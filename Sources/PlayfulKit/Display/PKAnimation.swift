@@ -69,7 +69,7 @@ public class PKAnimation {
         return SKAction.repeat(sequence, count: repeatCount)
     }
     
-    public func spriteAnimation(_ node: SKSpriteNode, images: [String], filteringMode: SKTextureFilteringMode, timePerFrame: TimeInterval = 0.5) -> SKAction {
+    public func animate(with images: [String], filteringMode: SKTextureFilteringMode = .linear, timePerFrame: TimeInterval = 0.5) -> SKAction {
         let textures = images.map { SKTexture(imageNamed: $0) }
         textures.forEach { $0.filteringMode = filteringMode }
         let animation = SKAction.animate(with: textures, timePerFrame: timePerFrame)
