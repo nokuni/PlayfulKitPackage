@@ -121,7 +121,7 @@ public class PKMatrix {
                             horizontalSpacing: CGFloat = 1,
                             verticalSpacing: CGFloat = 1,
                             maximumLineCount: Int = 2) {
-        nodes[index].name = "x\(coordinate.x) x\(coordinate.y)"
+        nodes[index].name = "x\(coordinate.x) y\(coordinate.y)"
         nodes[index].position = position
         node.addChild(nodes[index])
         let updatedPosition = axesIncrementedValue(axes: axes, alignment: alignment, node: nodes[index], position: position, spacing: horizontalSpacing)
@@ -249,7 +249,7 @@ public class PKMatrix {
                                       filteringMode: SKTextureFilteringMode = .linear,
                                       on node: SKNode,
                                       at coordinate: Coordinate) {
-        if let mapSquare = node.childNode(withName: "\(coordinate.x) \(coordinate.y)") as? SKSpriteNode {
+        if let mapSquare = node.childNode(withName: "x\(coordinate.x) y\(coordinate.y)") as? SKSpriteNode {
             mapSquare.texture = SKTexture(imageNamed: image)
             mapSquare.texture?.filteringMode = filteringMode
         }
