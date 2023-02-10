@@ -261,6 +261,7 @@ public class PKMatrix {
         guard let yName = coordinateNames?.last else { return Coordinate() }
         guard let xValue = Int(xName) else { return Coordinate() }
         guard let yValue = Int(yName) else { return Coordinate() }
+        print("Coordinate has been acquired")
         return Coordinate(x: xValue, y: yValue)
     }
     
