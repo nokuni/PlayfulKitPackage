@@ -280,6 +280,17 @@ public class PKMatrix {
         }
     }
     
+    public func fillMap(_ node: SKNode,
+                         of row: Int,
+                         from start: Int,
+                         to end: Int,
+                         with image: String,
+                         filteringMode: SKTextureFilteringMode = .linear) {
+        for index in start..<end {
+            addTextureOnMapSquare(image, filteringMode: filteringMode, on: node, at: .init(x: row, y: index))
+        }
+    }
+    
     public func fillMap(_ node: SKNode, from startingRow: Int, to endingRow: Int, with image: String) {
         let range = startingRow...endingRow
         for index in range {
