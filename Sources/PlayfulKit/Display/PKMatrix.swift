@@ -109,7 +109,7 @@ public class PKMatrix {
     }
     
     private func addMapNode(index: Int,
-                            of nodes: [SKShapeNode],
+                            of nodes: [SKNode],
                             at startingPosition: CGPoint = .zero,
                             in node: SKNode,
                             squareSize: CGSize,
@@ -220,6 +220,7 @@ public class PKMatrix {
     public func createMap(of amount: Int,
                           at startingPosition: CGPoint = .zero,
                           in node: SKNode,
+                          hasTexture: Bool,
                           squareSize: CGSize,
                           axes: PKAxes = .horizontal,
                           alignment: PKAlignment = .leading,
@@ -227,9 +228,11 @@ public class PKMatrix {
                           verticalSpacing: CGFloat = 1,
                           maximumLineCount: Int = 2) {
         guard amount > 0 else { return }
-        var squares: [SKShapeNode] = []
+        var squares: [SKSpriteNode] = []
         for _ in 0..<amount {
-            let coordinateSquare = SKShapeNode(rectOf: squareSize)
+            let coordinateSquare = SKSpriteNode()
+            coordinateSquare.texture = hasTexture ? SKTexture(imageNamed: "square") : nil
+            coordinateSquare.size = squareSize
             squares.append(coordinateSquare)
         }
         var coordinate: Coordinate = Coordinate()
@@ -242,13 +245,13 @@ public class PKMatrix {
         }
     }
     
-//    public func addSquareOnMap(_ node: SKNode, at coordinate: Coordinate) {
-//        let mapCoordinate = node.childNode(withName: "\(coordinate.x),\(coordinate.y)")
-//        let sprite = SKSpriteNode(imageNamed: "sand")
-//        sprite.texture?.filteringMode = .nearest
-//        sprite.size = mapCoordinate?.frame.size ?? .zero
-//        sprite.position = mapCoordinate?.position ?? .zero
-//        mapCoordinate?.removeFromParent()
-//        node.addChild(sprite)
-//    }
+    public func addTextureOnMapSquare(_ image: String,
+                                      filteringMode: SKTextureFilteringMode = .linear,
+                                      on node: SKNode,
+                                      at coordinate: Coordinate) {
+        if let mapSquare = node.childNode(withName: "\(coordinate.x),\(coordinate.y)") as? SKSpriteNode {
+            mapSquare.texture = SKTexture(imageNamed: image)
+            mapSquare.texture?.filteringMode = filteringMode
+        }
+    }
 }
