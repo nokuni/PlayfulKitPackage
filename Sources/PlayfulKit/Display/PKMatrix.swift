@@ -121,7 +121,7 @@ public class PKMatrix {
                             horizontalSpacing: CGFloat = 1,
                             verticalSpacing: CGFloat = 1,
                             maximumLineCount: Int = 2) {
-        nodes[index].name = "x\(coordinate.x) y\(coordinate.y)"
+        nodes[index].name = "\(coordinate.x) \(coordinate.y)"
         nodes[index].position = position
         node.addChild(nodes[index])
         let updatedPosition = axesIncrementedValue(axes: axes, alignment: alignment, node: nodes[index], position: position, spacing: horizontalSpacing)
