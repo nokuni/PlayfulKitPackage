@@ -280,6 +280,13 @@ public class PKMatrix {
         }
     }
     
+    public func fillMap(_ node: SKNode, from startingRow: Int, to endingRow: Int, with image: String) {
+        let range = startingRow...endingRow
+        for index in range {
+            fillMapRow(from: node, with: image, filteringMode: .nearest, row: index)
+        }
+    }
+    
     public func fillMap(_ node: SKNode, with image: String) {
         let nodes = node.children
         for index in nodes.indices {
