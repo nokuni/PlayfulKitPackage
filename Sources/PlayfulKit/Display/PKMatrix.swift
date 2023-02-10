@@ -25,9 +25,9 @@ public class PKMatrix {
         public init(
             x: Int = 0,
             y: Int = 0) {
-            self.x = x
-            self.y = y
-        }
+                self.x = x
+                self.y = y
+            }
         var x: Int = 0
         var y: Int = 0
     }
@@ -216,7 +216,7 @@ public class PKMatrix {
         }
     }
     
-    #warning("To improve")
+#warning("To improve")
     public func createMap(of amount: Int,
                           at startingPosition: CGPoint = .zero,
                           in node: SKNode,
@@ -249,14 +249,29 @@ public class PKMatrix {
                                       filteringMode: SKTextureFilteringMode = .linear,
                                       on node: SKNode,
                                       at coordinate: Coordinate) {
-        if let mapSquare = node.childNode(withName: "x\(coordinate.x) y\(coordinate.y)") as? SKSpriteNode {
+        if let mapSquare = node.childNode(withName: "\(coordinate.x) \(coordinate.y)") as? SKSpriteNode {
             mapSquare.texture = SKTexture(imageNamed: image)
             mapSquare.texture?.filteringMode = filteringMode
         }
     }
     
+    public func coordinate(from node: SKNode) -> Coordinate {
+        let coordinateNames = node.name?.components(separatedBy: " ")
+        guard let xName = coordinateNames?.first else { return Coordinate() }
+        guard let yName = coordinateNames?.last else { return Coordinate() }
+        guard let xValue = Int(xName) else { return Coordinate() }
+        guard let yValue = Int(yName) else { return Coordinate() }
+        return Coordinate(x: xValue, y: yValue)
+    }
+    
+    public func squares(_ node: SKNode, from row: Int) -> [SKNode] {
+        let nodes = node.children
+        let squareRow = nodes.filter { coordinate(from: $0).x == row }
+        return squareRow
+    }
+    
     public func fillMapRow(from node: SKNode, with image: String, filteringMode: SKTextureFilteringMode = .linear, row: Int) {
-        let nodes = node.children.getAll(named: "x\(row)")
+        let nodes = squares(node, from: row)
         for node in nodes {
             if let node = node as? SKSpriteNode {
                 node.texture = SKTexture(imageNamed: image)
