@@ -9,10 +9,10 @@ import SpriteKit
 
 public class PKMapNode: SKNode {
     
-    public init(tileSize: CGSize,
-                rows: Int,
-                columns: Int,
-                origin: CGPoint) {
+    public init(tileSize: CGSize = CGSize(width: 25, height: 25),
+                rows: Int = 10,
+                columns: Int = 10,
+                origin: CGPoint = CGPoint.center) {
         self.tileSize = tileSize
         self.rows = rows
         self.columns = columns
