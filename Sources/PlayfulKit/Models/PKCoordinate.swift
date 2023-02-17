@@ -14,6 +14,6 @@ public struct PKCoordinate: Equatable {
             self.x = x
             self.y = y
         }
-    var x: Int = 0
-    var y: Int = 0
+    public var x: Int = 0
+    public var y: Int = 0
 }
