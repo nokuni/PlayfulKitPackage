@@ -56,8 +56,16 @@ public class PKScribeNode: SKLabelNode {
         if currentCharacterIndex < parameter.content.count {
             currentCharacterIndex += 1
             let currentText = String(parameter.content.prefix(currentCharacterIndex))
-            parameter.content = currentText
-            attributedText = pkText.attributedText(parameter: parameter)
+            let newParameter = PKText.Paramater(
+                content: parameter.content,
+                font: parameter.font,
+                fontSize: parameter.fontSize,
+                fontColor: parameter.fontColor,
+                strokeWidth: parameter.strokeWidth,
+                strokeColor: parameter.strokeColor,
+                lineSpacing: parameter.lineSpacing,
+                padding: parameter.padding)
+            attributedText = pkText.attributedText(parameter: newParameter)
             print(parameter.content)
             print(attributedText?.string)
         }
