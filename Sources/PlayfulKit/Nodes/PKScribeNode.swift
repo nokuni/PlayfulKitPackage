@@ -58,6 +58,8 @@ public class PKScribeNode: SKLabelNode {
             let currentText = String(parameter.content.prefix(currentCharacterIndex))
             parameter.content = currentText
             attributedText = pkText.attributedText(parameter: parameter)
+            print(parameter.content)
+            print(attributedText?.string)
         }
     }
     private func write() {
