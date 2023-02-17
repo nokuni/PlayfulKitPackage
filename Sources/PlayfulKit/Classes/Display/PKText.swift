@@ -10,14 +10,31 @@ import SpriteKit
 public class PKText: PKTextProtocol {
     
     public struct Paramater {
+        public init(content: String,
+                    font: String,
+                    fontSize: CGFloat = 16,
+                    fontColor: UIColor = .white,
+                    strokeWidth: CGFloat = 0,
+                    strokeColor: UIColor = .clear,
+                    lineSpacing: CGFloat = 5,
+                    padding: CGFloat = 0) {
+            self.content = content
+            self.font = font
+            self.fontSize = fontSize
+            self.fontColor = fontColor
+            self.strokeWidth = strokeWidth
+            self.strokeColor = strokeColor
+            self.lineSpacing = lineSpacing
+            self.padding = padding
+        }
         var content: String
         var font: String
-        var fontSize: CGFloat = 16
-        var fontColor: UIColor = .white
-        var strokeWidth: CGFloat = 0
-        var strokeColor: UIColor = .clear
-        var lineSpacing: CGFloat = 5
-        var padding: CGFloat = 0
+        var fontSize: CGFloat
+        var fontColor: UIColor
+        var strokeWidth: CGFloat
+        var strokeColor: UIColor
+        var lineSpacing: CGFloat
+        var padding: CGFloat
     }
     
     public func attributedText(parameter: Paramater) -> NSAttributedString? {
