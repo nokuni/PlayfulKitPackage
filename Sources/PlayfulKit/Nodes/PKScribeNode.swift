@@ -57,7 +57,7 @@ public class PKScribeNode: SKLabelNode {
             currentCharacterIndex += 1
             let currentText = String(parameter.content.prefix(currentCharacterIndex))
             let newParameter = PKText.Paramater(
-                content: parameter.content,
+                content: currentText,
                 font: parameter.font,
                 fontSize: parameter.fontSize,
                 fontColor: parameter.fontColor,
