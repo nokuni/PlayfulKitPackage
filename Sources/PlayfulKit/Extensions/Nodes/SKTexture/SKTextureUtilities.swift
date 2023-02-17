@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-extension SKTexture {
+public extension SKTexture {
     // Get the name of the image texture
     var name: String? {
         let comps = description.components(separatedBy: "'")

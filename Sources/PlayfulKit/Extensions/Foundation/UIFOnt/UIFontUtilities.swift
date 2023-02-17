@@ -16,6 +16,6 @@ public extension UIFont {
         guard let randomFontName = UIFont.fontNames(forFamilyName: randomFamilyName).randomElement() else {
             return nil
         }
-        return "randomFontName"
+        return randomFontName
     }
 }

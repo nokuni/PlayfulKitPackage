@@ -21,4 +21,9 @@ public extension SKNode {
     func isExistingChildNode(named name: String) -> Bool {
         self.childNode(withName: name) != nil
     }
+    
+    func childNodesCount(named name: String) -> Int {
+        let nodes = childNodes(named: name)
+        return nodes.count
+    }
 }
