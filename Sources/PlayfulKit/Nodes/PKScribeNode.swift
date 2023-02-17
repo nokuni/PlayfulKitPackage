@@ -9,8 +9,10 @@ import SpriteKit
 
 public class PKScribeNode: SKLabelNode {
     
-    public init(parameter: PKText.Paramater) {
+    public init(parameter: PKText.Paramater,
+                timeInterval: TimeInterval = 0.05) {
         self.parameter = parameter
+        self.timeInterval = timeInterval
         super.init()
         setupScribe()
         write()
@@ -23,6 +25,7 @@ public class PKScribeNode: SKLabelNode {
     private let pkText = PKText()
     
     public var parameter: PKText.Paramater
+    public var timeInterval: TimeInterval
     private var currentCharacterIndex: Int = 0
     private var timer: Timer?
     
@@ -58,9 +61,10 @@ public class PKScribeNode: SKLabelNode {
         }
     }
     private func write() {
-        timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] timer in
+        timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { [weak self] timer in
             guard let self = self else { return }
             self.updateText()
         }
+        timer?.fire()
     }
 }
