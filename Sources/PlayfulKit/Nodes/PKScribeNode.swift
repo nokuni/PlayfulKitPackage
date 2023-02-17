@@ -63,6 +63,7 @@ public class PKScribeNode: SKLabelNode {
     private func write() {
         timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { [weak self] timer in
             guard let self = self else { return }
+            print("Text Updated")
             self.updateText()
         }
         timer?.fire()
