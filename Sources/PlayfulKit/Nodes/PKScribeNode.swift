@@ -42,6 +42,7 @@ public class PKScribeNode: SKLabelNode {
     // MARK: - PRIVATE
     private func setupScribe() {
         guard let parent = parent else { return }
+        print(parent)
         if let attributedText = pkText.attributedText(parameter: parameter) {
             self.attributedText = attributedText
         }
