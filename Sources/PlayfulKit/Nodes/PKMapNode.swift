@@ -45,13 +45,46 @@ public class PKMapNode: SKNode {
         applyTexture(texture, on: tilesAtRow)
     }
     
+    // Apply a texture on all the tiles in multiples row of the map
+    public func applyTexture(_ texture: SKTexture,
+                             from startingRow: Int,
+                             to endingRow: Int) {
+        for row in startingRow..<endingRow {
+            applyTexture(texture, on: row)
+        }
+    }
+    
     // Apply a texture on one tiles at a specific coordinate
     public func applyTexture(_ texture: SKTexture, at coordinate: PKCoordinate) {
         let tileNode = self.tiles.tile(at: coordinate)
         tileNode?.texture = texture
     }
     
+    // Apply a texture on all the tiles from a coordinate to another.
+    public func applyTexture(_ texture: SKTexture,
+                             from startingCoordinate: PKCoordinate,
+                             to endingCoordinate: PKCoordinate) {
+        let hasPositiveCoordinateRange = (endingCoordinate.x > startingCoordinate.x) ||
+        (startingCoordinate.y < columns)
+        guard hasPositiveCoordinateRange else { return }
+        var coordinate = startingCoordinate
+        repeat {
+            applyTexture(texture, at: coordinate)
+            advanceCoordinate(&coordinate)
+        } while (coordinate.x < endingCoordinate.x) || (coordinate.y < columns)
+    }
+    
     // MARK: - PRIVATE
+    
+    private func advanceCoordinate(_ coordinate: inout PKCoordinate) {
+        switch true {
+        case coordinate.y == columns:
+            coordinate.x += 1
+            coordinate.y = 0
+        default:
+            coordinate.y += 1
+        }
+    }
     
     private func tiles(size: CGSize, amount: Int) -> [PKTileNode] {
         var tileNodes: [PKTileNode] = []

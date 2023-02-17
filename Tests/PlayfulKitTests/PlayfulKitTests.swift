@@ -16,4 +16,13 @@ final class PlayfulKitTests: XCTestCase {
                                       parameter: .init(content: "Hello World"))
         rectangle.addChild(scribeNode)
     }
+    
+    func testMap() {
+        let mapNode = PKMapNode(rows: 10, columns: 10)
+        let texture = SKTexture(imageNamed: "redSquare")
+        let startingCoordinate = PKCoordinate(x: 0, y: 6)
+        let endingCoordinate = PKCoordinate(x: 3, y: 9)
+        mapNode.applyTexture(texture, from: startingCoordinate, to: endingCoordinate)
+        dump(mapNode.tiles)
+    }
 }

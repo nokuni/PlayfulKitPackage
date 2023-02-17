@@ -13,11 +13,12 @@ public extension Array where Element: PKTileNode {
         var coordinate = PKCoordinate()
         let splittedTiles = self.splitted(into: rows)
         for row in splittedTiles.indices {
-            coordinate.x += 1
             for index in splittedTiles[row].indices {
                 splittedTiles[row][index].coordinate = coordinate
                 coordinate.y += 1
             }
+            coordinate.x += 1
+            coordinate.y = 0
         }
         let tiles = splittedTiles.joined().map { $0 }
         self = tiles
