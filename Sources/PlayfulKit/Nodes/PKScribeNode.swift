@@ -52,28 +52,27 @@ public class PKScribeNode: SKLabelNode {
         verticalAlignmentMode = .top
         position = parent.corner(corner: .topLeft, node: self, padding: parameter.padding, hasAlignment: true)
     }
+    
+    private func isWriting() -> Bool {
+        currentCharacterIndex < parameter.content.count
+    }
+    
     private func updateText() {
-        if currentCharacterIndex < parameter.content.count {
+        switch true {
+        case isWriting():
             currentCharacterIndex += 1
             let currentText = String(parameter.content.prefix(currentCharacterIndex))
-            let newParameter = PKText.Paramater(
-                content: currentText,
-                font: parameter.font,
-                fontSize: parameter.fontSize,
-                fontColor: parameter.fontColor,
-                strokeWidth: parameter.strokeWidth,
-                strokeColor: parameter.strokeColor,
-                lineSpacing: parameter.lineSpacing,
-                padding: parameter.padding)
+            var newParameter = parameter
+            newParameter.content = currentText
             attributedText = pkText.attributedText(parameter: newParameter)
-            print(parameter.content)
-            print(attributedText?.string)
+        default:
+            stop()
         }
     }
+    
     private func write() {
         timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { [weak self] timer in
             guard let self = self else { return }
-            print("Text Updated")
             self.updateText()
         }
         timer?.fire()
