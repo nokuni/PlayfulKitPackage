@@ -49,7 +49,7 @@ public class PKLanguage {
     public static let shared = PKLanguage()
     public static let changedLanguage = Notification.Name("changedLanguage")
 
-    public init() {}
+    public init() { }
     
     public var language: Language {
         get {

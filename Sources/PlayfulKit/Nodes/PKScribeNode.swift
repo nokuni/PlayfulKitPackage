@@ -7,9 +7,9 @@
 
 import SpriteKit
 
-class PKScribeNode: SKLabelNode {
+public class PKScribeNode: SKLabelNode {
     
-    init(parameter: PKText.Paramater) {
+    public init(parameter: PKText.Paramater) {
         self.parameter = parameter
         super.init()
         setupScribe()

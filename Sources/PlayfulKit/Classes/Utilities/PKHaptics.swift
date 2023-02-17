@@ -10,6 +10,8 @@ import UIKit
 
 public class PKHaptics: HapticProtocol {
     
+    public init() { }
+    
     private var engine: CHHapticEngine?
     
     public func prepareHaptics() {
