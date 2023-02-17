@@ -9,8 +9,10 @@ import SpriteKit
 
 public class PKScribeNode: SKLabelNode {
     
-    public init(parameter: PKText.Paramater,
+    public init(container: SKNode,
+                parameter: PKText.Paramater,
                 timeInterval: TimeInterval = 0.05) {
+        self.container = container
         self.parameter = parameter
         self.timeInterval = timeInterval
         super.init()
@@ -24,6 +26,7 @@ public class PKScribeNode: SKLabelNode {
     
     private let pkText = PKText()
     
+    public var container: SKNode?
     public var parameter: PKText.Paramater
     public var timeInterval: TimeInterval
     private var currentCharacterIndex: Int = 0
@@ -41,17 +44,16 @@ public class PKScribeNode: SKLabelNode {
     
     // MARK: - PRIVATE
     private func setupScribe() {
-        guard let parent = parent else { return }
-        print(parent)
+        guard let container = container else { return }
         if let attributedText = pkText.attributedText(parameter: parameter) {
             self.attributedText = attributedText
         }
         lineBreakMode = NSLineBreakMode.byWordWrapping
         numberOfLines = 0
-        preferredMaxLayoutWidth = parent.frame.width - (parameter.padding * 2)
+        preferredMaxLayoutWidth = container.frame.width - (parameter.padding * 2)
         horizontalAlignmentMode = .left
         verticalAlignmentMode = .top
-        position = parent.corner(corner: .topLeft, node: self, padding: parameter.padding, hasAlignment: true)
+        position = container.corner(corner: .topLeft, node: self, padding: parameter.padding, hasAlignment: true)
     }
     
     private func isWriting() -> Bool {

@@ -11,7 +11,7 @@ public class PKText: PKTextProtocol {
     
     public struct Paramater {
         public init(content: String,
-                    font: String,
+                    fontName: String? = UIFont.randomSystemFontName,
                     fontSize: CGFloat = 16,
                     fontColor: UIColor = .white,
                     strokeWidth: CGFloat = 0,
@@ -19,7 +19,7 @@ public class PKText: PKTextProtocol {
                     lineSpacing: CGFloat = 5,
                     padding: CGFloat = 0) {
             self.content = content
-            self.font = font
+            self.fontName = fontName
             self.fontSize = fontSize
             self.fontColor = fontColor
             self.strokeWidth = strokeWidth
@@ -28,7 +28,7 @@ public class PKText: PKTextProtocol {
             self.padding = padding
         }
         var content: String
-        var font: String
+        var fontName: String?
         var fontSize: CGFloat
         var fontColor: UIColor
         var strokeWidth: CGFloat
@@ -38,7 +38,10 @@ public class PKText: PKTextProtocol {
     }
     
     public func attributedText(parameter: Paramater) -> NSAttributedString? {
-        guard let font: UIFont = UIFont(name: parameter.font,
+        guard let fontName = parameter.fontName else {
+            return nil
+        }
+        guard let font: UIFont = UIFont(name: fontName,
                                         size: parameter.fontSize) else {
             return nil
         }
