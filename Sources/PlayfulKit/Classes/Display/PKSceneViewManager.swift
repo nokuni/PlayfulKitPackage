@@ -43,6 +43,7 @@ public struct PKSceneViewManager<S: RawRepresentable> {
             currentView = previousView
         }
     }
+    
     public mutating func goToViewFromRootView(view: SKNode, viewState: S) {
         currentViewState = viewState
         view.name = viewState.rawValue as? String
@@ -51,6 +52,7 @@ public struct PKSceneViewManager<S: RawRepresentable> {
         previousView = rootView
         currentView = view
     }
+    
     public mutating func goToViewFromPreviousView(view: SKNode, viewState: S) {
         currentViewState = viewState
         view.name = viewState.rawValue as? String

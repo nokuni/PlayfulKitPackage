@@ -8,13 +8,7 @@
 import CoreHaptics
 import UIKit
 
-public protocol HapticSupport {
-    func prepareHaptics()
-    func simpleSuccess()
-    func complexSuccess(intensity: Float, sharpness: Float)
-}
-
-public class PKHaptics: HapticSupport {
+public class PKHaptics: HapticProtocol {
     
     private var engine: CHHapticEngine?
     
@@ -53,30 +47,6 @@ public class PKHaptics: HapticSupport {
             try player?.start(atTime: 0)
         } catch {
             print("Failed to play haptic pattern: \(error.localizedDescription).")
-        }
-    }
-}
-
-public enum VibrationAmplitude: CGFloat {
-    case veryLow = 1
-    case low = 2
-    case average = 3
-    case high = 4
-    case veryHigh = 5
-    
-    var haptic: Void {
-        let haptic = PKHaptics()
-        switch self {
-        case .veryLow:
-            return haptic.complexSuccess(intensity: 0.2, sharpness: 0.2)
-        case .low:
-            return haptic.complexSuccess(intensity: 0.4, sharpness: 0.4)
-        case .average:
-            return haptic.complexSuccess(intensity: 0.6, sharpness: 0.6)
-        case .high:
-            return haptic.complexSuccess(intensity: 0.8, sharpness: 0.8)
-        case .veryHigh:
-            return haptic.complexSuccess(intensity: 1, sharpness: 1)
         }
     }
 }

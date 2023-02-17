@@ -1,5 +1,5 @@
 //
-//  UIImageExtension.swift
+//  UIImageGradient.swift
 //  PlayfulKit
 //
 //  Created by Yann Christophe MAERTENS on 08/02/2023.

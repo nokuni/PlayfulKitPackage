@@ -9,77 +9,188 @@ import SpriteKit
 
 public class PKProgressBarNode: SKNode {
     
-    public var emptySprite: SKSpriteNode? = nil
-    public var progressBar: SKCropNode
-    public init(emptyImageName: String!, filledImageName : String, width: CGFloat, height: CGFloat) {
-        progressBar = SKCropNode()
+    public init(progressBar: ProgressBar) {
+        self.progressBar = progressBar
+        
         super.init()
-        let filledImage = SKSpriteNode(imageNamed: filledImageName)
-        filledImage.size = CGSize(width: UIScreen.main.bounds.width * width, height: UIScreen.main.bounds.width * height)
-        filledImage.texture?.filteringMode = .nearest
-        progressBar.addChild(filledImage)
-        progressBar.maskNode =
-        SKSpriteNode(color: UIColor.white, size: CGSize(width: filledImage.size.width * 2, height: filledImage.size.height * 2))
         
-        progressBar.maskNode?.position =
-        CGPoint(x: -filledImage.size.width / 2,y: -filledImage.size.height / 2)
+        createBar()
+        crop()
+        createUnderBar()
+    }
+    public init(imageProgressBar: ImageProgressBar) {
+        self.imageProgressBar = imageProgressBar
         
-        progressBar.zPosition = 0.1
-        self.addChild(progressBar)
+        super.init()
         
-        if emptyImageName != nil {
-            emptySprite = SKSpriteNode.init(imageNamed: emptyImageName)
-            emptySprite?.size = CGSize(width: UIScreen.main.bounds.width * width, height: UIScreen.main.bounds.width * height)
-            emptySprite?.texture?.filteringMode = .nearest
-            self.addChild(emptySprite!)
-        }
-    }
-    
-    public func getScaleAnimation(amount: CGFloat, duration: CGFloat) -> SKAction {
-        let scaleAnimation = SKAction.scaleX(to: progressBar.maskNode!.xScale + amount, duration: duration)
-        return scaleAnimation
-    }
-    
-    public func decrease(_ amount: CGFloat, duration: CGFloat) {
-        let animation = getScaleAnimation(amount: -amount, duration: duration)
-        if progressBar.maskNode!.xScale > 0 {
-            progressBar.maskNode!.run(animation)
-            if progressBar.maskNode!.xScale < 0 { setToMin(duration: duration) }
-        }
-    }
-    
-    public func increase(_ amount: CGFloat, duration: CGFloat) {
-        progressBar.maskNode!.xScale += amount
-    }
-    
-    public func setToMax(duration: CGFloat) {
-        let scaleAnimation = SKAction.scaleX(to: 1, duration: duration)
-        progressBar.maskNode!.run(scaleAnimation)
-    }
-    
-    public func setToMin(duration: CGFloat) {
-        let scaleAnimation = SKAction.scaleX(to: 0, duration: duration)
-        progressBar.maskNode!.run(scaleAnimation)
-    }
-    
-    public func setTo(_ amount: CGFloat, duration: CGFloat) {
-        let scaleAnimation = SKAction.scaleX(to: amount, duration: duration)
-        progressBar.maskNode!.run(scaleAnimation)
-    }
-    
-    public func isHealthBarEmpty() -> Bool {
-        guard let maskNode = progressBar.maskNode else { return false}
-        return maskNode.xScale <= 0
-    }
-    
-    public func setXProgress(xProgress : CGFloat){
-        var value = xProgress
-        if xProgress < 0 { value = 0 }
-        if xProgress > 1 { value = 1 }
-        progressBar.maskNode?.xScale = value
+        createUnderBar()
+        imageCrop()
+        createImageUnderBar()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private var progressBar: ProgressBar?
+    private var imageProgressBar: ImageProgressBar?
+    
+    private var cropNode = SKCropNode()
+    private var barNode = SKSpriteNode()
+    private var underBarNode = SKSpriteNode()
+    
+    public struct ProgressBar {
+        public init(amount: CGFloat = 1,
+                    size: CGSize,
+                    color: UIColor = .blue,
+                    underColor: UIColor = .black,
+                    cornerRadius: CGFloat = 15) {
+            self.amount = amount
+            self.size = size
+            self.color = color
+            self.underColor =  underColor
+            self.cornerRadius = cornerRadius
+        }
+        var amount: CGFloat
+        var size: CGSize
+        var color: UIColor
+        var underColor: UIColor
+        var cornerRadius: CGFloat
+    }
+    public struct ImageProgressBar {
+        public init(amount: CGFloat = 1,
+                    size: CGSize,
+                    image: String,
+                    underImage: String) {
+            self.amount = amount
+            self.size = size
+            self.image = image
+            self.underImage = image
+        }
+        var amount: CGFloat
+        var size: CGSize
+        var image: String
+        var underImage: String
+    }
+    
+    // MARK: - PUBLIC
+    
+    public func set(to amount: CGFloat, duration: CGFloat) {
+        let animation = scale(amount: amount, duration: duration)
+        cropNode.maskNode!.run(animation)
+    }
+    
+    public func increase(by amount: CGFloat, duration: CGFloat) {
+        guard let maskNode = cropNode.maskNode else { return }
+        let scaleAmount = maskNode.xScale + amount
+        let animation = scale(amount: scaleAmount, duration: duration)
+        if cropNode.maskNode!.xScale < 1 {
+            cropNode.maskNode!.run(animation)
+        }
+    }
+    
+    public func decrease(by amount: CGFloat, duration: CGFloat) {
+        guard let maskNode = cropNode.maskNode else { return }
+        let scaleAmount = maskNode.xScale - amount
+        let animation = scale(amount: scaleAmount, duration: duration)
+        if cropNode.maskNode!.xScale > 0 {
+            cropNode.maskNode!.run(animation)
+        }
+    }
+    
+    public func max(duration: CGFloat) {
+        let amount: CGFloat = 1
+        let animation = scale(amount: amount, duration: duration)
+        cropNode.maskNode!.run(animation)
+    }
+    
+    public func min(duration: CGFloat) {
+        let amount: CGFloat = 0
+        let animation = scale(amount: amount, duration: duration)
+        cropNode.maskNode!.run(animation)
+    }
+    
+    public func isBarEmpty() -> Bool {
+        guard let maskNode = cropNode.maskNode else { return false}
+        return maskNode.xScale <= 0
+    }
+    
+    public func isBarFull() -> Bool {
+        guard let maskNode = cropNode.maskNode else { return false}
+        return maskNode.xScale >= 1
+    }
+    
+    // MARK: - PRIVATE
+    
+    private func scale(amount: CGFloat,
+                       duration: CGFloat) -> SKAction {
+        let scaleAnimation = SKAction.scaleX(to: amount, duration: duration)
+        return scaleAnimation
+    }
+    
+    private func imageCrop() {
+        guard let imageProgressBar = imageProgressBar else { return }
+        cropNode.addChild(barNode)
+        cropNode.maskNode =
+        SKSpriteNode(
+            color: UIColor.white,
+            size: CGSize(width: barNode.size.width * 2,
+                         height: barNode.size.height * 2)
+        )
+        cropNode.maskNode?.xScale = imageProgressBar.amount
+        cropNode.maskNode?.position =
+        CGPoint(x: -barNode.size.width / 2,
+                y: -barNode.size.height / 2)
+        cropNode.zPosition = 0.1
+        addChild(cropNode)
+    }
+    
+    private func createImageBar() {
+        guard let imageProgressBar = imageProgressBar else { return }
+        barNode = SKSpriteNode(imageNamed: imageProgressBar.image)
+    }
+    
+    private func createImageUnderBar() {
+        guard let imageProgressBar = imageProgressBar else { return }
+        underBarNode = SKSpriteNode(imageNamed: imageProgressBar.underImage)
+        addChild(underBarNode)
+    }
+    
+    private func crop() {
+        guard let progressBar = progressBar else { return }
+        cropNode.addChild(barNode)
+        cropNode.maskNode =
+        SKSpriteNode(
+            color: UIColor.white,
+            size: CGSize(width: barNode.size.width * 2,
+                         height: barNode.size.height * 2)
+        )
+        cropNode.maskNode?.xScale = progressBar.amount
+        cropNode.maskNode?.position =
+        CGPoint(x: -barNode.size.width / 2,
+                y: -barNode.size.height / 2)
+        cropNode.zPosition = 0.1
+        addChild(cropNode)
+    }
+    
+    private func createBar() {
+        guard let progressBar = progressBar else { return }
+        if let image = UIImage.shape(color: progressBar.color,
+                                     size: progressBar.size,
+                                     cornerRadius: progressBar.cornerRadius) {
+            let texture = SKTexture(image: image)
+            barNode = SKSpriteNode(texture: texture)
+        }
+    }
+    
+    private func createUnderBar() {
+        guard let progressBar = progressBar else { return }
+        if let image = UIImage.shape(color: progressBar.underColor,
+                                     size: progressBar.size,
+                                     cornerRadius: progressBar.cornerRadius) {
+            let texture = SKTexture(image: image)
+            underBarNode = SKSpriteNode(texture: texture)
+            addChild(underBarNode)
+        }
     }
 }

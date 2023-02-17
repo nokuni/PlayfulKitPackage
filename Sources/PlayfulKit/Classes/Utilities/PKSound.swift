@@ -48,7 +48,10 @@ public class PKSound {
         }
     }
     
-    public func playSFX(name: String, loops: Int, volume: Float, isSpammable: Bool = false) {
+    public func playSFX(name: String,
+                        loops: Int,
+                        volume: Float,
+                        isSpammable: Bool = false) {
         if isSFXEnabled {
             if let url = Bundle.main.url(forResource: name, withExtension: nil),
                let audio = try? AVAudioPlayer(contentsOf: url) {
@@ -108,7 +111,10 @@ public class PKSound {
     
     // Looping sound method using a timer
     // This method can control the time interval of the looping sound
-    public func repeatSoundEffect(timeInterval: TimeInterval, name: String, volume: Float, repeatCount: Int) {
+    public func repeatSoundEffect(timeInterval: TimeInterval,
+                                  name: String,
+                                  volume: Float,
+                                  repeatCount: Int) {
         numberOfRepeat = repeatCount
         timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { timer in
             switch true {
