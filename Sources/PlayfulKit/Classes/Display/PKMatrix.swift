@@ -13,10 +13,10 @@ public class PKMatrix: PKMatrixProtocol {
     
     public struct Parameter {
         public init(axes: PKAxes = .horizontal,
-             alignment: PKAlignment = .leading,
-             horizontalSpacing: CGFloat = 1,
-             verticalSpacing: CGFloat = 1,
-             columns: Int = 2) {
+                    alignment: PKAlignment = .leading,
+                    horizontalSpacing: CGFloat = 1,
+                    verticalSpacing: CGFloat = 1,
+                    columns: Int = 2) {
             self.axes = axes
             self.alignment = alignment
             self.horizontalSpacing = horizontalSpacing
