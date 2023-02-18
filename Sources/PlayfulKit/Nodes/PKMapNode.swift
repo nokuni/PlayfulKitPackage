@@ -39,18 +39,33 @@ public class PKMapNode: SKNode {
         applyTexture(texture, on: self.tiles)
     }
     
+    // Apply texture on all the tile in a specific column of the map
+    public func applyTexture(_ texture: SKTexture, column: Int) {
+        let tilesOnColumn = self.tiles.filter { $0.coordinate.y == column }
+        applyTexture(texture, on: tilesOnColumn)
+    }
+    
+    // Apply a texture on all the tiles in multiples columns of the map
+    public func applyTexture(_ texture: SKTexture,
+                             startingColumn: Int,
+                             endingColumn: Int) {
+        for column in startingColumn..<endingColumn {
+            applyTexture(texture, column: column)
+        }
+    }
+    
     // Apply a texture on all the tiles in a specific row of the map
-    public func applyTexture(_ texture: SKTexture, on row: Int) {
-        let tilesAtRow = self.tiles.filter { $0.coordinate.x == row }
-        applyTexture(texture, on: tilesAtRow)
+    public func applyTexture(_ texture: SKTexture, row: Int) {
+        let tilesOnRow = self.tiles.filter { $0.coordinate.x == row }
+        applyTexture(texture, on: tilesOnRow)
     }
     
     // Apply a texture on all the tiles in multiples row of the map
     public func applyTexture(_ texture: SKTexture,
-                             from startingRow: Int,
-                             to endingRow: Int) {
+                             startingRow: Int,
+                             endingRow: Int) {
         for row in startingRow..<endingRow {
-            applyTexture(texture, on: row)
+            applyTexture(texture, row: row)
         }
     }
     
@@ -62,8 +77,8 @@ public class PKMapNode: SKNode {
     
     // Apply a texture on all the tiles from a coordinate to another.
     public func applyTexture(_ texture: SKTexture,
-                             from startingCoordinate: PKCoordinate,
-                             to endingCoordinate: PKCoordinate) {
+                             startingCoordinate: PKCoordinate,
+                             endingCoordinate: PKCoordinate) {
         let hasPositiveCoordinateRange = (endingCoordinate.x > startingCoordinate.x) ||
         (startingCoordinate.y < columns)
         guard hasPositiveCoordinateRange else { return }

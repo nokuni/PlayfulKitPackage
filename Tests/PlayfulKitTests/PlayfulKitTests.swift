@@ -22,7 +22,7 @@ final class PlayfulKitTests: XCTestCase {
         let texture = SKTexture(imageNamed: "redSquare")
         let firstCoordinate = PKCoordinate(x: 0, y: 0)
         let secondCoordinate = PKCoordinate(x: 1, y: 9)
-        map.applyTexture(texture, from: firstCoordinate, to: secondCoordinate)
+        map.applyTexture(texture, startingCoordinate: firstCoordinate, endingCoordinate: secondCoordinate)
         dump(map.children)
     }
 }
