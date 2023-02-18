@@ -109,7 +109,7 @@ public class PKMapNode: SKNode {
                      startingCoordinate: PKCoordinate(x: rows - 1,
                                                       y: 1),
                      endingCoordinate: PKCoordinate(x: rows - 1,
-                                                    y: columns - 3))
+                                                    y: 5))
         /*// Fill Middle
         applyTexture(structure.middle,
                      startingCoordinate: PKCoordinate(x: 1,
