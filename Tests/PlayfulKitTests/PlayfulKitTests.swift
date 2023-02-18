@@ -27,7 +27,6 @@ final class PlayfulKitTests: XCTestCase {
     }
     
     func testBitMasks() {
-        let bitmasks: [PKBitMaskCategory] = [.player, .playerProjectile, .enemy]
-        print(2 | 4 | 6)
+        
     }
 }
