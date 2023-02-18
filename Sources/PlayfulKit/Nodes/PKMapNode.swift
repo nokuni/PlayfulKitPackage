@@ -112,8 +112,8 @@ public class PKMapNode: SKNode {
                                                     y: bottomRightCornerCoordinate.y - 1))
         // Fill Middle
         applyTexture(structure.middle,
-                     startingCoordinate: PKCoordinate(x: 0,
-                                                      y: 0),
+                     startingCoordinate: PKCoordinate(x: 1,
+                                                      y: 1),
                      endingCoordinate: PKCoordinate(x: rows - 1,
                                                     y: columns - 1)
         )
