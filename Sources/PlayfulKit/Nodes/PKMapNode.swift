@@ -86,7 +86,7 @@ public class PKMapNode: SKNode {
         applyTexture(structure.bottomRight,
                      at: bottomRightCornerCoordinate)
         
-        /*// Fill first column
+        // Fill first column
         applyTexture(structure.left,
                      startingCoordinate: PKCoordinate(x: 1,
                                                       y: 0),
@@ -103,20 +103,20 @@ public class PKMapNode: SKNode {
                      startingCoordinate: PKCoordinate(x: 0,
                                                       y: 1),
                      endingCoordinate: PKCoordinate(x: 0,
-                                                    y: columns - 2))*/
+                                                    y: columns - 2))
         // Fill last row
         applyTexture(structure.bottom,
                      startingCoordinate: PKCoordinate(x: rows - 1,
                                                       y: 1),
                      endingCoordinate: PKCoordinate(x: rows - 1,
-                                                    y: 2))
-        /*// Fill Middle
+                                                    y: columns - 2))
+        // Fill Middle
         applyTexture(structure.middle,
                      startingCoordinate: PKCoordinate(x: 1,
                                                       y: 1),
                      endingCoordinate: PKCoordinate(x: rows - 1,
                                                     y: columns - 1)
-        )*/
+        )
         
     }
     
@@ -166,28 +166,12 @@ public class PKMapNode: SKNode {
                              startingCoordinate: PKCoordinate,
                              endingCoordinate: PKCoordinate) {
         guard (endingCoordinate.x > startingCoordinate.x) ||
-        (startingCoordinate.y < columns) else { return }
+                (startingCoordinate.y < columns) else { return }
         var coordinate = startingCoordinate
         repeat {
             applyTexture(texture, at: coordinate)
             advanceCoordinate(&coordinate)
         } while (coordinate.x < endingCoordinate.x) || (coordinate.y < endingCoordinate.y)
-        
-        // row: 4, columns: 6
-        // start (x: 0, y: 0)
-        // end   (x: 1, y: 3)
-        
-        // TRUE || TRUE (0 < 1, 0 < 3) TRUE
-        // TRUE || TRUE (0 < 1, 1 < 3) TRUE
-        // TRUE || TRUE (0 < 1, 2 < 3) TRUE
-        // TRUE || FALSE (0 < 1, 3 < 3) TRUE
-        // TRUE || FALSE (0 < 1, 4 < 3) TRUE
-        // TRUE || FALSE (0 < 1, 5 < 3) TRUE
-        
-        // FALSE || TRUE (1 < 1, 0 < 3) TRUE
-        // FALSE || TRUE (1 < 1, 1 < 3) TRUE
-        // FALSE || TRUE (1 < 1, 2 < 3) TRUE
-        // FALSE || FALSE (1 < 1, 3 < 3) FALSE
     }
     
     // MARK: - PRIVATE
