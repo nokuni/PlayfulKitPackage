@@ -171,7 +171,23 @@ public class PKMapNode: SKNode {
         repeat {
             applyTexture(texture, at: coordinate)
             advanceCoordinate(&coordinate)
-        } while (coordinate.x < endingCoordinate.x) || (coordinate.y < columns)
+        } while (coordinate.x < endingCoordinate.x) || (coordinate.y < endingCoordinate.y)
+        
+        // row: 4, columns: 6
+        // start (x: 0, y: 0)
+        // end   (x: 1, y: 3)
+        
+        // TRUE || TRUE (0 < 1, 0 < 3) TRUE
+        // TRUE || TRUE (0 < 1, 1 < 3) TRUE
+        // TRUE || TRUE (0 < 1, 2 < 3) TRUE
+        // TRUE || FALSE (0 < 1, 3 < 3) TRUE
+        // TRUE || FALSE (0 < 1, 4 < 3) TRUE
+        // TRUE || FALSE (0 < 1, 5 < 3) TRUE
+        
+        // FALSE || TRUE (1 < 1, 0 < 3) TRUE
+        // FALSE || TRUE (1 < 1, 1 < 3) TRUE
+        // FALSE || TRUE (1 < 1, 2 < 3) TRUE
+        // FALSE || FALSE (1 < 1, 3 < 3) FALSE
     }
     
     // MARK: - PRIVATE
