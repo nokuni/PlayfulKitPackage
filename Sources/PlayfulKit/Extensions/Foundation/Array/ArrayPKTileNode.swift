@@ -9,12 +9,12 @@ import SpriteKit
 
 public extension Array where Element: PKTileNode {
     
-    mutating func coordinateTiles(splittedBy rows: Int) {
+    mutating func coordinateTiles(splittedBy columns: Int) {
         var coordinate = PKCoordinate()
-        let splittedTiles = self.splitted(into: rows)
-        for row in splittedTiles.indices {
-            for index in splittedTiles[row].indices {
-                splittedTiles[row][index].coordinate = coordinate
+        let splittedTiles = self.splitted(into: columns)
+        for column in splittedTiles.indices {
+            for index in splittedTiles[column].indices {
+                splittedTiles[column][index].coordinate = coordinate
                 coordinate.y += 1
             }
             coordinate.x += 1

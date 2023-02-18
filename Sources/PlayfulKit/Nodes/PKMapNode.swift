@@ -100,7 +100,7 @@ public class PKMapNode: SKNode {
     private func createMap() {
         let amount = rows * columns
         var tileNodes = tiles(size: tileSize, amount: amount)
-        tileNodes.coordinateTiles(splittedBy: rows)
+        tileNodes.coordinateTiles(splittedBy: columns)
         matrix.createSpriteCollection(of: tileNodes,
                                       at: origin,
                                       in: self,
