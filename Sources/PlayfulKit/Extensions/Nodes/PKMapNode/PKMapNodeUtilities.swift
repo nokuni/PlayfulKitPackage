@@ -15,4 +15,9 @@ public extension PKMapNode {
     func tileNode(at coordinate: PKCoordinate) -> PKTileNode? {
         tiles.first(where: { $0.coordinate == coordinate })
     }
+    
+    func tilePosition(from coordinate: PKCoordinate) -> CGPoint? {
+        let tile = tileNode(at: coordinate)
+        return tile?.position
+    }
 }
