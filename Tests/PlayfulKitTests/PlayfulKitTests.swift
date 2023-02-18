@@ -25,4 +25,9 @@ final class PlayfulKitTests: XCTestCase {
         map.applyTexture(texture, startingCoordinate: firstCoordinate, endingCoordinate: secondCoordinate)
         dump(map.children)
     }
+    
+    func testBitMasks() {
+        let bitmasks: [SKNode.BitMaskCategory] = [.player, .playerProjectile, .enemy]
+        print(2 | 4 | 6)
+    }
 }
