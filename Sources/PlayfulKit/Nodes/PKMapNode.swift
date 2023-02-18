@@ -109,7 +109,7 @@ public class PKMapNode: SKNode {
                      startingCoordinate: PKCoordinate(x: rows - 1,
                                                       y: 1),
                      endingCoordinate: PKCoordinate(x: rows - 1,
-                                                    y: 5))
+                                                    y: 2))
         /*// Fill Middle
         applyTexture(structure.middle,
                      startingCoordinate: PKCoordinate(x: 1,
@@ -165,9 +165,8 @@ public class PKMapNode: SKNode {
     public func applyTexture(_ texture: SKTexture,
                              startingCoordinate: PKCoordinate,
                              endingCoordinate: PKCoordinate) {
-        let hasPositiveCoordinateRange = (endingCoordinate.x > startingCoordinate.x) ||
-        (startingCoordinate.y < columns)
-        guard hasPositiveCoordinateRange else { return }
+        guard (endingCoordinate.x > startingCoordinate.x) ||
+        (startingCoordinate.y < columns) else { return }
         var coordinate = startingCoordinate
         repeat {
             applyTexture(texture, at: coordinate)

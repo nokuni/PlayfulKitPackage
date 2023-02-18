@@ -18,11 +18,18 @@ final class PlayfulKitTests: XCTestCase {
     }
     
     func testMap() {
-        let map = PKMapNode(rows: 5, columns: 10)
-        let texture = SKTexture(imageNamed: "redSquare")
-        let firstCoordinate = PKCoordinate(x: 0, y: 0)
-        let secondCoordinate = PKCoordinate(x: 1, y: 9)
-        map.applyTexture(texture, startingCoordinate: firstCoordinate, endingCoordinate: secondCoordinate)
+        let map = PKMapNode(rows: 4, columns: 6)
+        map.applyTexture(structure: .init(
+            topLeft: SKTexture(imageNamed: "purpleSquare"),
+            topRight: SKTexture(imageNamed: "orangeSquare"),
+            bottomLeft: SKTexture(imageNamed: "yellowSquare"),
+            bottomRight: SKTexture(imageNamed: "blueSquare"),
+            left: SKTexture(imageNamed: ""),
+            right: SKTexture(imageNamed: ""),
+            top: SKTexture(imageNamed: ""),
+            bottom: SKTexture(imageNamed: "redSquare"),
+            middle: SKTexture(imageNamed: "")))
+        //dump(map.tiles)
     }
     
     func testBitMasks() {
