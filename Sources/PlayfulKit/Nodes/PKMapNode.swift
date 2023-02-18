@@ -10,10 +10,12 @@ import SpriteKit
 public class PKMapNode: SKNode {
     
     public init(tileSize: CGSize = CGSize(width: 25, height: 25),
+                tileBitMask: PKBitMask? = nil,
                 rows: Int = 10,
                 columns: Int = 10,
                 origin: CGPoint = CGPoint.center) {
         self.tileSize = tileSize
+        self.tileBitMask = tileBitMask
         self.rows = rows
         self.columns = columns
         self.origin = origin
@@ -26,6 +28,7 @@ public class PKMapNode: SKNode {
     }
     
     public var tileSize: CGSize
+    public var tileBitMask: PKBitMask?
     public var rows: Int
     public var columns: Int
     public var origin: CGPoint
@@ -183,12 +186,21 @@ public class PKMapNode: SKNode {
         }
     }
     
-    private func tiles(size: CGSize, amount: Int) -> [PKTileNode] {
+    private func tiles(size: CGSize,
+                       amount: Int,
+                       bitMask: PKBitMask? = nil) -> [PKTileNode] {
         var tileNodes: [PKTileNode] = []
         for _ in 0..<amount {
             let tileNode = PKTileNode()
             tileNode.size = size
             tileNode.texture = SKTexture(imageNamed: "")
+            if let bitMask = bitMask {
+                tileNode.applyPhysicsBody(size: tileNode.size,
+                                          bitMask: .init(category: bitMask.category,
+                                                         collision: bitMask.collision,
+                                                         contact: bitMask.contact)
+                )
+            }
             tileNodes.append(tileNode)
         }
         return tileNodes
@@ -196,7 +208,7 @@ public class PKMapNode: SKNode {
     
     private func createMap() {
         let amount = rows * columns
-        var tileNodes = tiles(size: tileSize, amount: amount)
+        var tileNodes = tiles(size: tileSize, amount: amount, bitMask: tileBitMask)
         tileNodes.coordinateTiles(splittedBy: columns)
         matrix.createSpriteCollection(of: tileNodes,
                                       at: origin,

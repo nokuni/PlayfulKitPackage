@@ -12,7 +12,7 @@ public extension PKMapNode {
         return self.children.compactMap { $0 as? PKTileNode }
     }
     
-    func tileNode(with coordinate: PKCoordinate) -> PKTileNode? {
+    func tileNode(at coordinate: PKCoordinate) -> PKTileNode? {
         tiles.first(where: { $0.coordinate == coordinate })
     }
 }
