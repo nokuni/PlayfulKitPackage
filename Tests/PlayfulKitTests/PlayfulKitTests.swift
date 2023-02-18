@@ -27,6 +27,12 @@ final class PlayfulKitTests: XCTestCase {
     }
     
     func testBitMasks() {
-        
+        let node = SKNode()
+        node.applyPhysicsBody(
+            size: CGSize(width: 50, height: 50),
+            bitMask: .init(category: .playerProjectile,
+                           collision: [.object, .wall],
+                           contact: [.object, .wall])
+        )
     }
 }

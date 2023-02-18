@@ -20,11 +20,11 @@ public struct PKBitMask {
     public let contact: [PKBitMaskCategory]
     
     public var collisionBitMask: UInt32? {
-        guard collision.isEmpty else { return PKBitMaskCategory.allSet.rawValue }
+        guard !collision.isEmpty else { return PKBitMaskCategory.allSet.rawValue }
         return collision.withXOROperators()
     }
     public var contactBitMask: UInt32? {
-        guard contact.isEmpty else { return PKBitMaskCategory.allClear.rawValue }
+        guard !contact.isEmpty else { return PKBitMaskCategory.allClear.rawValue }
         return contact.withXOROperators()
     }
 }
