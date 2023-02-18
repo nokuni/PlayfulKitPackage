@@ -104,7 +104,7 @@ public class PKMapNode: SKNode {
         matrix.createSpriteCollection(of: tileNodes,
                                       at: origin,
                                       in: self,
-                                      parameter: .init(maximumLineCount: rows))
+                                      parameter: .init(columns: columns))
     }
     
     private func applyTexture(_ texture: SKTexture, on tiles: [PKTileNode]) {

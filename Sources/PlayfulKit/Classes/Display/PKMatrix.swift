@@ -16,18 +16,18 @@ public class PKMatrix: PKMatrixProtocol {
              alignment: PKAlignment = .leading,
              horizontalSpacing: CGFloat = 1,
              verticalSpacing: CGFloat = 1,
-             maximumLineCount: Int = 2) {
+             columns: Int = 2) {
             self.axes = axes
             self.alignment = alignment
             self.horizontalSpacing = horizontalSpacing
             self.verticalSpacing = verticalSpacing
-            self.maximumLineCount = maximumLineCount
+            self.columns = columns
         }
         var axes: PKAxes
         var alignment: PKAlignment
         var horizontalSpacing: CGFloat
         var verticalSpacing: CGFloat
-        var maximumLineCount: Int
+        var columns: Int
     }
     
     private func centerAlignmentPosition(from nodes: [SKNode],
@@ -96,7 +96,7 @@ public class PKMatrix: PKMatrixProtocol {
         node.addChild(nodes[index])
         let updatedPosition = axesIncrementedValue(axes: parameter.axes, alignment: parameter.alignment, node: nodes[index], position: position, spacing: parameter.horizontalSpacing)
         position = updatedPosition
-        if (index + 1) % parameter.maximumLineCount == 0 {
+        if (index + 1) % parameter.columns == 0 {
             position.y -= (nodes.first!.frame.size.height * parameter.verticalSpacing)
             position.x = firstPosition.x
         }
