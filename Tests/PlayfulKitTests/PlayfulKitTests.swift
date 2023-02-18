@@ -23,16 +23,12 @@ final class PlayfulKitTests: XCTestCase {
         let firstCoordinate = PKCoordinate(x: 0, y: 0)
         let secondCoordinate = PKCoordinate(x: 1, y: 9)
         map.applyTexture(texture, startingCoordinate: firstCoordinate, endingCoordinate: secondCoordinate)
-        dump(map.children)
     }
     
     func testBitMasks() {
-        let node = SKNode()
-        node.applyPhysicsBody(
-            size: CGSize(width: 50, height: 50),
-            bitMask: .init(category: .playerProjectile,
-                           collision: [.object, .wall],
-                           contact: [.object, .wall])
-        )
+        let bitMasks: [PKBitMaskCategory] = [.object, .wall] // 0x1 << 4 and 0x1 << 5
+        let bitMaskValue = bitMasks.withXOROperators() // (0x1 << 4 | 0x1 << 5) = 48
+        let result: UInt32 = 48
+        XCTAssertEqual(bitMaskValue, result)
     }
 }
