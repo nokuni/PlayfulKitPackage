@@ -86,31 +86,30 @@ public class PKMapNode: SKNode {
         applyTexture(structure.bottomRight,
                      at: bottomRightCornerCoordinate)
         
-        /*
         // Fill first column
         applyTexture(structure.left,
                      startingCoordinate: PKCoordinate(x: topLeftCornerCoordinate.x + 1,
                                                       y: 0),
-                     endingCoordinate: PKCoordinate(x: bottomLeftCornerCoordinate.x - 1,
+                     endingCoordinate: PKCoordinate(x: rows - 1,
                                                     y: 0))
         // Fill last column
         applyTexture(structure.right,
                      startingCoordinate: PKCoordinate(x: topRightCornerCoordinate.x + 1,
                                                       y: columns - 1),
-                     endingCoordinate: PKCoordinate(x: bottomRightCornerCoordinate.x - 1,
+                     endingCoordinate: PKCoordinate(x: rows - 1,
                                                     y: columns - 1))
         // Fill first row
         applyTexture(structure.top,
                      startingCoordinate: PKCoordinate(x: 0,
                                                       y: topLeftCornerCoordinate.y + 1),
                      endingCoordinate: PKCoordinate(x: 0,
-                                                    y: topRightCornerCoordinate.y - 1))
+                                                    y: columns - 1))
         // Fill last row
         applyTexture(structure.bottom,
                      startingCoordinate: PKCoordinate(x: rows - 1,
                                                       y: bottomLeftCornerCoordinate.y + 1),
                      endingCoordinate: PKCoordinate(x: rows - 1,
-                                                    y: bottomRightCornerCoordinate.y - 1))
+                                                    y: columns - 1))
         // Fill Middle
         applyTexture(structure.middle,
                      startingCoordinate: PKCoordinate(x: 1,
@@ -118,7 +117,7 @@ public class PKMapNode: SKNode {
                      endingCoordinate: PKCoordinate(x: rows - 1,
                                                     y: columns - 1)
         )
-        */
+        
     }
     
     // Apply a texture on all the tiles of the map
