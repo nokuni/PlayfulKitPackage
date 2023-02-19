@@ -91,12 +91,15 @@ public class PKMapNode: SKNode {
     }
     
     // Apply Texture
-    public func applyTexture(structure: TileStructure, object: PKObjectNode? = nil) {
-        
-        let firstRow = 0
+    public func applyTexture(structure: TileStructure,
+                             startingCoordinate: PKCoordinate = PKCoordinate.zero,
+                             rows: Int,
+                             columns: Int,
+                             object: PKObjectNode? = nil) {
+        let firstRow = startingCoordinate.x
         let lastRow = rows - 1
         
-        let firstColumn = 0
+        let firstColumn = startingCoordinate.y
         let lastColumn = columns - 1
         
         let topLeftCornerCoordinate = PKCoordinate(x: firstRow, y: firstColumn)
