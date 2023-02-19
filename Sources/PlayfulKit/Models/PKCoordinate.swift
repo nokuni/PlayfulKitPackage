@@ -8,12 +8,10 @@
 import Foundation
 
 public struct PKCoordinate: Equatable {
-    public init(
-        x: Int = 0,
-        y: Int = 0) {
-            self.x = x
-            self.y = y
-        }
-    public var x: Int = 0
-    public var y: Int = 0
+    public init(x: Int,y: Int) {
+        self.x = x
+        self.y = y
+    }
+    public var x: Int
+    public var y: Int
 }

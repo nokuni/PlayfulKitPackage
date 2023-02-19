@@ -9,5 +9,6 @@ import Foundation
 
 public struct PKLogicBody {
     public var health: Int = 0
-    public var damageCounter: Int = 0
+    public var healthLost: Int = 0
+    public var damage: Int = 0
 }

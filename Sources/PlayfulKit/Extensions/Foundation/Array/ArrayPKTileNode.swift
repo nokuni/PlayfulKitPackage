@@ -10,7 +10,7 @@ import SpriteKit
 public extension Array where Element: PKTileNode {
     
     mutating func coordinateTiles(splittedBy columns: Int) {
-        var coordinate = PKCoordinate()
+        var coordinate = PKCoordinate.zero
         let splittedTiles = self.splitted(into: columns)
         for column in splittedTiles.indices {
             for index in splittedTiles[column].indices {

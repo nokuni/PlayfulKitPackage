@@ -8,5 +8,5 @@
 import SpriteKit
 
 public class PKTileNode: SKSpriteNode {
-    public var coordinate = PKCoordinate()
+    public var coordinate = PKCoordinate.zero
 }
