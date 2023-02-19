@@ -33,7 +33,7 @@ final class PlayfulKitTests: XCTestCase {
     }
     
     func testBitMasks() {
-        let bitMasks: [PKBitMaskCategory] = [.object, .wall] // 0x1 << 4 and 0x1 << 5
+        let bitMasks: [PKBitMaskCategory] = [.object, .structure] // 0x1 << 4 and 0x1 << 5
         let bitMaskValue = bitMasks.withXOROperators() // (0x1 << 4 | 0x1 << 5) = 48
         let result: UInt32 = 48
         XCTAssertEqual(bitMaskValue, result)

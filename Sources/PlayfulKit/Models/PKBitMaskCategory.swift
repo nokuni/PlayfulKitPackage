@@ -21,6 +21,5 @@ public struct PKBitMaskCategory: OptionSet {
     public static let enemy            = PKBitMaskCategory(rawValue: 0x1 << 2)
     public static let enemyProjectile  = PKBitMaskCategory(rawValue: 0x1 << 3)
     public static let object           = PKBitMaskCategory(rawValue: 0x1 << 4)
-    public static let wall             = PKBitMaskCategory(rawValue: 0x1 << 5)
-    public static let ground           = PKBitMaskCategory(rawValue: 0x1 << 6)
+    public static let structure        = PKBitMaskCategory(rawValue: 0x1 << 5)
 }
