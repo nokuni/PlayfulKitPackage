@@ -168,8 +168,8 @@ public class PKMapNode: SKNode {
         repeat {
             if !borders.contains(coordinate.y) {
                 applyTexture(texture, at: coordinate)
-                advanceCoordinate(&coordinate)
             }
+            advanceCoordinate(&coordinate)
         } while (coordinate.x < endingCoordinate.x) || (coordinate.y < endingCoordinate.y)
     }
     
