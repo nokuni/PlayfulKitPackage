@@ -29,23 +29,23 @@ public class PKObjectNode: SKSpriteNode {
         }
     }
     
-    public func animate(with state: PKObjectAnimation.State,
-                        filteringMode: SKTextureFilteringMode = .linear,
-                        timeInterval: TimeInterval = 0.05,
-                        repeatCount: Int = 0,
-                        isRepeatingForever: Bool = false) {
-        guard let animation = animation(from: state) else { return }
-        guard !animation.frames.isEmpty else { return }
+    public func animatedAction(with state: PKObjectAnimation.State,
+                               filteringMode: SKTextureFilteringMode = .linear,
+                               timeInterval: TimeInterval = 0.05,
+                               repeatCount: Int = 0,
+                               isRepeatingForever: Bool = false) -> SKAction {
+        guard let animation = animation(from: state) else { return SKAction() }
+        guard !animation.frames.isEmpty else { return SKAction() }
         let action = SKAction.animate(with: animation.frames,
                                       filteringMode: filteringMode,
                                       timePerFrame: timeInterval)
         switch true {
         case isRepeatingForever:
-            run(SKAction.repeatForever(action))
+            return SKAction.repeatForever(action)
         case repeatCount > 0:
-            run(SKAction.repeat(action, count: repeatCount))
+            return SKAction.repeat(action, count: repeatCount)
         default:
-            run(action)
+            return action
         }
     }
     
@@ -68,12 +68,9 @@ public class PKObjectNode: SKSpriteNode {
                         timeInterval: TimeInterval = 0.05) {
         guard isAnimated else { return removeFromParent() }
         let sequence = SKAction.sequence([
-            SKAction.run {
-                self.animate(with: .death,
-                             filteringMode: filteringMode,
-                             timeInterval: timeInterval)
-            },
-            SKAction.wait(forDuration: timeInterval),
+            animatedAction(with: .death,
+                           filteringMode: filteringMode,
+                           timeInterval: timeInterval),
             SKAction.removeFromParent()
         ])
         run(sequence)
