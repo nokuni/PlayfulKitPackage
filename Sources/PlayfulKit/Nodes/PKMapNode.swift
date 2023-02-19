@@ -107,7 +107,7 @@ public class PKMapNode: SKNode {
                                                       y: firstColumn),
                      endingCoordinate: PKCoordinate(x: lastRow,
                                                     y: lastColumn),
-                     excluding: [firstRow, firstColumn, lastRow, lastColumn]
+                     isExcludingBorders: true
         )
         
     }
@@ -161,21 +161,41 @@ public class PKMapNode: SKNode {
     public func applyTexture(_ texture: SKTexture,
                              startingCoordinate: PKCoordinate,
                              endingCoordinate: PKCoordinate,
-                             excluding borders: [Int] = []) {
+                             isExcludingBorders: Bool = false) {
         guard (endingCoordinate.x > startingCoordinate.x) ||
                 (startingCoordinate.y < columns) else { return }
         var coordinate = startingCoordinate
         repeat {
-            if !borders.contains(where: {
-                ($0 == coordinate.y) || ($0 == coordinate.x)
-            }) {
-                applyTexture(texture, at: coordinate)
-            }
+            applyTexture(texture, on: coordinate, isExcludingBorders: isExcludingBorders)
             advanceCoordinate(&coordinate)
         } while (coordinate.x < endingCoordinate.x) || (coordinate.y < endingCoordinate.y)
     }
     
     // MARK: - PRIVATE
+    
+    private func applyTexture(_ texture: SKTexture,
+                              on coordinate: PKCoordinate,
+                              isExcludingBorders: Bool) {
+        if isExcludingBorders {
+            if canFillBorders(on: coordinate) {
+                applyTexture(texture, at: coordinate)
+            }
+        } else {
+            applyTexture(texture, at: coordinate)
+        }
+    }
+    
+    private func canFillBorders(on coordinate: PKCoordinate) -> Bool {
+        let isCoordinateOnFirstRow = coordinate.x == 0
+        let isCoordinateOnFirstColumn = coordinate.y == 0
+        let isCoordinateOnLastRow = coordinate.x == (rows - 1)
+        let isCoordinateOnLastColumn = coordinate.y == (columns - 1)
+        
+        return !isCoordinateOnFirstRow &&
+        !isCoordinateOnFirstColumn &&
+        !isCoordinateOnLastRow &&
+        !isCoordinateOnLastColumn
+    }
     
     private func advanceCoordinate(_ coordinate: inout PKCoordinate) {
         switch true {
