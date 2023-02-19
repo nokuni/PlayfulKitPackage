@@ -7,6 +7,6 @@
 
 import Foundation
 
-extension PKCoordinate {
+public extension PKCoordinate {
     static var zero: PKCoordinate { return PKCoordinate(x: 0, y: 0) }
 }
