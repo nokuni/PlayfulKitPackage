@@ -69,15 +69,28 @@ public class PKMapNode: SKNode {
     
     // MARK: - PUBLIC
     
-    public func addObject(_ object: PKObjectNode) {
-        guard let coordinate = object.coordinate else { return }
+    // Add object on a coordinate
+    public func addObject(_ object: PKObjectNode, on coordinate: PKCoordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
         object.position = position
         addChild(object)
     }
     
+    // Add object through the map from a coordinate to another.
+    public func addObject(_ object: PKObjectNode,
+                          startingCoordinate: PKCoordinate,
+                          endingCoordinate: PKCoordinate) {
+        guard (endingCoordinate.x > startingCoordinate.x) ||
+                (startingCoordinate.y < columns) else { return }
+        var coordinate = startingCoordinate
+        repeat {
+            addObject(object, on: coordinate)
+            advanceCoordinate(&coordinate)
+        } while (coordinate.x < endingCoordinate.x) || (coordinate.y < endingCoordinate.y)
+    }
+    
     // Apply Texture
-    public func applyTexture(structure: TileStructure) {
+    public func applyTexture(structure: TileStructure, object: PKObjectNode?) {
         
         let firstRow = 0
         let lastRow = rows - 1
@@ -116,6 +129,14 @@ public class PKMapNode: SKNode {
                                                     y: lastColumn),
                      isExcludingBorders: true
         )
+        
+        if let object = object {
+            addObject(object,
+                      startingCoordinate: PKCoordinate(x: firstRow,
+                                                       y: firstColumn),
+                      endingCoordinate: PKCoordinate(x: lastRow,
+                                                     y: lastColumn))
+        }
         
     }
     
