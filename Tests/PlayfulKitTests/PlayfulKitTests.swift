@@ -29,7 +29,7 @@ final class PlayfulKitTests: XCTestCase {
             top: SKTexture(imageNamed: ""),
             bottom: SKTexture(imageNamed: "redSquare"),
             middle: SKTexture(imageNamed: "")))
-        //dump(map.tiles)
+        dump(map.tiles)
     }
     
     func testBitMasks() {

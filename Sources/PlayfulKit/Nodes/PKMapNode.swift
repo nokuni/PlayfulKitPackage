@@ -71,10 +71,17 @@ public class PKMapNode: SKNode {
     
     // Apply Texture
     public func applyTexture(structure: TileStructure) {
-        let topLeftCornerCoordinate = PKCoordinate(x: 0, y: 0)
-        let topRightCornerCoordinate = PKCoordinate(x: 0, y: columns - 1)
-        let bottomLeftCornerCoordinate = PKCoordinate(x: rows - 1, y: 0)
-        let bottomRightCornerCoordinate = PKCoordinate(x: rows - 1, y: columns - 1)
+        
+        let firstRow = 0
+        let lastRow = rows - 1
+        
+        let firstColumn = 0
+        let lastColumn = columns - 1
+        
+        let topLeftCornerCoordinate = PKCoordinate(x: firstRow, y: firstColumn)
+        let topRightCornerCoordinate = PKCoordinate(x: firstRow, y: lastColumn)
+        let bottomLeftCornerCoordinate = PKCoordinate(x: lastRow, y: firstColumn)
+        let bottomRightCornerCoordinate = PKCoordinate(x: lastRow, y: lastColumn)
         
         // Fill corners
         applyTexture(structure.topLeft,
@@ -87,35 +94,19 @@ public class PKMapNode: SKNode {
                      at: bottomRightCornerCoordinate)
         
         // Fill first column
-        applyTexture(structure.left,
-                     startingCoordinate: PKCoordinate(x: 1,
-                                                      y: 0),
-                     endingCoordinate: PKCoordinate(x: rows - 2,
-                                                    y: 0))
+        applyTexture(structure.left, column: firstColumn, excluding: [firstRow, lastRow])
         // Fill last column
-        applyTexture(structure.right,
-                     startingCoordinate: PKCoordinate(x: 1,
-                                                      y: columns - 1),
-                     endingCoordinate: PKCoordinate(x: rows - 2,
-                                                    y: columns - 1))
+        applyTexture(structure.right, column: lastColumn, excluding: [firstRow, lastRow])
         // Fill first row
-        applyTexture(structure.top,
-                     startingCoordinate: PKCoordinate(x: 0,
-                                                      y: 1),
-                     endingCoordinate: PKCoordinate(x: 0,
-                                                    y: columns - 2))
+        applyTexture(structure.top, column: firstRow, excluding: [firstColumn, lastColumn])
         // Fill last row
-        applyTexture(structure.bottom,
-                     startingCoordinate: PKCoordinate(x: rows - 1,
-                                                      y: 1),
-                     endingCoordinate: PKCoordinate(x: rows - 1,
-                                                    y: columns - 2))
+        applyTexture(structure.bottom, column: lastRow, excluding: [firstColumn, lastColumn])
         // Fill Middle
         applyTexture(structure.middle,
                      startingCoordinate: PKCoordinate(x: 1,
                                                       y: 1),
-                     endingCoordinate: PKCoordinate(x: rows - 1,
-                                                    y: columns - 1)
+                     endingCoordinate: PKCoordinate(x: lastRow,
+                                                    y: lastColumn)
         )
         
     }
@@ -126,8 +117,9 @@ public class PKMapNode: SKNode {
     }
     
     // Apply texture on all the tile in a specific column of the map
-    public func applyTexture(_ texture: SKTexture, column: Int) {
+    public func applyTexture(_ texture: SKTexture, column: Int, excluding rows: [Int] = []) {
         let tilesOnColumn = self.tiles.filter { $0.coordinate.y == column }
+        let result = tiles.filter { !rows.contains($0.coordinate.x) }
         applyTexture(texture, on: tilesOnColumn)
     }
     
