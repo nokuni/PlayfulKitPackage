@@ -69,6 +69,13 @@ public class PKMapNode: SKNode {
     
     // MARK: - PUBLIC
     
+    public func addObject(_ object: PKObjectNode) {
+        guard let coordinate = object.coordinate else { return }
+        guard let position = tilePosition(from: coordinate) else { return }
+        object.position = position
+        addChild(object)
+    }
+    
     // Apply Texture
     public func applyTexture(structure: TileStructure) {
         
