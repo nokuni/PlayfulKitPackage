@@ -96,7 +96,7 @@ public class PKMapNode: SKNode {
         // Fill first column
         applyTexture(structure.left, column: firstColumn, excluding: [firstRow, lastRow])
         // Fill last column
-        applyTexture(structure.right, column: lastColumn, excluding: [firstRow, lastRow])
+        /*applyTexture(structure.right, column: lastColumn, excluding: [firstRow, lastRow])
         // Fill first row
         applyTexture(structure.top, column: firstRow, excluding: [firstColumn, lastColumn])
         // Fill last row
@@ -107,7 +107,7 @@ public class PKMapNode: SKNode {
                                                       y: 1),
                      endingCoordinate: PKCoordinate(x: lastRow,
                                                     y: lastColumn)
-        )
+        )*/
         
     }
     
