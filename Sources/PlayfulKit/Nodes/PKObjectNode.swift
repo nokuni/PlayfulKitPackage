@@ -9,4 +9,5 @@ import SpriteKit
 
 public class PKObjectNode: SKSpriteNode {
     public var logic = PKLogicBody()
+    public var coordinate: PKCoordinate?
 }
