@@ -103,11 +103,11 @@ public class PKMapNode: SKNode {
         applyTexture(structure.bottom, row: lastRow, excluding: [firstColumn, lastColumn])
         // Fill Middle
         applyTexture(structure.middle,
-                     startingCoordinate: PKCoordinate(x: 1,
-                                                      y: 1),
+                     startingCoordinate: PKCoordinate(x: firstRow,
+                                                      y: firstColumn),
                      endingCoordinate: PKCoordinate(x: lastRow,
                                                     y: lastColumn),
-                     excluding: [firstColumn, lastColumn]
+                     excluding: [firstRow, firstColumn, lastRow, lastColumn]
         )
         
     }
@@ -166,7 +166,9 @@ public class PKMapNode: SKNode {
                 (startingCoordinate.y < columns) else { return }
         var coordinate = startingCoordinate
         repeat {
-            if !borders.contains(coordinate.y) {
+            if !borders.contains(where: {
+                ($0 == coordinate.y) || ($0 == coordinate.x)
+            }) {
                 applyTexture(texture, at: coordinate)
             }
             advanceCoordinate(&coordinate)
