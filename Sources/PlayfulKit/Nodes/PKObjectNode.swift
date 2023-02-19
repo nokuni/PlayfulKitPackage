@@ -75,4 +75,19 @@ public class PKObjectNode: SKSpriteNode {
         ])
         run(sequence)
     }
+    
+    public func hitAndDestroy(filteringMode: SKTextureFilteringMode = .linear,
+                              hitTimeInterval: TimeInterval = 0.05,
+                              deathTimeInterval: TimeInterval = 0.05) {
+        let sequence = SKAction.sequence([
+            animatedAction(with: .hit,
+                           filteringMode: filteringMode,
+                           timeInterval: hitTimeInterval),
+            animatedAction(with: .death,
+                           filteringMode: filteringMode,
+                           timeInterval: deathTimeInterval),
+            SKAction.removeFromParent()
+        ])
+        run(sequence)
+    }
 }
