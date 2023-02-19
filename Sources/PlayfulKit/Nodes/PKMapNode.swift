@@ -90,7 +90,7 @@ public class PKMapNode: SKNode {
     }
     
     // Apply Texture
-    public func applyTexture(structure: TileStructure, object: PKObjectNode?) {
+    public func applyTexture(structure: TileStructure, object: PKObjectNode? = nil) {
         
         let firstRow = 0
         let lastRow = rows - 1
