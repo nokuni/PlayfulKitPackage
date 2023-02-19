@@ -119,8 +119,8 @@ public class PKMapNode: SKNode {
     // Apply texture on all the tile in a specific column of the map
     public func applyTexture(_ texture: SKTexture, column: Int, excluding rows: [Int] = []) {
         let tilesOnColumn = self.tiles.filter { $0.coordinate.y == column }
-        let result = tiles.filter { !rows.contains($0.coordinate.x) }
-        applyTexture(texture, on: tilesOnColumn)
+        let result = tilesOnColumn.filter { !rows.contains($0.coordinate.x) }
+        applyTexture(texture, on: result)
     }
     
     // Apply a texture on all the tiles in multiples columns of the map

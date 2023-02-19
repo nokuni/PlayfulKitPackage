@@ -24,10 +24,10 @@ final class PlayfulKitTests: XCTestCase {
             topRight: SKTexture(imageNamed: "orangeSquare"),
             bottomLeft: SKTexture(imageNamed: "yellowSquare"),
             bottomRight: SKTexture(imageNamed: "blueSquare"),
-            left: SKTexture(imageNamed: ""),
+            left: SKTexture(imageNamed: "redSquare"),
             right: SKTexture(imageNamed: ""),
             top: SKTexture(imageNamed: ""),
-            bottom: SKTexture(imageNamed: "redSquare"),
+            bottom: SKTexture(imageNamed: ""),
             middle: SKTexture(imageNamed: "")))
         dump(map.tiles)
     }
