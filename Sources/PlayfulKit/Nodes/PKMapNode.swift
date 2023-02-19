@@ -98,9 +98,9 @@ public class PKMapNode: SKNode {
         // Fill last column
         applyTexture(structure.right, column: lastColumn, excluding: [firstRow, lastRow])
         // Fill first row
-        applyTexture(structure.top, column: firstRow, excluding: [firstColumn, lastColumn])
+        applyTexture(structure.top, row: firstRow, excluding: [firstColumn, lastColumn])
         // Fill last row
-        applyTexture(structure.bottom, column: lastRow, excluding: [firstColumn, lastColumn])
+        applyTexture(structure.bottom, row: lastRow, excluding: [firstColumn, lastColumn])
         // Fill Middle
         applyTexture(structure.middle,
                      startingCoordinate: PKCoordinate(x: 1,
@@ -134,8 +134,10 @@ public class PKMapNode: SKNode {
     }
     
     // Apply a texture on all the tiles in a specific row of the map
-    public func applyTexture(_ texture: SKTexture, row: Int) {
-        let tilesOnRow = self.tiles.filter { $0.coordinate.x == row }
+    public func applyTexture(_ texture: SKTexture, row: Int, excluding columns: [Int] = []) {
+        let tilesOnRow = self.tiles.filter {
+            $0.coordinate.x == row && !columns.contains($0.coordinate.y)
+        }
         applyTexture(texture, on: tilesOnRow)
     }
     
