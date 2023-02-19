@@ -102,12 +102,13 @@ public class PKMapNode: SKNode {
         // Fill last row
         applyTexture(structure.bottom, row: lastRow, excluding: [firstColumn, lastColumn])
         // Fill Middle
-        /*applyTexture(structure.middle,
+        applyTexture(structure.middle,
                      startingCoordinate: PKCoordinate(x: 1,
                                                       y: 1),
                      endingCoordinate: PKCoordinate(x: lastRow,
-                                                    y: lastColumn)
-        )*/
+                                                    y: lastColumn),
+                     excluding: [firstColumn, lastColumn]
+        )
         
     }
     
@@ -159,13 +160,16 @@ public class PKMapNode: SKNode {
     // Apply a texture on all the tiles from a coordinate to another.
     public func applyTexture(_ texture: SKTexture,
                              startingCoordinate: PKCoordinate,
-                             endingCoordinate: PKCoordinate) {
+                             endingCoordinate: PKCoordinate,
+                             excluding borders: [Int] = []) {
         guard (endingCoordinate.x > startingCoordinate.x) ||
                 (startingCoordinate.y < columns) else { return }
         var coordinate = startingCoordinate
         repeat {
-            applyTexture(texture, at: coordinate)
-            advanceCoordinate(&coordinate)
+            if !borders.contains(coordinate.y) {
+                applyTexture(texture, at: coordinate)
+                advanceCoordinate(&coordinate)
+            }
         } while (coordinate.x < endingCoordinate.x) || (coordinate.y < endingCoordinate.y)
     }
     
