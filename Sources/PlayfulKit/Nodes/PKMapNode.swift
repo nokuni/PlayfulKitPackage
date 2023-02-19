@@ -102,12 +102,12 @@ public class PKMapNode: SKNode {
         // Fill last row
         applyTexture(structure.bottom, row: lastRow, excluding: [firstColumn, lastColumn])
         // Fill Middle
-        applyTexture(structure.middle,
+        /*applyTexture(structure.middle,
                      startingCoordinate: PKCoordinate(x: 1,
                                                       y: 1),
                      endingCoordinate: PKCoordinate(x: lastRow,
                                                     y: lastColumn)
-        )
+        )*/
         
     }
     
