@@ -25,11 +25,11 @@ final class PlayfulKitTests: XCTestCase {
             bottomLeft: SKTexture(imageNamed: "yellowSquare"),
             bottomRight: SKTexture(imageNamed: "blueSquare"),
             left: SKTexture(imageNamed: "redSquare"),
-            right: SKTexture(imageNamed: ""),
-            top: SKTexture(imageNamed: ""),
-            bottom: SKTexture(imageNamed: ""),
-            middle: SKTexture(imageNamed: "")))
-        dump(map.tiles)
+            right: SKTexture(imageNamed: "redSquare"),
+            top: SKTexture(imageNamed: "redSquare"),
+            bottom: SKTexture(imageNamed: "redSquare"),
+            middle: SKTexture(imageNamed: "redSquare")))
+        //dump(map.tiles)
     }
     
     func testBitMasks() {
