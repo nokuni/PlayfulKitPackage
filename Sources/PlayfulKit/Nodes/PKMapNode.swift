@@ -84,7 +84,7 @@ public class PKMapNode: SKNode {
         guard (endingCoordinate.x > startingCoordinate.x) ||
                 (startingCoordinate.y < columns) else { return }
         var coordinate = startingCoordinate
-        let newObject = object
+        var newObject: PKObjectNode { object }
         repeat {
             addObject(newObject, at: coordinate)
             advanceCoordinate(&coordinate)
