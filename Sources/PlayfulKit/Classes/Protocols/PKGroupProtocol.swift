@@ -1,5 +1,5 @@
 //
-//  PKMatrixProtocol.swift
+//  PKGroupProtocol.swift
 //  
 //
 //  Created by Maertens Yann-Christophe on 17/02/23.
@@ -7,19 +7,19 @@
 
 import SpriteKit
 
-public protocol PKMatrixProtocol {
+public protocol PKGroupProtocol {
     func createSpriteList(of nodes: [SKNode],
                           at startingPosition: CGPoint,
                           in node: SKNode,
-                          axes: PKAxes,
-                          alignment: PKAlignment,
+                          axes: Axes,
+                          alignment: Adjustement,
                           spacing: CGFloat)
     
     func createSpriteCollectionWithDelay(of nodes: [SKSpriteNode],
                                          at startingPosition: CGPoint,
                                          in node: SKNode,
-                                         axes: PKAxes,
-                                         alignment: PKAlignment,
+                                         axes: Axes,
+                                         alignment: Adjustement,
                                          spacing: CGFloat,
                                          maximumLineCount: Int,
                                          delay: TimeInterval,
@@ -29,5 +29,5 @@ public protocol PKMatrixProtocol {
     func createSpriteCollection(of nodes: [SKNode],
                                 at startingPosition: CGPoint,
                                 in node: SKNode,
-                                parameter: PKMatrix.Parameter)
+                                parameter: PKGroup.Parameter)
 }

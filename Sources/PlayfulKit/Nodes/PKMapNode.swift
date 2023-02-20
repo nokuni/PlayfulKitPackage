@@ -10,14 +10,12 @@ import SpriteKit
 public class PKMapNode: SKNode {
     
     public init(tileSize: CGSize = CGSize(width: 25, height: 25),
-                tileBitMask: PKBitMask? = nil,
-                rows: Int = 10,
-                columns: Int = 10,
+                tileBitMask: Collision? = nil,
+                matrix: Matrix = Matrix.zero,
                 origin: CGPoint = CGPoint.center) {
         self.tileSize = tileSize
         self.tileBitMask = tileBitMask
-        self.rows = rows
-        self.columns = columns
+        self.matrix = matrix
         self.origin = origin
         super.init()
         self.createMap()
@@ -28,12 +26,11 @@ public class PKMapNode: SKNode {
     }
     
     public var tileSize: CGSize
-    public var tileBitMask: PKBitMask?
-    public var rows: Int
-    public var columns: Int
+    public var tileBitMask: Collision?
+    public var matrix: Matrix
     public var origin: CGPoint
     
-    private let matrix = PKMatrix()
+    private let group = PKGroup()
     
     public struct TileStructure {
         public init(topLeft: SKTexture,
@@ -70,7 +67,7 @@ public class PKMapNode: SKNode {
     // MARK: - PUBLIC
     
     // Add object on a coordinate
-    public func addObject(_ object: PKObjectNode, at coordinate: PKCoordinate) {
+    public func addObject(_ object: PKObjectNode, at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
         object.coordinate = coordinate
         object.position = position
@@ -79,10 +76,10 @@ public class PKMapNode: SKNode {
     
     // Add object through the map from a coordinate to another.
     public func addObject(_ object: PKObjectNode,
-                          startingCoordinate: PKCoordinate,
-                          endingCoordinate: PKCoordinate) {
+                          startingCoordinate: Coordinate,
+                          endingCoordinate: Coordinate) {
         guard (endingCoordinate.x > startingCoordinate.x) ||
-                (startingCoordinate.y < columns) else { return }
+                (startingCoordinate.y < matrix.column) else { return }
         var coordinate = startingCoordinate
         var newObject: PKObjectNode { object }
         repeat {
@@ -93,7 +90,7 @@ public class PKMapNode: SKNode {
     
     // Apply Texture
     public func applyTexture(structure: TileStructure,
-                             startingCoordinate: PKCoordinate = PKCoordinate.zero,
+                             startingCoordinate: Coordinate = Coordinate.zero,
                              rows: Int,
                              columns: Int,
                              object: PKObjectNode? = nil) {
@@ -103,10 +100,10 @@ public class PKMapNode: SKNode {
         let firstColumn = startingCoordinate.y
         let lastColumn = columns - 1
         
-        let topLeftCornerCoordinate = PKCoordinate(x: firstRow, y: firstColumn)
-        let topRightCornerCoordinate = PKCoordinate(x: firstRow, y: lastColumn)
-        let bottomLeftCornerCoordinate = PKCoordinate(x: lastRow, y: firstColumn)
-        let bottomRightCornerCoordinate = PKCoordinate(x: lastRow, y: lastColumn)
+        let topLeftCornerCoordinate = Coordinate(x: firstRow, y: firstColumn)
+        let topRightCornerCoordinate = Coordinate(x: firstRow, y: lastColumn)
+        let bottomLeftCornerCoordinate = Coordinate(x: lastRow, y: firstColumn)
+        let bottomRightCornerCoordinate = Coordinate(x: lastRow, y: lastColumn)
         
         // Fill corners
         applyTexture(structure.topLeft,
@@ -128,18 +125,18 @@ public class PKMapNode: SKNode {
         applyTexture(structure.bottom, row: lastRow, excluding: [firstColumn, lastColumn])
         // Fill Middle
         applyTexture(structure.middle,
-                     startingCoordinate: PKCoordinate(x: firstRow,
+                     startingCoordinate: Coordinate(x: firstRow,
                                                       y: firstColumn),
-                     endingCoordinate: PKCoordinate(x: lastRow,
+                     endingCoordinate: Coordinate(x: lastRow,
                                                     y: lastColumn),
                      isExcludingBorders: true
         )
         
         if let object = object {
             addObject(object,
-                      startingCoordinate: PKCoordinate(x: firstRow,
+                      startingCoordinate: Coordinate(x: firstRow,
                                                        y: firstColumn),
-                      endingCoordinate: PKCoordinate(x: lastRow,
+                      endingCoordinate: Coordinate(x: lastRow,
                                                      y: lastColumn))
         }
         
@@ -185,18 +182,18 @@ public class PKMapNode: SKNode {
     }
     
     // Apply a texture on one tiles at a specific coordinate
-    public func applyTexture(_ texture: SKTexture, at coordinate: PKCoordinate) {
+    public func applyTexture(_ texture: SKTexture, at coordinate: Coordinate) {
         let tileNode = self.tiles.tile(at: coordinate)
         tileNode?.texture = texture
     }
     
     // Apply a texture on all the tiles from a coordinate to another.
     public func applyTexture(_ texture: SKTexture,
-                             startingCoordinate: PKCoordinate,
-                             endingCoordinate: PKCoordinate,
+                             startingCoordinate: Coordinate,
+                             endingCoordinate: Coordinate,
                              isExcludingBorders: Bool = false) {
         guard (endingCoordinate.x > startingCoordinate.x) ||
-                (startingCoordinate.y < columns) else { return }
+                (startingCoordinate.y < matrix.column) else { return }
         var coordinate = startingCoordinate
         repeat {
             applyTexture(texture, on: coordinate, isExcludingBorders: isExcludingBorders)
@@ -207,7 +204,7 @@ public class PKMapNode: SKNode {
     // MARK: - PRIVATE
     
     private func applyTexture(_ texture: SKTexture,
-                              on coordinate: PKCoordinate,
+                              on coordinate: Coordinate,
                               isExcludingBorders: Bool) {
         if isExcludingBorders {
             if canFillBorders(on: coordinate) {
@@ -218,11 +215,11 @@ public class PKMapNode: SKNode {
         }
     }
     
-    private func canFillBorders(on coordinate: PKCoordinate) -> Bool {
+    private func canFillBorders(on coordinate: Coordinate) -> Bool {
         let isCoordinateOnFirstRow = coordinate.x == 0
         let isCoordinateOnFirstColumn = coordinate.y == 0
-        let isCoordinateOnLastRow = coordinate.x == (rows - 1)
-        let isCoordinateOnLastColumn = coordinate.y == (columns - 1)
+        let isCoordinateOnLastRow = coordinate.x == (matrix.row - 1)
+        let isCoordinateOnLastColumn = coordinate.y == (matrix.column - 1)
         
         return !isCoordinateOnFirstRow &&
         !isCoordinateOnFirstColumn &&
@@ -230,9 +227,9 @@ public class PKMapNode: SKNode {
         !isCoordinateOnLastColumn
     }
     
-    private func advanceCoordinate(_ coordinate: inout PKCoordinate) {
+    private func advanceCoordinate(_ coordinate: inout Coordinate) {
         switch true {
-        case coordinate.y == columns:
+        case coordinate.y == matrix.column:
             coordinate.x += 1
             coordinate.y = 0
         default:
@@ -242,7 +239,7 @@ public class PKMapNode: SKNode {
     
     private func tiles(size: CGSize,
                        amount: Int,
-                       bitMask: PKBitMask? = nil) -> [PKTileNode] {
+                       bitMask: Collision? = nil) -> [PKTileNode] {
         var tileNodes: [PKTileNode] = []
         for _ in 0..<amount {
             let tileNode = PKTileNode()
@@ -261,13 +258,13 @@ public class PKMapNode: SKNode {
     }
     
     private func createMap() {
-        let amount = rows * columns
-        var tileNodes = tiles(size: tileSize, amount: amount, bitMask: tileBitMask)
-        tileNodes.coordinateTiles(splittedBy: columns)
-        matrix.createSpriteCollection(of: tileNodes,
+        let amount = matrix.row * matrix.column
+        var tileNodes = tiles(size: tileSize, amount: matrix.product, bitMask: tileBitMask)
+        tileNodes.coordinateTiles(splittedBy: matrix.column)
+        group.createSpriteCollection(of: tileNodes,
                                       at: origin,
                                       in: self,
-                                      parameter: .init(columns: columns))
+                                      parameter: .init(columns: matrix.column))
     }
     
     private func applyTexture(_ texture: SKTexture, on tiles: [PKTileNode]) {

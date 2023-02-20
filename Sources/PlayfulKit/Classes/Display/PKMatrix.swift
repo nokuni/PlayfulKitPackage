@@ -7,13 +7,13 @@
 
 import SpriteKit
 
-public class PKMatrix: PKMatrixProtocol {
+public class PKGroup: PKGroupProtocol {
     
     public init() { }
     
     public struct Parameter {
-        public init(axes: PKAxes = .horizontal,
-                    alignment: PKAlignment = .leading,
+        public init(axes: Axes = .horizontal,
+                    alignment: Adjustement = .leading,
                     horizontalSpacing: CGFloat = 1,
                     verticalSpacing: CGFloat = 1,
                     columns: Int = 2) {
@@ -23,8 +23,8 @@ public class PKMatrix: PKMatrixProtocol {
             self.verticalSpacing = verticalSpacing
             self.columns = columns
         }
-        var axes: PKAxes
-        var alignment: PKAlignment
+        var axes: Axes
+        var alignment: Adjustement
         var horizontalSpacing: CGFloat
         var verticalSpacing: CGFloat
         var columns: Int
@@ -44,7 +44,7 @@ public class PKMatrix: PKMatrixProtocol {
     
     private func initialListPosition(from nodes: [SKNode],
                                      on startingPosition: CGPoint,
-                                     with alignment: PKAlignment,
+                                     with alignment: Adjustement,
                                      and spacing: CGFloat) -> CGPoint {
         let centerAlignmentValue = centerAlignmentPosition(from: nodes, with: spacing)
         
@@ -62,8 +62,8 @@ public class PKMatrix: PKMatrixProtocol {
         return initialPosition
     }
     
-    private func axesIncrementedValue(axes: PKAxes,
-                                      alignment: PKAlignment,
+    private func axesIncrementedValue(axes: Axes,
+                                      alignment: Adjustement,
                                       node: SKNode,
                                       position: CGPoint,
                                       spacing: CGFloat) -> CGPoint {
@@ -106,8 +106,8 @@ public class PKMatrix: PKMatrixProtocol {
     public func createSpriteList(of nodes: [SKNode],
                                  at startingPosition: CGPoint = .zero,
                                  in node: SKNode,
-                                 axes: PKAxes = .vertical,
-                                 alignment: PKAlignment = .leading,
+                                 axes: Axes = .vertical,
+                                 alignment: Adjustement = .leading,
                                  spacing: CGFloat = 1) {
         guard !nodes.isEmpty else { return }
         var nodes = nodes
@@ -124,8 +124,8 @@ public class PKMatrix: PKMatrixProtocol {
     public func createSpriteCollectionWithDelay(of nodes: [SKSpriteNode],
                                                 at startingPosition: CGPoint = .zero,
                                                 in node: SKNode,
-                                                axes: PKAxes = .horizontal,
-                                                alignment: PKAlignment = .leading,
+                                                axes: Axes = .horizontal,
+                                                alignment: Adjustement = .leading,
                                                 spacing: CGFloat = 1,
                                                 maximumLineCount: Int = 2,
                                                 delay: TimeInterval = 0.5,

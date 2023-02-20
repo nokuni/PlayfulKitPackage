@@ -16,11 +16,11 @@ public extension PKMapNode {
         return self.children.compactMap { $0 as? PKObjectNode }
     }
     
-    func tileNode(at coordinate: PKCoordinate) -> PKTileNode? {
+    func tileNode(at coordinate: Coordinate) -> PKTileNode? {
         tiles.first(where: { $0.coordinate == coordinate })
     }
     
-    func tilePosition(from coordinate: PKCoordinate) -> CGPoint? {
+    func tilePosition(from coordinate: Coordinate) -> CGPoint? {
         let tile = tileNode(at: coordinate)
         return tile?.position
     }

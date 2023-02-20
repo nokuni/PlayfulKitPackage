@@ -8,28 +8,28 @@
 import SpriteKit
 
 public class PKObjectNode: SKSpriteNode {
-    public var logic = PKLogicBody()
-    public var coordinate: PKCoordinate?
+    public var logic = LogicBody()
+    public var coordinate: Coordinate?
     
-    private var animations: [PKObjectAnimation] = [
-        PKObjectAnimation(state: .idle),
-        PKObjectAnimation(state: .walk),
-        PKObjectAnimation(state: .run),
-        PKObjectAnimation(state: .hit),
-        PKObjectAnimation(state: .attack),
-        PKObjectAnimation(state: .jump),
-        PKObjectAnimation(state: .death),
+    private var animations: [ObjectAnimation] = [
+        ObjectAnimation(state: .idle),
+        ObjectAnimation(state: .walk),
+        ObjectAnimation(state: .run),
+        ObjectAnimation(state: .hit),
+        ObjectAnimation(state: .attack),
+        ObjectAnimation(state: .jump),
+        ObjectAnimation(state: .death),
     ]
     
     // MARK: - ANIMATIONS
     
-    public func addFrames(_ frames: [String], on state: PKObjectAnimation.State) {
+    public func addFrames(_ frames: [String], on state: ObjectAnimation.State) {
         if let index = animationIndex(from: state) {
             animations[index].frames = frames
         }
     }
     
-    public func animatedAction(with state: PKObjectAnimation.State,
+    public func animatedAction(with state: ObjectAnimation.State,
                                filteringMode: SKTextureFilteringMode = .linear,
                                timeInterval: TimeInterval = 0.05,
                                repeatCount: Int = 0,
@@ -49,14 +49,14 @@ public class PKObjectNode: SKSpriteNode {
         }
     }
     
-    private func animationIndex(from state: PKObjectAnimation.State) -> Int? {
+    private func animationIndex(from state: ObjectAnimation.State) -> Int? {
         guard let index = animations.firstIndex(where: { $0.state == state }) else {
             return nil
         }
         return index
     }
     
-    private func animation(from state: PKObjectAnimation.State) -> PKObjectAnimation? {
+    private func animation(from state: ObjectAnimation.State) -> ObjectAnimation? {
         guard let index = animationIndex(from: state) else { return nil }
         return animations[index]
     }

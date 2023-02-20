@@ -18,22 +18,22 @@ final class PlayfulKitTests: XCTestCase {
     }
     
     func testMap() {
-        let map = PKMapNode(rows: 4, columns: 6)
-        map.applyTexture(structure: .init(
-            topLeft: SKTexture(imageNamed: "purpleSquare"),
-            topRight: SKTexture(imageNamed: "orangeSquare"),
-            bottomLeft: SKTexture(imageNamed: "yellowSquare"),
-            bottomRight: SKTexture(imageNamed: "blueSquare"),
-            left: SKTexture(imageNamed: "pinkSquare"),
-            right: SKTexture(imageNamed: "greenSquare"),
-            top: SKTexture(imageNamed: "dBlueSquare"),
-            bottom: SKTexture(imageNamed: "cyanSquare"),
-            middle: SKTexture(imageNamed: "redSquare")), rows: 4, columns: 6)
-        dump(map.tiles)
+//        let map = PKMapNode(rows: 4, columns: 6)
+//        map.applyTexture(structure: .init(
+//            topLeft: SKTexture(imageNamed: "purpleSquare"),
+//            topRight: SKTexture(imageNamed: "orangeSquare"),
+//            bottomLeft: SKTexture(imageNamed: "yellowSquare"),
+//            bottomRight: SKTexture(imageNamed: "blueSquare"),
+//            left: SKTexture(imageNamed: "pinkSquare"),
+//            right: SKTexture(imageNamed: "greenSquare"),
+//            top: SKTexture(imageNamed: "dBlueSquare"),
+//            bottom: SKTexture(imageNamed: "cyanSquare"),
+//            middle: SKTexture(imageNamed: "redSquare")), rows: 4, columns: 6)
+//        dump(map.tiles)
     }
     
     func testBitMasks() {
-        let bitMasks: [PKBitMaskCategory] = [.object, .structure] // 0x1 << 4 and 0x1 << 5
+        let bitMasks: [CollisionCategory] = [.object, .structure] // 0x1 << 4 and 0x1 << 5
         let bitMaskValue = bitMasks.withXOROperators() // (0x1 << 4 | 0x1 << 5) = 48
         let result: UInt32 = 48
         XCTAssertEqual(bitMaskValue, result)

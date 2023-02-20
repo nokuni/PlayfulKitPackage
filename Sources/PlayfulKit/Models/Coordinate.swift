@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct PKCoordinate: Equatable {
+public struct Coordinate: Equatable {
     public init(x: Int,y: Int) {
         self.x = x
         self.y = y
