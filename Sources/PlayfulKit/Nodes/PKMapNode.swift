@@ -70,7 +70,7 @@ public class PKMapNode: SKNode {
     // MARK: - PUBLIC
     
     // Add object on a coordinate
-    public func addObject(_ object: PKObjectNode, on coordinate: PKCoordinate) {
+    public func addObject(_ object: PKObjectNode, at coordinate: PKCoordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
         object.coordinate = coordinate
         object.position = position
@@ -85,7 +85,8 @@ public class PKMapNode: SKNode {
                 (startingCoordinate.y < columns) else { return }
         var coordinate = startingCoordinate
         repeat {
-            addObject(object, on: coordinate)
+            let newObject = object
+            addObject(newObject, at: coordinate)
             advanceCoordinate(&coordinate)
         } while (coordinate.x < endingCoordinate.x) || (coordinate.y < endingCoordinate.y)
     }
