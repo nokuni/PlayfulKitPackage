@@ -7,6 +7,7 @@
 
 import SpriteKit
 
-public class PKTileNode: SKSpriteNode {
+/// A Tile node.
+public class PKTileNode: SKSpriteNode, MapElement {
     public var coordinate = Coordinate.zero
 }

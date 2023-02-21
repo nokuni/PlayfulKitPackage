@@ -7,7 +7,9 @@
 
 import Foundation
 
-extension Array where Element: RawRepresentable {
+public extension Array where Element: RawRepresentable {
+
+    /// Returns a UInt32 value from enum values.
     func withXOROperators() -> UInt32? {
         guard !self.isEmpty else { return nil }
         let stringArray = self.compactMap { "\($0.rawValue)" }
@@ -15,7 +17,8 @@ extension Array where Element: RawRepresentable {
         let dictionary = self.intoDictionary()
         return string.intoUInt32(from: dictionary)
     }
-    
+
+    /// Returns a dictionary containing UInt32 values from enum values.
     func intoDictionary() -> [Int: UInt32] {
         var dictionary: [Int: UInt32] = [:]
         for (index, element) in self.enumerated() {

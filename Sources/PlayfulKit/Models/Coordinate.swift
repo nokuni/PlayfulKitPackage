@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// The coordinate x and y.
 public struct Coordinate: Equatable {
     public init(x: Int,y: Int) {
         self.x = x

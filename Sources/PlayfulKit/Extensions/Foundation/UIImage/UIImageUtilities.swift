@@ -9,7 +9,7 @@ import UIKit
 
 public extension UIImage {
     
-    // Create an UIImage with a color and a size
+    /// UIImage with a color and a size.
     convenience init?(color: UIColor,
                       size: CGSize) {
         let rect = CGRect(origin: .zero, size: size)
@@ -22,9 +22,8 @@ public extension UIImage {
         guard let cgImage = image?.cgImage else { return nil }
         self.init(cgImage: cgImage)
     }
-    
-    // Return UIImage with rounded corners
-    func withRoundedCorners(radius: CGFloat? = nil) -> UIImage? {
+
+    private func withRoundedCorners(radius: CGFloat? = nil) -> UIImage? {
         let maxRadius = min(size.width, size.height) / 2
         let cornerRadius: CGFloat
         if let radius = radius, radius > 0 && radius <= maxRadius {
@@ -40,7 +39,8 @@ public extension UIImage {
         UIGraphicsEndImageContext()
         return image
     }
-    
+
+    /// Returns a colored UIImage with rounded corners.
     static func shape(color: UIColor,
                       size: CGSize,
                       cornerRadius: CGFloat) -> UIImage? {

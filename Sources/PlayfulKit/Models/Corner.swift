@@ -7,7 +7,8 @@
 
 import Foundation
 
-public enum Corner {
+/// Represents the four corners of a quadrilateral shape.
+public enum QuadrilateralCorner {
     case topLeft
     case topRight
     case bottomRight

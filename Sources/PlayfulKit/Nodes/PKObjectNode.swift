@@ -7,9 +7,10 @@
 
 import SpriteKit
 
-public class PKObjectNode: SKSpriteNode {
+/// An object node.
+public class PKObjectNode: SKSpriteNode, MapElement {
     public var logic = LogicBody()
-    public var coordinate: Coordinate?
+    public var coordinate = Coordinate.zero
     
     private var animations: [ObjectAnimation] = [
         ObjectAnimation(state: .idle),
@@ -18,17 +19,19 @@ public class PKObjectNode: SKSpriteNode {
         ObjectAnimation(state: .hit),
         ObjectAnimation(state: .attack),
         ObjectAnimation(state: .jump),
-        ObjectAnimation(state: .death),
+        ObjectAnimation(state: .deletion),
     ]
     
     // MARK: - ANIMATIONS
-    
+
+    /// Add images to an object animation state.
     public func addFrames(_ frames: [String], on state: ObjectAnimation.State) {
         if let index = animationIndex(from: state) {
             animations[index].frames = frames
         }
     }
-    
+
+    /// Get the action animation from an object animation state.
     public func animatedAction(with state: ObjectAnimation.State,
                                filteringMode: SKTextureFilteringMode = .linear,
                                timeInterval: TimeInterval = 0.05,
@@ -48,7 +51,7 @@ public class PKObjectNode: SKSpriteNode {
             return action
         }
     }
-    
+
     private func animationIndex(from state: ObjectAnimation.State) -> Int? {
         guard let index = animations.firstIndex(where: { $0.state == state }) else {
             return nil
@@ -62,20 +65,22 @@ public class PKObjectNode: SKSpriteNode {
     }
     
     // MARK: - LOGIC
-    
+
+    /// Remove the object with or without  a deletion animation.
     public func destroy(isAnimated: Bool,
                         filteringMode: SKTextureFilteringMode = .linear,
                         timeInterval: TimeInterval = 0.05) {
         guard isAnimated else { return removeFromParent() }
         let sequence = SKAction.sequence([
-            animatedAction(with: .death,
+            animatedAction(with: .deletion,
                            filteringMode: filteringMode,
                            timeInterval: timeInterval),
             SKAction.removeFromParent()
         ])
         run(sequence)
     }
-    
+
+    /// Remove the object with a deletion animation after an hit animation.
     public func hitAndDestroy(filteringMode: SKTextureFilteringMode = .linear,
                               hitTimeInterval: TimeInterval = 0.05,
                               deathTimeInterval: TimeInterval = 0.05) {
@@ -83,7 +88,7 @@ public class PKObjectNode: SKSpriteNode {
             animatedAction(with: .hit,
                            filteringMode: filteringMode,
                            timeInterval: hitTimeInterval),
-            animatedAction(with: .death,
+            animatedAction(with: .deletion,
                            filteringMode: filteringMode,
                            timeInterval: deathTimeInterval),
             SKAction.removeFromParent()

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// The animation of an object.
 public struct ObjectAnimation {
     public init(state: State,
                 frames: [String] = []) {
@@ -24,6 +25,6 @@ public struct ObjectAnimation {
         case hit
         case attack
         case jump
-        case death
+        case deletion
     }
 }

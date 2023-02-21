@@ -13,10 +13,9 @@ public extension Coordinate {
         let result = Int(string)
         return result
     }
-    static var zero: Coordinate { return Coordinate(x: 0, y: 0) }
-    static func end(_ matrix: Matrix) -> Coordinate {
-        Coordinate(x: matrix.row - 1, y: matrix.column - 1)
-    }
+    /// The coordinate whose x and y are both zero.
+    static var zero: Coordinate { Coordinate(x: 0, y: 0) }
+    
     mutating func advanceX(by amount: Int) {
         self.x += amount
     }

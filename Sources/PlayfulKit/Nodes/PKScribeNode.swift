@@ -7,6 +7,7 @@
 
 import SpriteKit
 
+/// A writing text node.
 public class PKScribeNode: SKLabelNode {
     
     public init(container: SKNode,
@@ -29,15 +30,16 @@ public class PKScribeNode: SKLabelNode {
     public var container: SKNode?
     public var parameter: PKText.Paramater
     public var timeInterval: TimeInterval
+    
     private var currentCharacterIndex: Int = 0
     private var timer: Timer?
     
     // MARK: - PUBLIC
     
-    // Stop the writing text.
+    /// Stop the writing text.
     public func stop() { timer?.invalidate() }
     
-    // Check if the text has finished writing.
+    /// Check if the text has finished writing.
     public func hasFinished() -> Bool {
         currentCharacterIndex == parameter.content.count
     }

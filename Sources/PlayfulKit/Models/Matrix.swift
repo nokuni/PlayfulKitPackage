@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// The matrix row and column
 public struct Matrix {
     public init(row: Int,
                 column: Int) {

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Represents the horizontal and vertical.
 public enum Axes {
     case horizontal
     case vertical

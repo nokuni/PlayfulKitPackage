@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Represents the center, leading and trailing.
 public enum Adjustement {
     case center
     case leading

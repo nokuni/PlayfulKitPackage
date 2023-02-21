@@ -7,6 +7,7 @@
 
 import SpriteKit
 
+/// Node collision.
 public struct Collision {
     public init(category: CollisionCategory = .allSet,
                 collision: [CollisionCategory] = [],

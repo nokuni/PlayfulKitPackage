@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// The logic of an object.
 public struct LogicBody {
     public var health: Int = 1
     public var healthLost: Int = 0

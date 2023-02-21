@@ -8,7 +8,9 @@
 import UIKit
 
 public extension UIImage {
+    /// Gradient from UIImage.
     struct Gradient {
+        /// Points of the UIImage Gradient
         public enum Points {
             case topLeftToBottomRight
             case bottomRightToTopLeft
@@ -34,6 +36,7 @@ public extension UIImage {
                 }
             }
         }
+        /// Returns a UIImage defined by its dimension,  points and colors.
         static func image(withBounds: CGRect, points: Points, colors: [CGColor]) -> UIImage {
             
             // Configure the gradient layer based on input

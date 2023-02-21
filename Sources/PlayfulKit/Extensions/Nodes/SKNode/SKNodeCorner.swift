@@ -9,7 +9,7 @@ import SpriteKit
 
 public extension SKNode {
     
-    func cornerOrigin(_ corner: Corner) -> CGPoint {
+    func cornerOrigin(_ corner: QuadrilateralCorner) -> CGPoint {
         switch corner {
         case .topLeft: return topLeftCornerOrigin
         case .topRight: return topRightCornerOrigin
@@ -42,7 +42,7 @@ public extension SKNode {
         )
     }
     
-    func corner(corner: Corner,
+    func corner(corner: QuadrilateralCorner,
                 node: SKNode,
                 padding: CGFloat = 0,
                 hasAlignment: Bool = false) -> CGPoint {

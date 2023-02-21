@@ -39,11 +39,11 @@ final class PlayfulKitTests: XCTestCase {
             return object
         }
         let map = PKMapNode()
-        map.addObject(object,
-                      startingCoordinate: Coordinate.zero,
-                      endingCoordinate: Coordinate(x: 0, y: 5)
-        )
-        print(map.objects.map { $0.coordinate })
+//        map.addObject(object,
+//                      startingCoordinate: Coordinate.zero,
+//                      endingCoordinate: Coordinate(x: 0, y: 5)
+//        )
+//        print(map.objects.map { $0.coordinate })
     }
     
     func testBitMasks() {

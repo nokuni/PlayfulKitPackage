@@ -7,8 +7,8 @@
 
 import Foundation
 
-extension Int {
-
+public extension Int {
+    /// Returns a string of the number with an amount of leading zeros.
     func leadingZeros(amount: Int) -> String {
         let result = String(format: "%0\(amount)d", self)
         return result
