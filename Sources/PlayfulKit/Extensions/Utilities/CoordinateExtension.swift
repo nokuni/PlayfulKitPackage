@@ -27,7 +27,7 @@ public extension Coordinate {
         var coordinates: [Coordinate] = []
         for _ in startIndex ..< endIndex {
             let stringIndex = startIndex.leadingZeros(amount: 2)
-            let coordinate = stringIndex.coordinate(in: stringIndex)
+            let coordinate = stringIndex.coordinate
             coordinates.append(coordinate)
         }
         return coordinates

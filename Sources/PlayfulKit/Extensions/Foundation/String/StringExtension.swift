@@ -17,11 +17,11 @@ extension String {
         return number
     }
 
-    func coordinate(in string: String) -> Coordinate {
-        guard string.count == 2 else { return Coordinate.zero }
-        guard Int(string) != nil else { return Coordinate.zero }
-        guard let x = string.first?.wholeNumberValue else { return Coordinate.zero }
-        guard let y = string.last?.wholeNumberValue else { return Coordinate.zero }
+    var coordinate: Coordinate {
+        guard self.count == 2 else { return Coordinate.zero }
+        guard Int(self) != nil else { return Coordinate.zero }
+        guard let x = self.first?.wholeNumberValue else { return Coordinate.zero }
+        guard let y = self.last?.wholeNumberValue else { return Coordinate.zero }
         let coordinate = Coordinate(x: x, y: y)
         return coordinate
     }

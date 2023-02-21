@@ -11,7 +11,7 @@ public class PKMapNode: SKNode {
     
     public init(tileSize: CGSize = CGSize(width: 25, height: 25),
                 tileBitMask: Collision? = nil,
-                matrix: Matrix = Matrix.zero,
+                matrix: Matrix = Matrix(row: 10, column: 10),
                 origin: CGPoint = CGPoint.center) {
         self.tileSize = tileSize
         self.tileBitMask = tileBitMask
@@ -81,7 +81,7 @@ public class PKMapNode: SKNode {
         let coordinates = Coordinate.coordinates(from: startingCoordinate,
                                                  to: endingCoordinate)
         for coordinate in coordinates {
-            let newObject = object
+            let newObject = PKObjectNode()
             addObject(newObject, at: coordinate)
         }
     }
@@ -254,7 +254,6 @@ public class PKMapNode: SKNode {
     }
     
     private func createMap() {
-        let amount = matrix.row * matrix.column
         var tileNodes = tiles(size: tileSize, amount: matrix.product, bitMask: tileBitMask)
         tileNodes.coordinateTiles(splittedBy: matrix.column)
         group.createSpriteCollection(of: tileNodes,
