@@ -14,23 +14,22 @@ public extension Int {
         return result
     }
 
-    func rowCoordinates(column: Int) -> [Coordinate] {
+    func rowCoordinates(column: Int) -> [Int] {
         var coordinates: [Coordinate] = []
-        let indexRange = self ..< column
-        let stringIndices = indexRange.map { $0.leadingZeros(amount: 2) }
-        for string in stringIndices {
-            coordinates.append(string.coordinate)
+        for index in 0..<column {
+            let coordinate = Coordinate(x: self, y: index)
+            coordinates.append(coordinate)
         }
-        return coordinates
+        return coordinates.map { $0.x }
     }
 
-    func columnCoordinates(row: Int) -> [Coordinate] {
+    func columnCoordinates(row: Int) -> [Int] {
         var coordinates: [Coordinate] = []
         let indexRange = self ..< row
         let stringIndices = indexRange.map { $0.leadingZeros(amount: 2) }
         for string in stringIndices {
             coordinates.append(string.coordinate)
         }
-        return coordinates
+        return coordinates.map { $0.y }
     }
 }
