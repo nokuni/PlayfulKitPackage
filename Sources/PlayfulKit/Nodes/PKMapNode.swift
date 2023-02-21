@@ -81,7 +81,9 @@ public class PKMapNode: SKNode {
         let coordinates = Coordinate.coordinates(from: startingCoordinate,
                                                  to: endingCoordinate)
         for coordinate in coordinates {
-            addObject(object, at: coordinate)
+            if let newObject = object.copy() as? PKObjectNode {
+                addObject(newObject, at: coordinate)
+            }
         }
     }
     
