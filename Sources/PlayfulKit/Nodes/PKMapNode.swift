@@ -213,14 +213,13 @@ public class PKMapNode: SKNode {
     // MARK: - PRIVATE
     
     private func tiles(count: Int) -> [PKTileNode] {
-        let tileNode = PKTileNode()
-        tileNode.size = tileSize
-        tileNode.texture = SKTexture(imageNamed: "")
-
-        guard let tileNodeCopy = tileNode.copy() as? PKTileNode else { return [] }
-
-        let tileNodes = [PKTileNode](repeating: tileNodeCopy, count: count)
-
+        var tileNodes: [PKTileNode] = []
+        for _ in 0..<count {
+            let tileNode = PKTileNode()
+            tileNode.size = tileSize
+            tileNode.texture = SKTexture(imageNamed: "")
+            tileNodes.append(tileNode)
+        }
         return tileNodes
     }
     private func createMap() {
