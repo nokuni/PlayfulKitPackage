@@ -90,14 +90,13 @@ public class PKMapNode: SKNode {
     // Apply Texture
     public func applyTexture(structure: TileStructure,
                              startingCoordinate: Coordinate = Coordinate.zero,
-                             rows: Int,
-                             columns: Int,
+                             matrix: Matrix,
                              object: PKObjectNode? = nil) {
         let firstRow = startingCoordinate.x
-        let lastRow = rows - 1
+        let lastRow = matrix.row - 1
         
         let firstColumn = startingCoordinate.y
-        let lastColumn = columns - 1
+        let lastColumn = matrix.column - 1
         
         let topLeftCornerCoordinate = Coordinate(x: firstRow, y: firstColumn)
         let topRightCornerCoordinate = Coordinate(x: firstRow, y: lastColumn)
@@ -127,8 +126,7 @@ public class PKMapNode: SKNode {
                      startingCoordinate: Coordinate(x: firstRow + 1,
                                                       y: firstColumn + 1),
                      endingCoordinate: Coordinate(x: lastRow,
-                                                    y: lastColumn),
-                     isExcludingBorders: true
+                                                    y: lastColumn)
         )
         
         if let object = object {
@@ -189,28 +187,22 @@ public class PKMapNode: SKNode {
     // Apply a texture on all the tiles from a coordinate to another.
     public func applyTexture(_ texture: SKTexture,
                              startingCoordinate: Coordinate,
-                             endingCoordinate: Coordinate,
-                             isExcludingBorders: Bool = false) {
-        let coordinates = Coordinate.coordinates(from: startingCoordinate,
-                                                 to: endingCoordinate)
+                             endingCoordinate: Coordinate) {
+        let coordinates = Coordinate.coordinates(from: Coordinate.zero,
+                                                 to: Coordinate.end(matrix))
         for coordinate in coordinates {
-            applyTexture(texture, on: coordinate, isExcludingBorders: isExcludingBorders)
+            let isIncluded =
+            coordinate.x >= startingCoordinate.x &&
+            coordinate.y >= startingCoordinate.y &&
+            coordinate.x <= endingCoordinate.x &&
+            coordinate.y <= endingCoordinate.y
+            if isIncluded {
+                applyTexture(texture, at: coordinate)
+            }
         }
     }
     
     // MARK: - PRIVATE
-    
-    private func applyTexture(_ texture: SKTexture,
-                              on coordinate: Coordinate,
-                              isExcludingBorders: Bool) {
-        if isExcludingBorders {
-            if canFillBorders(on: coordinate) {
-                applyTexture(texture, at: coordinate)
-            }
-        } else {
-            applyTexture(texture, at: coordinate)
-        }
-    }
     
     private func canFillBorders(on coordinate: Coordinate) -> Bool {
         let isCoordinateOnFirstRow = coordinate.x == 0

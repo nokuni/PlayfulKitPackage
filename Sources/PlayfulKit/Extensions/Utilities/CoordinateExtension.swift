@@ -14,6 +14,9 @@ public extension Coordinate {
         return result
     }
     static var zero: Coordinate { return Coordinate(x: 0, y: 0) }
+    static func end(_ matrix: Matrix) -> Coordinate {
+        Coordinate(x: matrix.row - 1, y: matrix.column - 1)
+    }
     mutating func advanceX(by amount: Int) {
         self.x += amount
     }
