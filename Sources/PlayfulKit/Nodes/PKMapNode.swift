@@ -213,13 +213,13 @@ public class PKMapNode: SKNode {
     // MARK: - PRIVATE
     
     private func tiles(count: Int) -> [PKTileNode] {
-
-        guard let tileNode = PKTileNode().copy() as? PKTileNode else { return [] }
-
+        let tileNode = PKTileNode()
         tileNode.size = tileSize
         tileNode.texture = SKTexture(imageNamed: "")
 
-        let tileNodes = [PKTileNode](repeating: tileNode, count: count)
+        guard let tileNodeCopy = tileNode.copy() as? PKTileNode else { return [] }
+
+        let tileNodes = [PKTileNode](repeating: tileNodeCopy, count: count)
 
         return tileNodes
     }
