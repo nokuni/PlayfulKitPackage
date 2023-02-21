@@ -143,8 +143,8 @@ public class PKMapNode: SKNode {
         drawTexture(structure.top, row: firstRow, excluding: firstRowExcludedColumns)
 
         // Fill last row
-        let lastRowExcludedColumns = lastRow.rowCoordinates(column: lastColumn)
-        drawTexture(structure.bottom, row: lastRow, excluding: lastRowExcludedColumns)
+//        let lastRowExcludedColumns = lastRow.rowCoordinates(column: lastColumn)
+//        drawTexture(structure.bottom, row: lastRow, excluding: lastRowExcludedColumns)
 
 
         //        if let object = object {
