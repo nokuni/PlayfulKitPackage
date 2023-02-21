@@ -20,13 +20,16 @@ public extension Coordinate {
     mutating func advanceY(by amount: Int) {
         self.y += amount
     }
-    func test(startingCoordinate: Coordinate,
-              endingCoordinate: Coordinate) {
-        guard let startIndex = startingCoordinate.index else { return }
-        guard let endIndex = endingCoordinate.index else { return }
-
+    static func coordinates(from startingCoordinate: Coordinate,
+                            to endingCoordinate: Coordinate) -> [Coordinate] {
+        guard let startIndex = startingCoordinate.index else { return [] }
+        guard let endIndex = endingCoordinate.index else { return [] }
+        var coordinates: [Coordinate] = []
         for _ in startIndex ..< endIndex {
-            
+            let stringIndex = startIndex.leadingZeros(amount: 2)
+            let coordinate = stringIndex.coordinate(in: stringIndex)
+            coordinates.append(coordinate)
         }
+        return coordinates
     }
 }

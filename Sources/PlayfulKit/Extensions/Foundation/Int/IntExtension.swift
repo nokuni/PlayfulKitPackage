@@ -6,9 +6,11 @@
 //
 
 import Foundation
-//
-//extension Int {
-//    var coordinate: Coordinate {
-//        guard
-//    }
-//}
+
+extension Int {
+
+    func leadingZeros(amount: Int) -> String {
+        let result = String(format: "%0\(amount)d", self)
+        return result
+    }
+}

@@ -78,14 +78,12 @@ public class PKMapNode: SKNode {
     public func addObject(_ object: PKObjectNode,
                           startingCoordinate: Coordinate,
                           endingCoordinate: Coordinate) {
-        guard (endingCoordinate.x > startingCoordinate.x) ||
-                (startingCoordinate.y < matrix.column) else { return }
-        var coordinate = startingCoordinate
-        var newObject: PKObjectNode { object }
-        repeat {
+        let coordinates = Coordinate.coordinates(from: startingCoordinate,
+                                                 to: endingCoordinate)
+        for coordinate in coordinates {
+            let newObject = object
             addObject(newObject, at: coordinate)
-            advanceCoordinate(&coordinate)
-        } while (coordinate.x < endingCoordinate.x) || (coordinate.y < endingCoordinate.y)
+        }
     }
     
     // Apply Texture
@@ -192,13 +190,11 @@ public class PKMapNode: SKNode {
                              startingCoordinate: Coordinate,
                              endingCoordinate: Coordinate,
                              isExcludingBorders: Bool = false) {
-        guard (endingCoordinate.x > startingCoordinate.x) ||
-                (startingCoordinate.y < matrix.column) else { return }
-        var coordinate = startingCoordinate
-        repeat {
-            applyTexture(texture, on: coordinate, isExcludingBorders: isExcludingBorders)
-            advanceCoordinate(&coordinate)
-        } while (coordinate.x < endingCoordinate.x) || (coordinate.y < endingCoordinate.y)
+        let coordinates = Coordinate.coordinates(from: startingCoordinate,
+                                                 to: endingCoordinate)
+        for coordinate in coordinates {
+            applyTexture(texture, at: coordinate)
+        }
     }
     
     // MARK: - PRIVATE
