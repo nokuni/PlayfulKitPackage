@@ -194,7 +194,7 @@ public class PKMapNode: SKNode {
         let coordinates = Coordinate.coordinates(from: startingCoordinate,
                                                  to: endingCoordinate)
         for coordinate in coordinates {
-            applyTexture(texture, at: coordinate)
+            applyTexture(texture, on: coordinate, isExcludingBorders: isExcludingBorders)
         }
     }
     
