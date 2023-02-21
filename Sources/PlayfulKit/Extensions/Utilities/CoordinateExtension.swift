@@ -25,8 +25,8 @@ public extension Coordinate {
         guard let startIndex = startingCoordinate.index else { return [] }
         guard let endIndex = endingCoordinate.index else { return [] }
         var coordinates: [Coordinate] = []
-        for _ in startIndex ..< endIndex {
-            let stringIndex = startIndex.leadingZeros(amount: 2)
+        for index in startIndex ..< endIndex {
+            let stringIndex = index.leadingZeros(amount: 2)
             let coordinate = stringIndex.coordinate
             coordinates.append(coordinate)
         }

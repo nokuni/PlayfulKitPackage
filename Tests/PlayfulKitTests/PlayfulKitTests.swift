@@ -31,6 +31,20 @@ final class PlayfulKitTests: XCTestCase {
 //            middle: SKTexture(imageNamed: "redSquare")), rows: 4, columns: 6)
 //        dump(map.tiles)
     }
+
+    func testMapFill() {
+        var object: PKObjectNode {
+            let object = PKObjectNode(imageNamed: "blueSquare")
+            object.size = map.tileSize
+            return object
+        }
+        let map = PKMapNode()
+        map.addObject(object,
+                      startingCoordinate: Coordinate.zero,
+                      endingCoordinate: Coordinate(x: 0, y: 5)
+        )
+        print(map.objects.map { $0.coordinate })
+    }
     
     func testBitMasks() {
         let bitMasks: [CollisionCategory] = [.object, .structure] // 0x1 << 4 and 0x1 << 5
