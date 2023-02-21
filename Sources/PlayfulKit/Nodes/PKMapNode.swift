@@ -121,15 +121,15 @@ public class PKMapNode: SKNode {
 
         // Fill corners
         drawTexture(structure.topLeft,
-                     at: topLeftCornerCoordinate)
+                    at: topLeftCornerCoordinate)
         drawTexture(structure.topRight,
-                     at: topRightCornerCoordinate)
+                    at: topRightCornerCoordinate)
         drawTexture(structure.bottomLeft,
-                     at: bottomLeftCornerCoordinate)
+                    at: bottomLeftCornerCoordinate)
         drawTexture(structure.bottomRight,
-                     at: bottomRightCornerCoordinate)
+                    at: bottomRightCornerCoordinate)
 
-        /*
+
         // Fill first column
         drawTexture(structure.left, column: firstColumn, excluding: [firstRow, lastRow])
         // Fill last column
@@ -138,15 +138,15 @@ public class PKMapNode: SKNode {
         drawTexture(structure.top, row: firstRow, excluding: [firstColumn, lastColumn])
         // Fill last row
         drawTexture(structure.bottom, row: lastRow, excluding: [firstColumn, lastColumn])
-        */
 
-//        if let object = object {
-//            addObject(object,
-//                      startingCoordinate: Coordinate(x: firstRow,
-//                                                     y: firstColumn),
-//                      endingCoordinate: Coordinate(x: lastRow,
-//                                                   y: lastColumn))
-//        }
+
+        //        if let object = object {
+        //            addObject(object,
+        //                      startingCoordinate: Coordinate(x: firstRow,
+        //                                                     y: firstColumn),
+        //                      endingCoordinate: Coordinate(x: lastRow,
+        //                                                   y: lastColumn))
+        //        }
 
     }
     
