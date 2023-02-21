@@ -99,11 +99,20 @@ public class PKMapNode: SKNode {
                              startingCoordinate: Coordinate = Coordinate.zero,
                              matrix: Matrix,
                              object: PKObjectNode? = nil) {
+
+        let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
+
         let firstRow = startingCoordinate.x
-        let lastRow = matrix.row - 1
+        let lastRow = endingCoordinate.x
 
         let firstColumn = startingCoordinate.y
-        let lastColumn = matrix.column - 1
+        let lastColumn = endingCoordinate.y
+
+        // Fill all area with middle texture first
+        drawTexture(structure.middle,
+                    matrix: matrix,
+                    startingCoordinate: startingCoordinate
+        )
 
         let topLeftCornerCoordinate = Coordinate(x: firstRow, y: firstColumn)
         let topRightCornerCoordinate = Coordinate(x: firstRow, y: lastColumn)
@@ -120,6 +129,7 @@ public class PKMapNode: SKNode {
         drawTexture(structure.bottomRight,
                      at: bottomRightCornerCoordinate)
 
+        /*
         // Fill first column
         drawTexture(structure.left, column: firstColumn, excluding: [firstRow, lastRow])
         // Fill last column
@@ -128,12 +138,7 @@ public class PKMapNode: SKNode {
         drawTexture(structure.top, row: firstRow, excluding: [firstColumn, lastColumn])
         // Fill last row
         drawTexture(structure.bottom, row: lastRow, excluding: [firstColumn, lastColumn])
-
-        // Fill Middle
-        drawTexture(structure.middle,
-                    matrix: Matrix(row: matrix.row - 2, column: matrix.column - 2),
-                    startingCoordinate: Coordinate(x: firstRow + 1, y: firstColumn + 1)
-        )
+        */
 
 //        if let object = object {
 //            addObject(object,
