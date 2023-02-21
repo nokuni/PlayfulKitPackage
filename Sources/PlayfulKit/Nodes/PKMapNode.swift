@@ -131,13 +131,20 @@ public class PKMapNode: SKNode {
 
 
         // Fill first column
-        drawTexture(structure.left, column: firstColumn, excluding: [firstRow, lastRow])
+        let firstColumnExcludedRows = firstColumn.columnCoordinates(row: lastRow)
+        drawTexture(structure.left, column: firstColumn, excluding: firstColumnExcludedRows)
+
         // Fill last column
-        drawTexture(structure.right, column: lastColumn, excluding: [firstRow, lastRow])
+        let lastColumnExcludedRows = lastColumn.columnCoordinates(row: lastRow)
+        drawTexture(structure.right, column: lastColumn, excluding: lastColumnExcludedRows)
+
         // Fill first row
-        drawTexture(structure.top, row: firstRow, excluding: [firstColumn, lastColumn])
+        let firstRowExcludedColumns = firstRow.rowCoordinates(column: lastColumn)
+        drawTexture(structure.top, row: firstRow, excluding: firstRowExcludedColumns)
+
         // Fill last row
-        drawTexture(structure.bottom, row: lastRow, excluding: [firstColumn, lastColumn])
+        let lastRowExcludedColumns = lastRow.rowCoordinates(column: lastColumn)
+        drawTexture(structure.bottom, row: lastRow, excluding: lastRowExcludedColumns)
 
 
         //        if let object = object {
@@ -156,17 +163,17 @@ public class PKMapNode: SKNode {
     }
 
     /// Draw a single texture on all tiles in a specific row.
-    public func drawTexture(_ texture: SKTexture, row: Int, excluding columns: [Int] = []) {
+    public func drawTexture(_ texture: SKTexture, row: Int, excluding columns: [Coordinate] = []) {
         let tilesOnRow = self.tiles.filter {
-            $0.coordinate.x == row && !columns.contains($0.coordinate.y)
+            $0.coordinate.x == row && !columns.contains($0.coordinate)
         }
         drawTexture(texture, on: tilesOnRow)
     }
 
     /// Draw a single texture on all tiles in a specific column.
-    public func drawTexture(_ texture: SKTexture, column: Int, excluding rows: [Int] = []) {
+    public func drawTexture(_ texture: SKTexture, column: Int, excluding rows: [Coordinate] = []) {
         let tilesOnColumn = self.tiles.filter {
-            ($0.coordinate.y == column) && !rows.contains($0.coordinate.x)
+            ($0.coordinate.y == column) && !rows.contains($0.coordinate)
         }
         drawTexture(texture, on: tilesOnColumn)
     }
