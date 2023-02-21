@@ -21,4 +21,11 @@ public extension Matrix {
     var lastCoordinate: Coordinate {
         Coordinate(x: self.row - 1, y: self.column - 1)
     }
+
+    func lastCoordinate(from startingCoordinate: Coordinate) -> Coordinate {
+        let x = (self.row + startingCoordinate.x) - 1
+        let y = (self.column + startingCoordinate.y) - 1
+        let lastCoordinate = Coordinate(x: x, y: y)
+        return lastCoordinate
+    }
 }
