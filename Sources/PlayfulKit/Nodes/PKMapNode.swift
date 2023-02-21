@@ -69,10 +69,9 @@ public class PKMapNode: SKNode {
     // Add object on a coordinate
     public func addObject(_ object: PKObjectNode, at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
-        let newObject = object
-        newObject.coordinate = coordinate
-        newObject.position = position
-        addChild(newObject)
+        object.coordinate = coordinate
+        object.position = position
+        addChild(object)
     }
     
     // Add object through the map from a coordinate to another.
@@ -82,7 +81,9 @@ public class PKMapNode: SKNode {
         let coordinates = Coordinate.coordinates(from: startingCoordinate,
                                                  to: endingCoordinate)
         for coordinate in coordinates {
-            addObject(object, at: coordinate)
+            if let newObject = object.copy() as? PKObjectNode {
+                addObject(newObject, at: coordinate)
+            }
         }
     }
     
