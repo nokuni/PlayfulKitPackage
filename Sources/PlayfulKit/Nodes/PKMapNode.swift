@@ -92,7 +92,9 @@ public class PKMapNode: SKNode {
                                                           startingCoordinate: startingCoordinate,
                                                           endingCoordinate: endingCoordinate)
             if isIncluding {
-                addObject(object, texture: texture, at: coordinate)
+                if let newObject = object.copy() as? PKObjectNode {
+                    addObject(newObject, texture: texture, at: coordinate)
+                }
             }
         }
     }
@@ -107,7 +109,9 @@ public class PKMapNode: SKNode {
         }
         let coordinates = tilesOnRow.map { $0.coordinate }
         for coordinate in coordinates {
-            addObject(object, texture: texture, at: coordinate)
+            if let newObject = object.copy() as? PKObjectNode {
+                addObject(newObject, texture: texture, at: coordinate)
+            }
         }
     }
     
@@ -121,7 +125,9 @@ public class PKMapNode: SKNode {
         }
         let coordinates = tilesOnColumn.map { $0.coordinate }
         for coordinate in coordinates {
-            addObject(object, texture: texture, at: coordinate)
+            if let newObject = object.copy() as? PKObjectNode {
+                addObject(newObject, texture: texture, at: coordinate)
+            }
         }
     }
     
