@@ -1,5 +1,5 @@
 //
-//  PKHaptics.swift
+//  HapticsManager.swift
 //  PlayfulKit
 //
 //  Created by Maertens Yann-Christophe on 11/08/22.
@@ -8,7 +8,7 @@
 import CoreHaptics
 import UIKit
 
-public class PKHaptics: HapticProtocol {
+public class HapticsManager {
     
     public init() { }
     

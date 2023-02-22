@@ -6,6 +6,7 @@
 //
 
 import SpriteKit
+import Utility_Toolbox
 
 public class PKProgressBarNode: SKNode {
     
@@ -38,7 +39,7 @@ public class PKProgressBarNode: SKNode {
     private var cropNode = SKCropNode()
     private var barNode = SKSpriteNode()
     private var underBarNode = SKSpriteNode()
-
+    
     /// A progress bar synthesized with colors.
     public struct ProgressBar {
         public init(amount: CGFloat = 1,
@@ -76,13 +77,13 @@ public class PKProgressBarNode: SKNode {
     }
     
     // MARK: - PUBLIC
-
+    
     /// Sets an amount between 0 and 1 for the progress bar.
     public func set(to amount: CGFloat, duration: CGFloat) {
         let animation = scale(amount: amount, duration: duration)
         cropNode.maskNode!.run(animation)
     }
-
+    
     /// Increases the current amount of the progress bar.
     public func increase(by amount: CGFloat, duration: CGFloat) {
         guard let maskNode = cropNode.maskNode else { return }
@@ -92,7 +93,7 @@ public class PKProgressBarNode: SKNode {
             cropNode.maskNode!.run(animation)
         }
     }
-
+    
     /// Decreases the current amount of the progress bar.
     public func decrease(by amount: CGFloat, duration: CGFloat) {
         guard let maskNode = cropNode.maskNode else { return }
@@ -102,27 +103,27 @@ public class PKProgressBarNode: SKNode {
             cropNode.maskNode!.run(animation)
         }
     }
-
+    
     /// Set the amount of the progress bar to 1.
     public func max(duration: CGFloat) {
         let amount: CGFloat = 1
         let animation = scale(amount: amount, duration: duration)
         cropNode.maskNode!.run(animation)
     }
-
+    
     /// Set the amount of the progress bar to 0.
     public func min(duration: CGFloat) {
         let amount: CGFloat = 0
         let animation = scale(amount: amount, duration: duration)
         cropNode.maskNode!.run(animation)
     }
-
+    
     /// Check if the amount of the progress bar is 0.
     public func isBarEmpty() -> Bool {
         guard let maskNode = cropNode.maskNode else { return false}
         return maskNode.xScale <= 0
     }
-
+    
     /// Check if the amount of the progress bar is 1.
     public func isBarFull() -> Bool {
         guard let maskNode = cropNode.maskNode else { return false}
@@ -184,9 +185,9 @@ public class PKProgressBarNode: SKNode {
     
     private func createBar() {
         guard let progressBar = progressBar else { return }
-        if let image = UIImage.shape(color: progressBar.color,
-                                     size: progressBar.size,
-                                     cornerRadius: progressBar.cornerRadius) {
+        if let image = UIImage.rectangle(size: progressBar.size,
+                                         color: progressBar.color,
+                                         cornerRadius: progressBar.cornerRadius) {
             let texture = SKTexture(image: image)
             barNode = SKSpriteNode(texture: texture)
         }
@@ -194,9 +195,9 @@ public class PKProgressBarNode: SKNode {
     
     private func createUnderBar() {
         guard let progressBar = progressBar else { return }
-        if let image = UIImage.shape(color: progressBar.underColor,
-                                     size: progressBar.size,
-                                     cornerRadius: progressBar.cornerRadius) {
+        if let image = UIImage.rectangle(size: progressBar.size,
+                                         color: progressBar.underColor,
+                                         cornerRadius: progressBar.cornerRadius) {
             let texture = SKTexture(image: image)
             underBarNode = SKSpriteNode(texture: texture)
             addChild(underBarNode)

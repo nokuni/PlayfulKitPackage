@@ -1,5 +1,5 @@
 //
-//  GameSceneViewManager.swift
+//  SceneViewManager.swift
 //  PlayfulKit
 //
 //  Created by Maertens Yann-Christophe on 11/08/22.
@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-public struct PKSceneViewManager<S: RawRepresentable> {
+public struct SceneViewManager<S: RawRepresentable> {
     
     public init(currentViewState: S) {
         self.currentViewState = currentViewState

@@ -1,5 +1,5 @@
 //
-//  PKAnimation.swift
+//  AnimationManager.swift
 //  PlayfulKit
 //
 //  Created by Maertens Yann-Christophe on 11/08/22.
@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-public class PKAnimation: PKAnimationProtocol {
+public class AnimationManager {
     
     public init() { }
     

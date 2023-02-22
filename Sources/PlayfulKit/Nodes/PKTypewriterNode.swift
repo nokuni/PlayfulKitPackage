@@ -1,5 +1,5 @@
 //
-//  PKScribeNode.swift
+//  PKTypewriterNode.swift
 //  
 //
 //  Created by Maertens Yann-Christophe on 15/02/23.
@@ -8,16 +8,16 @@
 import SpriteKit
 
 /// A writing text node.
-public class PKScribeNode: SKLabelNode {
+public class PKTypewriterNode: SKLabelNode {
     
     public init(container: SKNode,
-                parameter: PKText.Paramater,
+                parameter: TextManager.Paramater,
                 timeInterval: TimeInterval = 0.05) {
         self.container = container
         self.parameter = parameter
         self.timeInterval = timeInterval
         super.init()
-        setupScribe()
+        setupWriting()
         write()
     }
     
@@ -25,10 +25,10 @@ public class PKScribeNode: SKLabelNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let pkText = PKText()
+    private let textManager = TextManager()
     
     public var container: SKNode?
-    public var parameter: PKText.Paramater
+    public var parameter: TextManager.Paramater
     public var timeInterval: TimeInterval
     
     private var currentCharacterIndex: Int = 0
@@ -45,9 +45,9 @@ public class PKScribeNode: SKLabelNode {
     }
     
     // MARK: - PRIVATE
-    private func setupScribe() {
+    private func setupWriting() {
         guard let container = container else { return }
-        if let attributedText = pkText.attributedText(parameter: parameter) {
+        if let attributedText = textManager.attributedText(parameter: parameter) {
             self.attributedText = attributedText
         }
         lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -69,7 +69,7 @@ public class PKScribeNode: SKLabelNode {
             let currentText = String(parameter.content.prefix(currentCharacterIndex))
             var newParameter = parameter
             newParameter.content = currentText
-            attributedText = pkText.attributedText(parameter: newParameter)
+            attributedText = textManager.attributedText(parameter: newParameter)
         default:
             stop()
         }

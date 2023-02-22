@@ -12,8 +12,8 @@ final class PlayfulKitTests: XCTestCase {
     func testScribe() {
         let rectangle = SKShapeNode(rectOf: CGSize(width: 300, height: 100))
         rectangle.name = "Window"
-        let scribeNode = PKScribeNode(container: rectangle,
-                                      parameter: .init(content: "Hello World"))
+        let scribeNode = PKTypewriterNode(container: rectangle,
+                                          parameter: .init(content: "Hello World"))
         rectangle.addChild(scribeNode)
     }
     
@@ -31,7 +31,7 @@ final class PlayfulKitTests: XCTestCase {
             middle: SKTexture(imageNamed: "redSquare")), startingCoordinate: Coordinate(x: 1, y: 3), matrix: Matrix(row: 4, column: 6))
         dump(mapNode.tiles)
     }
-
+    
     func testMapFill() {
         var object: PKObjectNode {
             let object = PKObjectNode(imageNamed: "blueSquare")
@@ -39,11 +39,11 @@ final class PlayfulKitTests: XCTestCase {
             return object
         }
         let map = PKMapNode()
-//        map.addObject(object,
-//                      startingCoordinate: Coordinate.zero,
-//                      endingCoordinate: Coordinate(x: 0, y: 5)
-//        )
-//        print(map.objects.map { $0.coordinate })
+        //        map.addObject(object,
+        //                      startingCoordinate: Coordinate.zero,
+        //                      endingCoordinate: Coordinate(x: 0, y: 5)
+        //        )
+        //        print(map.objects.map { $0.coordinate })
     }
     
     func testBitMasks() {

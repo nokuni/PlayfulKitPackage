@@ -1,5 +1,5 @@
 //
-//  PKLanguage.swift
+//  LanguageManager.swift
 //  PlayfulKit
 //
 //  Created by Maertens Yann-Christophe on 11/08/22.
@@ -44,9 +44,9 @@ public extension String {
     }
 }
 
-public class PKLanguage {
+public class LanguageManager {
 
-    public static let shared = PKLanguage()
+    public static let shared = LanguageManager()
     public static let changedLanguage = Notification.Name("changedLanguage")
 
     public init() { }
@@ -60,7 +60,7 @@ public class PKLanguage {
         } set {
             if newValue != language {
                 UserDefaults.standard.setValue(newValue.rawValue, forKey: "language")
-                NotificationCenter.default.post(name: PKLanguage.changedLanguage, object: nil)
+                NotificationCenter.default.post(name: LanguageManager.changedLanguage, object: nil)
             }
         }
     }

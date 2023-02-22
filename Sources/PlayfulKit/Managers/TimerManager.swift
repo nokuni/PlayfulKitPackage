@@ -1,5 +1,5 @@
 //
-//  PKTimer.swift
+//  TimerManager.swift
 //  PlayfulKit
 //
 //  Created by Maertens Yann-Christophe on 11/08/22.
@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-public class PKTimer: SKNode {
+public class TimerManager: SKNode {
     
     public var staticCountdown: Int
     public var onGoingCountdown: Int
@@ -21,17 +21,16 @@ public class PKTimer: SKNode {
         self.staticCountdown = staticCountdown
         self.onGoingCountdown = onGoingCountdown
         super.init()
-        startTimer(timeInterval: timeInterval, action: action, countingAction: countingAction, resetAction: resetAction)
     }
     
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func startTimer(timeInterval: TimeInterval,
-                           action: (() -> Void)?,
-                           countingAction: (() -> Void)?,
-                           resetAction: (() -> Void)?) {
+    public func start(timeInterval: TimeInterval,
+                      action: (() -> Void)?,
+                      countingAction: (() -> Void)?,
+                      resetAction: (() -> Void)?) {
         let sequenceAnimation = SKAction.sequence([
             SKAction.wait(forDuration: timeInterval),
             SKAction.run {

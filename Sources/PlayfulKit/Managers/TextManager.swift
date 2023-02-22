@@ -1,5 +1,5 @@
 //
-//  PKText.swift
+//  TextManager.swift
 //  PlayfulKit
 //
 //  Created by Maertens Yann-Christophe on 11/08/22.
@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-public class PKText: PKTextProtocol {
+public class TextManager {
     
     public struct Paramater {
         public init(content: String,

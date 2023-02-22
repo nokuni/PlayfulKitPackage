@@ -1,5 +1,5 @@
 //
-//  PKMatrix.swift
+//  Assembly.swift
 //  PlayfulKit
 //
 //  Created by Maertens Yann-Christophe on 05/11/22.
@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-public class PKGroup: PKGroupProtocol {
+public class AssemblyManager {
     
     public init() { }
     
@@ -86,23 +86,7 @@ public class PKGroup: PKGroupProtocol {
         }
     }
     
-    private func addCollectionNode(index: Int,
-                                   node: SKNode,
-                                   nodes: [SKNode],
-                                   parameter: Parameter,
-                                   firstPosition: CGPoint,
-                                   position: inout CGPoint) {
-        nodes[index].position = position
-        node.addChild(nodes[index])
-        let updatedPosition = axesIncrementedValue(axes: parameter.axes, alignment: parameter.alignment, node: nodes[index], position: position, spacing: parameter.horizontalSpacing)
-        position = updatedPosition
-        if (index + 1) % parameter.columns == 0 {
-            position.y -= (nodes.first!.frame.size.height * parameter.verticalSpacing)
-            position.x = firstPosition.x
-        }
-    }
-    
-    // Create a list of sprites
+    /// Create a list of sprites
     public func createSpriteList(of nodes: [SKNode],
                                  at startingPosition: CGPoint = .zero,
                                  in node: SKNode,
@@ -120,7 +104,7 @@ public class PKGroup: PKGroupProtocol {
         }
     }
     
-    // Create a collection of sprite nodes delayed on each sprite node creation.
+    /// Create a collection of sprite nodes delayed on each sprite node creation.
     public func createSpriteCollectionWithDelay(of nodes: [SKSpriteNode],
                                                 at startingPosition: CGPoint = .zero,
                                                 in node: SKNode,
@@ -162,11 +146,11 @@ public class PKGroup: PKGroupProtocol {
         timer?.fire()
     }
     
-    // Create a collection of sprite nodes
+    /// Create a collection of sprite nodes
     public func createSpriteCollection(of nodes: [SKNode],
                                        at startingPosition: CGPoint = .zero,
                                        in node: SKNode,
-                                       parameter: Parameter = Parameter()) {
+                                       parameter: AssemblyManager.Parameter = AssemblyManager.Parameter()) {
         
         guard !nodes.isEmpty else { return }
         
@@ -177,6 +161,22 @@ public class PKGroup: PKGroupProtocol {
         
         for index in nodes.indices {
             addCollectionNode(index: index, node: node, nodes: nodes, parameter: parameter, firstPosition: firstPosition, position: &initialPosition)
+        }
+    }
+    
+    private func addCollectionNode(index: Int,
+                                   node: SKNode,
+                                   nodes: [SKNode],
+                                   parameter: AssemblyManager.Parameter,
+                                   firstPosition: CGPoint,
+                                   position: inout CGPoint) {
+        nodes[index].position = position
+        node.addChild(nodes[index])
+        let updatedPosition = axesIncrementedValue(axes: parameter.axes, alignment: parameter.alignment, node: nodes[index], position: position, spacing: parameter.horizontalSpacing)
+        position = updatedPosition
+        if (index + 1) % parameter.columns == 0 {
+            position.y -= (nodes.first!.frame.size.height * parameter.verticalSpacing)
+            position.x = firstPosition.x
         }
     }
 }

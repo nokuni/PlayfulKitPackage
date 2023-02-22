@@ -8,7 +8,7 @@
 import SpriteKit
 
 /// An object node.
-public class PKObjectNode: SKSpriteNode, MapElement {
+public class PKObjectNode: SKSpriteNode {
     public var logic = LogicBody()
     public var coordinate = Coordinate.zero
     
