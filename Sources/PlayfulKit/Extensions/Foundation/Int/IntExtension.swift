@@ -25,10 +25,9 @@ public extension Int {
 
     func columnCoordinates(row: Int) -> [Int] {
         var coordinates: [Coordinate] = []
-        let indexRange = self ..< row
-        let stringIndices = indexRange.map { $0.leadingZeros(amount: 2) }
-        for string in stringIndices {
-            coordinates.append(string.coordinate)
+        for index in 0..<row {
+            let coordinate = Coordinate(x: index, y: self)
+            coordinates.append(coordinate)
         }
         return coordinates.map { $0.y }
     }

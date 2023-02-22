@@ -132,22 +132,31 @@ public class PKMapNode: SKNode {
 
         // Fill first column
         let firstColumnCoordinates = firstColumn.columnCoordinates(row: lastRow)
-        let firstColumnCoordinatess = firstColumnCoordinates.filter {
-            ($0 != firstRow) && ($0 != lastRow) && ($0 < lastColumn)
+        let excludedFirstColumns = firstColumnCoordinates.filter {
+            ($0 == firstRow) && ($0 == lastRow) && ($0 > lastRow)
         }
-        drawTexture(structure.left, column: firstColumn, excluding: firstColumnCoordinatess)
+        drawTexture(structure.left, column: firstColumn, excluding: excludedFirstColumns)
 
         // Fill last column
-        let lastColumnExcludedRows = lastColumn.columnCoordinates(row: lastRow)
-        drawTexture(structure.right, column: lastColumn, excluding: lastColumnExcludedRows)
+        let lastColumnCoordinates = lastColumn.columnCoordinates(row: lastRow)
+        let excludedLastColumns = lastColumnCoordinates.filter {
+            ($0 == firstRow) && ($0 == lastRow) && ($0 > lastRow)
+        }
+        drawTexture(structure.right, column: lastColumn, excluding: excludedLastColumns)
 
         // Fill first row
-        let firstRowExcludedColumns = firstRow.rowCoordinates(column: lastColumn)
-        drawTexture(structure.top, row: firstRow, excluding: firstRowExcludedColumns)
+        let firstRowCoordinates = firstRow.rowCoordinates(column: lastColumn)
+        let excludedFirstRows = firstRowCoordinates.filter {
+            ($0 == firstRow) && ($0 == lastRow) && ($0 < lastRow)
+        }
+        drawTexture(structure.top, row: firstRow, excluding: excludedFirstRows)
 
         // Fill last row
-//        let lastRowExcludedColumns = lastRow.rowCoordinates(column: lastColumn)
-//        drawTexture(structure.bottom, row: lastRow, excluding: lastRowExcludedColumns)
+        let lastRowCoordinates = lastRow.rowCoordinates(column: lastColumn)
+        let excludedLastRows = lastRowCoordinates.filter {
+            ($0 == firstRow) && ($0 == lastRow) && ($0 < lastRow)
+        }
+        drawTexture(structure.bottom, row: lastRow, excluding: excludedLastRows)
 
 
         //        if let object = object {
