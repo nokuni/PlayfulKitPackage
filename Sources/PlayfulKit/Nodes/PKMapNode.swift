@@ -9,13 +9,11 @@ import SpriteKit
 
 public class PKMapNode: SKNode {
     
-    public init(tileSize: CGSize = CGSize(width: 25, height: 25),
-                tileBitMask: Collision? = nil,
+    public init(squareSize: CGSize = CGSize(width: 25, height: 25),
                 matrix: Matrix = Matrix(row: 10, column: 10),
                 origin: CGPoint = CGPoint.center) {
         
-        self.tileSize = tileSize
-        self.tileBitMask = tileBitMask
+        self.squareSize = squareSize
         self.matrix = matrix
         self.origin = origin
         
@@ -28,15 +26,14 @@ public class PKMapNode: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public var tileSize: CGSize
-    public var tileBitMask: Collision?
+    public var squareSize: CGSize
     public var matrix: Matrix
     public var origin: CGPoint
     
     private let assembly = AssemblyManager()
     
     /// A quadrilateral tile structure.
-    public struct TileStructure {
+    public struct MapStructure {
         public init(topLeft: SKTexture,
                     topRight: SKTexture,
                     bottomLeft: SKTexture,
@@ -68,11 +65,12 @@ public class PKMapNode: SKNode {
         public var middle: SKTexture
     }
     
-    // MARK: - PUBLIC
+    // MARK: - OBJECTS
     
     /// Add a single object at a specific coordinate
-    public func addObject(_ object: PKObjectNode, at coordinate: Coordinate) {
+    public func addObject(_ object: PKObjectNode, texture: SKTexture, at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
+        object.texture = texture
         object.coordinate = coordinate
         object.position = position
         addChild(object)
@@ -80,6 +78,7 @@ public class PKMapNode: SKNode {
     
     /// Add a shape of a single object.
     public func addObject(_ object: PKObjectNode,
+                          texture: SKTexture,
                           matrix: Matrix,
                           startingCoordinate: Coordinate) {
         
@@ -93,13 +92,125 @@ public class PKMapNode: SKNode {
                                                           startingCoordinate: startingCoordinate,
                                                           endingCoordinate: endingCoordinate)
             if isIncluding {
-                addObject(object, at: coordinate)
+                addObject(object, texture: texture, at: coordinate)
             }
         }
     }
     
-    /// Draw Texture following a specific structure.
-    public func drawTexture(structure: TileStructure,
+    /// Add objects in a specific row.
+    public func addObject(_ object: PKObjectNode,
+                          texture: SKTexture,
+                          row: Int,
+                          excluding columns: [Coordinate] = []) {
+        let tilesOnRow = self.tiles.filter {
+            $0.coordinate.x == row && !columns.contains($0.coordinate)
+        }
+        let coordinates = tilesOnRow.map { $0.coordinate }
+        for coordinate in coordinates {
+            addObject(object, texture: texture, at: coordinate)
+        }
+    }
+    
+    /// Add objects in a specific column.
+    public func addObject(_ object: PKObjectNode,
+                            texture: SKTexture,
+                            column: Int,
+                            excluding rows: [Coordinate] = []) {
+        let tilesOnColumn = self.tiles.filter {
+            ($0.coordinate.y == column) && !rows.contains($0.coordinate)
+        }
+        let coordinates = tilesOnColumn.map { $0.coordinate }
+        for coordinate in coordinates {
+            addObject(object, texture: texture, at: coordinate)
+        }
+    }
+    
+    /// Add a shape of a single object.
+    public func addObject(_ object: PKObjectNode,
+                          structure: MapStructure,
+                          startingCoordinate: Coordinate = Coordinate.zero,
+                          matrix: Matrix) {
+        
+        let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
+        
+        let firstRow = startingCoordinate.x
+        let lastRow = endingCoordinate.x
+        
+        let firstColumn = startingCoordinate.y
+        let lastColumn = endingCoordinate.y
+        
+        // Fill all area with object with middle texture first
+        addObject(object,
+                  texture: structure.middle,
+                  matrix: matrix,
+                  startingCoordinate: startingCoordinate
+        )
+        
+        let topLeftCornerCoordinate = Coordinate(x: firstRow, y: firstColumn)
+        let topRightCornerCoordinate = Coordinate(x: firstRow, y: lastColumn)
+        let bottomLeftCornerCoordinate = Coordinate(x: lastRow, y: firstColumn)
+        let bottomRightCornerCoordinate = Coordinate(x: lastRow, y: lastColumn)
+        
+        // Fill corners
+        addObject(object,
+                  texture: structure.topLeft,
+                  at: topLeftCornerCoordinate)
+        addObject(object,
+                  texture: structure.topRight,
+                  at: topRightCornerCoordinate)
+        addObject(object,
+                  texture: structure.bottomLeft,
+                  at: bottomLeftCornerCoordinate)
+        addObject(object,
+                  texture: structure.bottomRight,
+                  at: bottomRightCornerCoordinate)
+        
+        
+        // Fill first column
+        let firstColumnCoordinates = columnCoordinates(firstColumn)
+        let excludedFirstColumns = firstColumnCoordinates.filter {
+            ($0 == Coordinate(x: firstRow, y: $0.y)) ||
+            ($0 == Coordinate(x: lastRow, y: $0.y)) ||
+            $0.x > lastRow ||
+            $0.x < firstRow
+        }
+        addObject(object, texture: structure.left, column: firstColumn, excluding: excludedFirstColumns)
+        
+        // Fill last column
+        let lastColumnCoordinates = columnCoordinates(lastColumn)
+        let excludedLastColumns = lastColumnCoordinates.filter {
+            ($0 == Coordinate(x: firstRow, y: $0.y)) ||
+            ($0 == Coordinate(x: lastRow, y: $0.y)) ||
+            $0.x > lastRow ||
+            $0.x < firstRow
+        }
+        addObject(object, texture: structure.right, column: lastColumn, excluding: excludedLastColumns)
+        
+        // Fill first row
+        let firstRowCoordinates = rowCoordinates(firstRow)
+        let excludedFirstRows = firstRowCoordinates.filter {
+            ($0 == Coordinate(x: $0.x, y: firstColumn)) ||
+            ($0 == Coordinate(x: $0.x, y: lastColumn)) ||
+            $0.y > lastColumn ||
+            $0.y < firstColumn
+        }
+        addObject(object, texture: structure.top, row: firstRow, excluding: excludedFirstRows)
+        
+        // Fill last row
+        let lastRowCoordinates = rowCoordinates(lastRow)
+        let excludedLastRows = lastRowCoordinates.filter {
+            ($0 == Coordinate(x: $0.x, y: firstColumn)) ||
+            ($0 == Coordinate(x: $0.x, y: lastColumn)) ||
+            $0.y > lastColumn ||
+            $0.y < firstColumn
+        }
+        addObject(object, texture: structure.bottom, row: lastRow, excluding: excludedLastRows)
+    }
+    
+    // MARK: - TEXTURES
+    
+    /// Draw textures following a specific structure.
+    public func drawTexture(structure: MapStructure,
                             startingCoordinate: Coordinate = Coordinate.zero,
                             matrix: Matrix,
                             object: PKObjectNode? = nil) {
@@ -174,15 +285,6 @@ public class PKMapNode: SKNode {
         }
         drawTexture(structure.bottom, row: lastRow, excluding: excludedLastRows)
         
-        
-        //        if let object = object {
-        //            addObject(object,
-        //                      startingCoordinate: Coordinate(x: firstRow,
-        //                                                     y: firstColumn),
-        //                      endingCoordinate: Coordinate(x: lastRow,
-        //                                                   y: lastColumn))
-        //        }
-        
     }
     
     /// Draw a single texture on all tiles.
@@ -238,7 +340,7 @@ public class PKMapNode: SKNode {
         var tileNodes: [PKTileNode] = []
         for _ in 0..<count {
             let tileNode = PKTileNode()
-            tileNode.size = tileSize
+            tileNode.size = squareSize
             tileNode.texture = SKTexture(imageNamed: "")
             tileNodes.append(tileNode)
         }

@@ -35,7 +35,7 @@ final class PlayfulKitTests: XCTestCase {
     func testMapFill() {
         var object: PKObjectNode {
             let object = PKObjectNode(imageNamed: "blueSquare")
-            object.size = map.tileSize
+            object.size = map.squareSize
             return object
         }
         let map = PKMapNode()
