@@ -140,7 +140,7 @@ public class PKMapNode: SKNode {
         // Fill last column
         let lastColumnCoordinates = lastColumn.columnCoordinates(row: lastRow)
         let excludedLastColumns = lastColumnCoordinates.filter {
-            ($0 == firstRow) && ($0 == lastRow) && ($0 > lastRow)
+            ($0 == firstRow) && ($0 == lastRow) && ($0 < lastRow)
         }
         drawTexture(structure.right, column: lastColumn, excluding: excludedLastColumns)
 
