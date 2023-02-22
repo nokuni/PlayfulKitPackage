@@ -19,7 +19,7 @@ final class PlayfulKitTests: XCTestCase {
     
     func testMap() {
         let mapNode = PKMapNode(origin: CGPoint(x: CGPoint.center.x - 50, y: CGPoint.center.y))
-        mapNode.applyTexture(structure: .init(
+        mapNode.drawTexture(structure: .init(
             topLeft: SKTexture(imageNamed: "pinkSquare"),
             topRight: SKTexture(imageNamed: "orangeSquare"),
             bottomLeft: SKTexture(imageNamed: "greenSquare"),
@@ -28,7 +28,7 @@ final class PlayfulKitTests: XCTestCase {
             right: SKTexture(imageNamed: "cyanSquare"),
             top: SKTexture(imageNamed: "dBlueSquare"),
             bottom: SKTexture(imageNamed: "blueSquare"),
-            middle: SKTexture(imageNamed: "redSquare")), startingCoordinate: Coordinate.zero, matrix: Matrix(row: 4, column: 6))
+            middle: SKTexture(imageNamed: "redSquare")), startingCoordinate: Coordinate(x: 1, y: 3), matrix: Matrix(row: 4, column: 6))
         dump(mapNode.tiles)
     }
 

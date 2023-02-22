@@ -234,7 +234,7 @@ public class PKMapNode: SKNode {
         let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
 
         let coordinates = Coordinate.coordinates(from: matrix.firstCoordinate,
-                                                 to: matrix.lastCoordinate)
+                                                 to: endingCoordinate)
 
         for coordinate in coordinates {
             let isIncluding = isIncludingOtherCoordinates(coordinate,
