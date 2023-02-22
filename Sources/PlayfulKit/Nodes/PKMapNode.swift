@@ -94,8 +94,8 @@ public class PKMapNode: SKNode {
         }
     }
     
-    // Apply Texture
-    public func applyTexture(structure: TileStructure,
+    /// Draw Texture following a specific structure.
+    public func drawTexture(structure: TileStructure,
                              startingCoordinate: Coordinate = Coordinate.zero,
                              matrix: Matrix,
                              object: PKObjectNode? = nil) {
@@ -131,34 +131,38 @@ public class PKMapNode: SKNode {
 
 
         // Fill first column
-        let firstColumnCoordinates = firstColumn.columnCoordinates(row: lastRow)
+        let firstColumnCoordinates = columnCoordinates(firstColumn)
         let excludedFirstColumns = firstColumnCoordinates.filter {
             ($0 == Coordinate(x: firstRow, y: $0.y)) ||
-            ($0 == Coordinate(x: lastRow, y: $0.y))
+            ($0 == Coordinate(x: lastRow, y: $0.y)) ||
+            $0.x > lastRow
         }
         drawTexture(structure.left, column: firstColumn, excluding: excludedFirstColumns)
 
         // Fill last column
-        let lastColumnCoordinates = lastColumn.columnCoordinates(row: lastRow)
+        let lastColumnCoordinates = columnCoordinates(lastColumn)
         let excludedLastColumns = lastColumnCoordinates.filter {
             ($0 == Coordinate(x: firstRow, y: $0.y)) ||
-            ($0 == Coordinate(x: lastRow, y: $0.y))
+            ($0 == Coordinate(x: lastRow, y: $0.y)) ||
+            $0.x > lastRow
         }
         drawTexture(structure.right, column: lastColumn, excluding: excludedLastColumns)
 
         // Fill first row
-        let firstRowCoordinates = firstRow.rowCoordinates(column: lastColumn)
+        let firstRowCoordinates = rowCoordinates(firstRow)
         let excludedFirstRows = firstRowCoordinates.filter {
             ($0 == Coordinate(x: $0.x, y: firstColumn)) ||
-            ($0 == Coordinate(x: $0.x, y: lastColumn))
+            ($0 == Coordinate(x: $0.x, y: lastColumn)) ||
+            $0.y > lastColumn
         }
         drawTexture(structure.top, row: firstRow, excluding: excludedFirstRows)
 
         // Fill last row
-        let lastRowCoordinates = lastRow.rowCoordinates(column: lastColumn)
+        let lastRowCoordinates = rowCoordinates(lastRow)
         let excludedLastRows = lastRowCoordinates.filter {
             ($0 == Coordinate(x: $0.x, y: firstColumn)) ||
-            ($0 == Coordinate(x: $0.x, y: lastColumn))
+            ($0 == Coordinate(x: $0.x, y: lastColumn)) ||
+            $0.y > lastColumn
         }
         drawTexture(structure.bottom, row: lastRow, excluding: excludedLastRows)
 

@@ -25,4 +25,16 @@ public extension PKMapNode {
         let tile = tileNode(at: coordinate)
         return tile?.position
     }
+    
+    func rowCoordinates(_ row: Int) -> [Coordinate] {
+        let tiles = tiles.filter { $0.coordinate.x == row }
+        let coordinates = tiles.map { $0.coordinate }
+        return coordinates
+    }
+    
+    func columnCoordinates(_ column: Int) -> [Coordinate] {
+        let tiles = tiles.filter { $0.coordinate.y == column }
+        let coordinates = tiles.map { $0.coordinate }
+        return coordinates
+    }
 }

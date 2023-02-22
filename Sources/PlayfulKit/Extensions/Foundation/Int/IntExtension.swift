@@ -13,22 +13,4 @@ public extension Int {
         let result = String(format: "%0\(amount)d", self)
         return result
     }
-
-    func rowCoordinates(column: Int) -> [Coordinate] {
-        var coordinates: [Coordinate] = []
-        for index in 0...column {
-            let coordinate = Coordinate(x: self, y: index)
-            coordinates.append(coordinate)
-        }
-        return coordinates.map { $0 }
-    }
-
-    func columnCoordinates(row: Int) -> [Coordinate] {
-        var coordinates: [Coordinate] = []
-        for index in 0...row {
-            let coordinate = Coordinate(x: index, y: self)
-            coordinates.append(coordinate)
-        }
-        return coordinates.map { $0 }
-    }
 }
