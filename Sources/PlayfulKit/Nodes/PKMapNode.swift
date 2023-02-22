@@ -135,7 +135,8 @@ public class PKMapNode: SKNode {
         let excludedFirstColumns = firstColumnCoordinates.filter {
             ($0 == Coordinate(x: firstRow, y: $0.y)) ||
             ($0 == Coordinate(x: lastRow, y: $0.y)) ||
-            $0.x > lastRow
+            $0.x > lastRow ||
+            $0.x < firstRow
         }
         drawTexture(structure.left, column: firstColumn, excluding: excludedFirstColumns)
 
@@ -144,7 +145,8 @@ public class PKMapNode: SKNode {
         let excludedLastColumns = lastColumnCoordinates.filter {
             ($0 == Coordinate(x: firstRow, y: $0.y)) ||
             ($0 == Coordinate(x: lastRow, y: $0.y)) ||
-            $0.x > lastRow
+            $0.x > lastRow ||
+            $0.x < firstRow
         }
         drawTexture(structure.right, column: lastColumn, excluding: excludedLastColumns)
 
@@ -153,7 +155,8 @@ public class PKMapNode: SKNode {
         let excludedFirstRows = firstRowCoordinates.filter {
             ($0 == Coordinate(x: $0.x, y: firstColumn)) ||
             ($0 == Coordinate(x: $0.x, y: lastColumn)) ||
-            $0.y > lastColumn
+            $0.y > lastColumn ||
+            $0.y < firstColumn
         }
         drawTexture(structure.top, row: firstRow, excluding: excludedFirstRows)
 
@@ -162,7 +165,8 @@ public class PKMapNode: SKNode {
         let excludedLastRows = lastRowCoordinates.filter {
             ($0 == Coordinate(x: $0.x, y: firstColumn)) ||
             ($0 == Coordinate(x: $0.x, y: lastColumn)) ||
-            $0.y > lastColumn
+            $0.y > lastColumn ||
+            $0.y < firstColumn
         }
         drawTexture(structure.bottom, row: lastRow, excluding: excludedLastRows)
 
