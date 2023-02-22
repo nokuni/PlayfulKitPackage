@@ -19,17 +19,21 @@ final class PlayfulKitTests: XCTestCase {
     
     func testMap() {
         let mapNode = PKMapNode(origin: CGPoint(x: CGPoint.center.x - 50, y: CGPoint.center.y))
-        mapNode.drawTexture(structure: .init(
-            topLeft: SKTexture(imageNamed: "pinkSquare"),
-            topRight: SKTexture(imageNamed: "orangeSquare"),
-            bottomLeft: SKTexture(imageNamed: "greenSquare"),
-            bottomRight: SKTexture(imageNamed: "purpleSquare"),
-            left: SKTexture(imageNamed: "yellowSquare"),
-            right: SKTexture(imageNamed: "cyanSquare"),
-            top: SKTexture(imageNamed: "dBlueSquare"),
-            bottom: SKTexture(imageNamed: "blueSquare"),
-            middle: SKTexture(imageNamed: "redSquare")), startingCoordinate: Coordinate(x: 1, y: 3), matrix: Matrix(row: 4, column: 6))
-        dump(mapNode.tiles)
+        let object = PKObjectNode()
+        mapNode.addObject(object,
+                          structure: .init(
+                            topLeft: SKTexture(imageNamed: "pinkSquare"),
+                            topRight: SKTexture(imageNamed: "orangeSquare"),
+                            bottomLeft: SKTexture(imageNamed: "greenSquare"),
+                            bottomRight: SKTexture(imageNamed: "purpleSquare"),
+                            left: SKTexture(imageNamed: "yellowSquare"),
+                            right: SKTexture(imageNamed: "cyanSquare"),
+                            top: SKTexture(imageNamed: "dBlueSquare"),
+                            bottom: SKTexture(imageNamed: "blueSquare"),
+                            middle: SKTexture(imageNamed: "redSquare")),
+                          startingCoordinate: Coordinate(x: 1, y: 3),
+                          matrix: Matrix(row: 4, column: 6))
+        dump(mapNode.objects)
     }
     
     func testMapFill() {

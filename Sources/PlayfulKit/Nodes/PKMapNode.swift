@@ -70,10 +70,12 @@ public class PKMapNode: SKNode {
     /// Add a single object at a specific coordinate
     public func addObject(_ object: PKObjectNode, texture: SKTexture, at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
-        object.texture = texture
-        object.coordinate = coordinate
-        object.position = position
-        addChild(object)
+        if let newObject = object.copy() as? PKObjectNode {
+            newObject.texture = texture
+            newObject.coordinate = coordinate
+            newObject.position = position
+            addChild(newObject)
+        }
     }
     
     /// Add a shape of a single object.
