@@ -28,7 +28,7 @@ public extension Coordinate {
         guard let endIndex = endingCoordinate.index else { return [] }
         var coordinates: [Coordinate] = []
         for index in startIndex ..< endIndex {
-            let stringIndex = index.leadingZeros(amount: 2)
+            let stringIndex = index.leadingZeros(amount: 3)
             let coordinate = stringIndex.coordinate
             coordinates.append(coordinate)
         }
