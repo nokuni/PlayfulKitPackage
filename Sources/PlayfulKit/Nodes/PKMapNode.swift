@@ -331,7 +331,7 @@ public class PKMapNode: SKNode {
         let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
         
         let coordinates = Coordinate.coordinates(from: matrix.firstCoordinate,
-                                                 to: endingCoordinate,
+                                                 to: matrix.lastCoordinate,
                                                  in: matrix)
         
         for coordinate in coordinates {
