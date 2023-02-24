@@ -37,13 +37,14 @@ final class PlayfulKitTests: XCTestCase {
     }
     
     func testAddingTextures() {
-        let map = PKMapNode(matrix: Matrix(row: 10, column: 10))
+        let map = PKMapNode(matrix: Matrix(row: 18, column: 30))
         
         map.drawTexture(SKTexture(imageNamed: "redSquare"),
-                        matrix: Matrix(row: 5, column: 5),
-                        startingCoordinate: Coordinate(x: 0, y: 4))
+                        matrix: Matrix(row: 6, column: 6),
+                        startingCoordinate: Coordinate(x: 2, y: 5))
 
-        print(map.tiles.compactMap { $0.texture?.name }.filter { $0 != "MissingResource.png" })
+        let texturesWithoutImages = map.tiles.filter { $0.texture?.name != "MissingResource.png"}
+        print(texturesWithoutImages.map { $0.coordinate })
     }
     
     func testCollisions() {
