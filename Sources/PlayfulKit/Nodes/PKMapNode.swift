@@ -86,9 +86,9 @@ public class PKMapNode: SKNode {
         
         let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
         
-        let coordinates = Coordinate.coordinates(from: matrix.firstCoordinate,
-                                                 to: matrix.lastCoordinate,
-                                                 in: matrix)
+        let coordinates = Coordinate.coordinates(from: self.matrix.firstCoordinate,
+                                                 to: self.matrix.lastCoordinate,
+                                                 in: self.matrix)
         
         for coordinate in coordinates {
             let isIncluding = isIncludingOtherCoordinates(coordinate,
