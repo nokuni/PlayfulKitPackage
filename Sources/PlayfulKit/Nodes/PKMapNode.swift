@@ -337,7 +337,7 @@ public class PKMapNode: SKNode {
         for coordinate in coordinates {
             let isIncluding = isIncludingOtherCoordinates(coordinate,
                                                           startingCoordinate: startingCoordinate,
-                                                          endingCoordinate: endingCoordinate)
+                                                          endingCoordinate: matrix.lastCoordinate)
             if isIncluding {
                 drawTexture(texture, at: coordinate)
             }
