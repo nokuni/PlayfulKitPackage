@@ -220,8 +220,7 @@ public class PKMapNode: SKNode {
     /// Draw textures following a specific structure.
     public func drawTexture(structure: MapStructure,
                             startingCoordinate: Coordinate = Coordinate.zero,
-                            matrix: Matrix,
-                            object: PKObjectNode? = nil) {
+                            matrix: Matrix) {
         
         let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
         
@@ -329,9 +328,9 @@ public class PKMapNode: SKNode {
         
         let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
         
-        let coordinates = Coordinate.coordinates(from: matrix.firstCoordinate,
-                                                 to: endingCoordinate,
-                                                 in: matrix)
+        let coordinates = Coordinate.coordinates(from: self.matrix.firstCoordinate,
+                                                 to: self.matrix.lastCoordinate,
+                                                 in: self.matrix)
         
         for coordinate in coordinates {
             let isIncluding = isIncludingOtherCoordinates(coordinate,

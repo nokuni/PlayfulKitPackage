@@ -17,7 +17,7 @@ public extension Coordinate {
     static var zero: Coordinate { Coordinate(x: 0, y: 0) }
 
     mutating func advance(matrix: Matrix) {
-        if y < matrix.column {
+        if y < matrix.maxY {
             y += 1
         } else {
             y = 0
@@ -34,8 +34,6 @@ public extension Coordinate {
         repeat {
             coordinates.append(currentCoordinate)
             currentCoordinate.advance(matrix: matrix)
-            print(currentCoordinate)
-            print("")
         } while currentCoordinate != endingCoordinate
 
         return coordinates

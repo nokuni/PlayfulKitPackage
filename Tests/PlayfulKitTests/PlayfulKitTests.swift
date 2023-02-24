@@ -36,12 +36,7 @@ final class PlayfulKitTests: XCTestCase {
         dump(mapNode.objects)
     }
     
-    func testMapFill() {
-        var object: PKObjectNode {
-            let object = PKObjectNode(imageNamed: "blueSquare")
-            object.size = map.squareSize
-            return object
-        }
+    func testAddingTextures() {
         let map = PKMapNode(matrix: Matrix(row: 10, column: 10))
         
         map.drawTexture(SKTexture(imageNamed: "redSquare"),
