@@ -10,7 +10,19 @@ import Foundation
 public extension Matrix {
 
     /// The matrix whose row and column are both zero.
-    static var zero: Matrix { return Matrix(row: 0, column: 0) }
+    static var zero: Matrix {
+        Matrix(row: 0, column: 0)
+    }
+
+    /// The last x coordinate.
+    var maxX: Int {
+        row - 1
+    }
+
+    /// The last y coordinate.
+    var maxY: Int {
+        column - 1
+    }
 
     /// The first coordinate on a matrix.
     var firstCoordinate: Coordinate {
@@ -19,13 +31,13 @@ public extension Matrix {
 
     /// The last coordinate on a matrix.
     var lastCoordinate: Coordinate {
-        Coordinate(x: self.row - 1, y: self.column - 1)
+        Coordinate(x: maxX, y: maxY)
     }
 
     func lastCoordinate(from startingCoordinate: Coordinate) -> Coordinate {
-        let x = (self.row + startingCoordinate.x) - 1
-        let y = (self.column + startingCoordinate.y) - 1
-        let lastCoordinate = Coordinate(x: x, y: y)
-        return lastCoordinate
+        let x = (row + startingCoordinate.x) - 1
+        let y = (column + startingCoordinate.y) - 1
+        let coordinate = Coordinate(x: x, y: y)
+        return coordinate
     }
 }

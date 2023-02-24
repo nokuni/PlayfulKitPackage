@@ -18,5 +18,5 @@ public struct Matrix {
     public var row: Int
     public var column: Int
 
-    var product: Int { row * column }
+    public var total: Int { row * column }
 }

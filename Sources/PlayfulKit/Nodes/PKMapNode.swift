@@ -87,7 +87,8 @@ public class PKMapNode: SKNode {
         let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
         
         let coordinates = Coordinate.coordinates(from: matrix.firstCoordinate,
-                                                 to: matrix.lastCoordinate)
+                                                 to: matrix.lastCoordinate,
+                                                 in: matrix)
         
         for coordinate in coordinates {
             let isIncluding = isIncludingOtherCoordinates(coordinate,
@@ -330,7 +331,8 @@ public class PKMapNode: SKNode {
         let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
         
         let coordinates = Coordinate.coordinates(from: matrix.firstCoordinate,
-                                                 to: endingCoordinate)
+                                                 to: endingCoordinate,
+                                                 in: matrix)
         
         for coordinate in coordinates {
             let isIncluding = isIncludingOtherCoordinates(coordinate,
@@ -355,7 +357,7 @@ public class PKMapNode: SKNode {
         return tileNodes
     }
     private func createMap() {
-        var tileNodes = tiles(count: matrix.product)
+        var tileNodes = tiles(count: matrix.total)
         tileNodes.attributeCoordinates(splittedBy: matrix.column)
         assembly.createSpriteCollection(of: tileNodes,
                                         at: origin,

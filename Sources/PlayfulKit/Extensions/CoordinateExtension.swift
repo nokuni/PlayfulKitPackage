@@ -15,23 +15,27 @@ public extension Coordinate {
     }
     /// The coordinate whose x and y are both zero.
     static var zero: Coordinate { Coordinate(x: 0, y: 0) }
-    
-    mutating func advanceX(by amount: Int) {
-        self.x += amount
-    }
-    mutating func advanceY(by amount: Int) {
-        self.y += amount
-    }
-    static func coordinates(from startingCoordinate: Coordinate,
-                            to endingCoordinate: Coordinate) -> [Coordinate] {
-        guard let startIndex = startingCoordinate.index else { return [] }
-        guard let endIndex = endingCoordinate.index else { return [] }
-        var coordinates: [Coordinate] = []
-        for index in startIndex ..< endIndex {
-            let stringIndex = index.leadingZeros(amount: 3)
-            let coordinate = stringIndex.coordinate
-            coordinates.append(coordinate)
+
+    mutating func advance(matrix: Matrix) {
+        if y < matrix.maxY {
+            y += 1
+        } else {
+            y = 0
+            x += 1
         }
+    }
+
+    static func coordinates(from startingCoordinate: Coordinate,
+                            to endingCoordinate: Coordinate,
+                            in matrix: Matrix) -> [Coordinate] {
+        var coordinates: [Coordinate] = []
+        var currentCoordinate = startingCoordinate
+
+        repeat {
+            coordinates.append(currentCoordinate)
+            currentCoordinate.advance(matrix: matrix)
+        } while currentCoordinate != endingCoordinate
+
         return coordinates
     }
 }
