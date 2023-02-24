@@ -42,7 +42,11 @@ final class PlayfulKitTests: XCTestCase {
             object.size = map.squareSize
             return object
         }
-        let map = PKMapNode()
+        let map = PKMapNode(matrix: Matrix(row: 18, column: 30))
+        map.drawTexture(SKTexture(imageNamed: "redSquare"),
+                        matrix: Matrix(row: 14, column: 30),
+                        startingCoordinate: Coordinate.zero)
+        print(map.tiles.map { $0.coordinate })
         //        map.addObject(object,
         //                      startingCoordinate: Coordinate.zero,
         //                      endingCoordinate: Coordinate(x: 0, y: 5)
