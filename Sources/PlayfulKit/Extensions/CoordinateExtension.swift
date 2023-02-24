@@ -17,7 +17,7 @@ public extension Coordinate {
     static var zero: Coordinate { Coordinate(x: 0, y: 0) }
 
     mutating func advance(matrix: Matrix) {
-        if y < matrix.maxY {
+        if y <= matrix.maxY {
             y += 1
         } else {
             y = 0
