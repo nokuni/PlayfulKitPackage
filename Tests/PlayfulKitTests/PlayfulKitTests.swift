@@ -42,19 +42,16 @@ final class PlayfulKitTests: XCTestCase {
             object.size = map.squareSize
             return object
         }
-        let map = PKMapNode(matrix: Matrix(row: 18, column: 30))
+        let map = PKMapNode(matrix: Matrix(row: 10, column: 10))
+        
         map.drawTexture(SKTexture(imageNamed: "redSquare"),
-                        matrix: Matrix(row: 14, column: 30),
-                        startingCoordinate: Coordinate.zero)
-        print(map.tiles.map { $0.coordinate })
-        //        map.addObject(object,
-        //                      startingCoordinate: Coordinate.zero,
-        //                      endingCoordinate: Coordinate(x: 0, y: 5)
-        //        )
-        //        print(map.objects.map { $0.coordinate })
+                        matrix: Matrix(row: 5, column: 5),
+                        startingCoordinate: Coordinate(x: 0, y: 4))
+
+        print(map.tiles.compactMap { $0.texture?.name }.filter { $0 != "MissingResource.png" })
     }
     
-    func testBitMasks() {
+    func testCollisions() {
         let bitMasks: [CollisionCategory] = [.object, .structure] // 0x1 << 4 and 0x1 << 5
         let bitMaskValue = bitMasks.withXOROperators() // (0x1 << 4 | 0x1 << 5) = 48
         let result: UInt32 = 48

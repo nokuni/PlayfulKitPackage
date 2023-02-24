@@ -174,7 +174,6 @@ public class PKMapNode: SKNode {
                   texture: structure.bottomRight,
                   at: bottomRightCornerCoordinate)
         
-        
         // Fill first column
         let firstColumnCoordinates = columnCoordinates(firstColumn)
         let excludedFirstColumns = firstColumnCoordinates.filter {
@@ -328,11 +327,11 @@ public class PKMapNode: SKNode {
                             matrix: Matrix,
                             startingCoordinate: Coordinate) {
         
-        let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
+        //let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
         
-        let coordinates = Coordinate.coordinates(from: matrix.firstCoordinate,
-                                                 to: matrix.lastCoordinate,
-                                                 in: matrix)
+        let coordinates = Coordinate.coordinates(from: self.matrix.firstCoordinate,
+                                                 to: self.matrix.lastCoordinate,
+                                                 in: self.matrix)
         
         for coordinate in coordinates {
             let isIncluding = isIncludingOtherCoordinates(coordinate,
