@@ -327,11 +327,11 @@ public class PKMapNode: SKNode {
                             matrix: Matrix,
                             startingCoordinate: Coordinate) {
         
-        //let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
+        let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
         
-        let coordinates = Coordinate.coordinates(from: self.matrix.firstCoordinate,
-                                                 to: self.matrix.lastCoordinate,
-                                                 in: self.matrix)
+        let coordinates = Coordinate.coordinates(from: matrix.firstCoordinate,
+                                                 to: endingCoordinate,
+                                                 in: matrix)
         
         for coordinate in coordinates {
             let isIncluding = isIncludingOtherCoordinates(coordinate,
