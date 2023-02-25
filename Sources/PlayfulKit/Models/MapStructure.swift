@@ -9,7 +9,8 @@ import SpriteKit
 
 /// A quadrilateral structure of textures
 public struct MapStructure {
-    public init(topLeft: SKTexture,
+    public init(name: String? = nil,
+                topLeft: SKTexture,
                 topRight: SKTexture,
                 bottomLeft: SKTexture,
                 bottomRight: SKTexture,
@@ -18,6 +19,7 @@ public struct MapStructure {
                 top: SKTexture,
                 bottom: SKTexture,
                 middle: SKTexture) {
+        self.name = name
         self.topLeft = topLeft
         self.topRight = topRight
         self.bottomLeft = bottomLeft
@@ -29,6 +31,7 @@ public struct MapStructure {
         self.middle = middle
     }
     
+    public var name: String?
     public var topLeft: SKTexture
     public var topRight: SKTexture
     public var bottomLeft: SKTexture

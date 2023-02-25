@@ -47,7 +47,7 @@ public class PKMapNode: SKNode {
     }
     
     /// Add objects over specific coordinates.
-    public func addObject(_ object: PKObjectNode,
+    /*public func addObject(_ object: PKObjectNode,
                           texture: SKTexture,
                           matrix: Matrix,
                           startingCoordinate: Coordinate) {
@@ -68,7 +68,7 @@ public class PKMapNode: SKNode {
                 }
             }
         }
-    }
+    }*/
     
     /// Add objects over a specific row.
     public func addObject(_ object: PKObjectNode,
@@ -88,9 +88,9 @@ public class PKMapNode: SKNode {
     
     /// Add objects over a specific column.
     public func addObject(_ object: PKObjectNode,
-                            texture: SKTexture,
-                            column: Int,
-                            excluding rows: [Coordinate] = []) {
+                          texture: SKTexture,
+                          column: Int,
+                          excluding rows: [Coordinate] = []) {
         let tilesOnColumn = self.tiles.filter {
             ($0.coordinate.y == column) && !rows.contains($0.coordinate)
         }
@@ -103,7 +103,7 @@ public class PKMapNode: SKNode {
     }
     
     /// Add objects following a specific textured structure.
-    public func addObject(_ object: PKObjectNode,
+    /*public func addObject(_ object: PKObjectNode,
                           structure: MapStructure,
                           startingCoordinate: Coordinate = Coordinate.zero,
                           matrix: Matrix) {
@@ -181,6 +181,31 @@ public class PKMapNode: SKNode {
             $0.y < firstColumn
         }
         addObject(object, texture: structure.bottom, row: lastRow, excluding: excludedLastRows)
+    }*/
+    
+    /// Add object with multiples textures over specific coordinates
+    public func addMultipleTexturedObject(_ object: PKObjectNode,
+                                          textures: [SKTexture],
+                                          matrix: Matrix,
+                                          startingCoordinate: Coordinate) {
+        
+        let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
+        
+        let coordinates = Coordinate.coordinates(from: self.matrix.firstCoordinate,
+                                                 to: self.matrix.lastCoordinate,
+                                                 in: self.matrix)
+        
+        let shapedCoordinates = coordinates.filter {
+            isIncludingOtherCoordinates($0,
+                                        startingCoordinate: startingCoordinate,
+                                        endingCoordinate: endingCoordinate)
+        }
+        
+        guard shapedCoordinates.count == textures.count else { return }
+        
+        for index in shapedCoordinates.indices {
+            addObject(object, texture: textures[index], at: shapedCoordinates[index])
+        }
     }
     
     // MARK: - TEXTURES
@@ -307,6 +332,30 @@ public class PKMapNode: SKNode {
             if isIncluding {
                 drawTexture(texture, at: coordinate)
             }
+        }
+    }
+    
+    /// Draw multiple textures over specific coordinates
+    public func drawMultipleTextures(_ textures: [SKTexture],
+                                     matrix: Matrix,
+                                     startingCoordinate: Coordinate) {
+        
+        let endingCoordinate = matrix.lastCoordinate(from: startingCoordinate)
+        
+        let coordinates = Coordinate.coordinates(from: self.matrix.firstCoordinate,
+                                                 to: self.matrix.lastCoordinate,
+                                                 in: self.matrix)
+        
+        let shapedCoordinates = coordinates.filter {
+            isIncludingOtherCoordinates($0,
+                                        startingCoordinate: startingCoordinate,
+                                        endingCoordinate: endingCoordinate)
+        }
+        
+        guard shapedCoordinates.count == textures.count else { return }
+        
+        for index in shapedCoordinates.indices {
+            drawTexture(textures[index], at: shapedCoordinates[index])
         }
     }
     
