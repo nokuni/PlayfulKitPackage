@@ -71,6 +71,7 @@ public class PKMapNode: SKNode {
     public func addObject(_ object: PKObjectNode, texture: SKTexture, at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
         if let newObject = object.copy() as? PKObjectNode {
+            newObject.size = squareSize
             newObject.texture = texture
             newObject.coordinate = coordinate
             newObject.position = position
