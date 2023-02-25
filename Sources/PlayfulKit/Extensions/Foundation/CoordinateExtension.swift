@@ -8,15 +8,11 @@
 import Foundation
 
 public extension Coordinate {
-    var index: Int? {
-        let string = "\(x)\(y)"
-        let result = Int(string)
-        return result
-    }
+    
     /// The coordinate whose x and y are both zero.
     static var zero: Coordinate { Coordinate(x: 0, y: 0) }
 
-    mutating func advance(matrix: Matrix) {
+    private mutating func advance(matrix: Matrix) {
         if y < matrix.maxY {
             y += 1
         } else {
@@ -25,6 +21,7 @@ public extension Coordinate {
         }
     }
 
+    /// Returns the coordinates from a starting point to an ending point in a a specific matrix.
     static func coordinates(from startingCoordinate: Coordinate,
                             to endingCoordinate: Coordinate,
                             in matrix: Matrix) -> [Coordinate] {

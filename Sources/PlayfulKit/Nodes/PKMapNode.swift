@@ -32,39 +32,6 @@ public class PKMapNode: SKNode {
     
     private let assembly = AssemblyManager()
     
-    /// A quadrilateral tile structure.
-    public struct MapStructure {
-        public init(topLeft: SKTexture,
-                    topRight: SKTexture,
-                    bottomLeft: SKTexture,
-                    bottomRight: SKTexture,
-                    left: SKTexture,
-                    right: SKTexture,
-                    top: SKTexture,
-                    bottom: SKTexture,
-                    middle: SKTexture) {
-            self.topLeft = topLeft
-            self.topRight = topRight
-            self.bottomLeft = bottomLeft
-            self.bottomRight = bottomRight
-            self.left = left
-            self.right = right
-            self.top = top
-            self.bottom = bottom
-            self.middle = middle
-        }
-        
-        public var topLeft: SKTexture
-        public var topRight: SKTexture
-        public var bottomLeft: SKTexture
-        public var bottomRight: SKTexture
-        public var left: SKTexture
-        public var right: SKTexture
-        public var top: SKTexture
-        public var bottom: SKTexture
-        public var middle: SKTexture
-    }
-    
     // MARK: - OBJECTS
     
     /// Add a single object at a specific coordinate
@@ -79,7 +46,7 @@ public class PKMapNode: SKNode {
         }
     }
     
-    /// Add a shape of a single object.
+    /// Add objects over specific coordinates.
     public func addObject(_ object: PKObjectNode,
                           texture: SKTexture,
                           matrix: Matrix,
@@ -103,7 +70,7 @@ public class PKMapNode: SKNode {
         }
     }
     
-    /// Add objects in a specific row.
+    /// Add objects over a specific row.
     public func addObject(_ object: PKObjectNode,
                           texture: SKTexture,
                           row: Int,
@@ -119,7 +86,7 @@ public class PKMapNode: SKNode {
         }
     }
     
-    /// Add objects in a specific column.
+    /// Add objects over a specific column.
     public func addObject(_ object: PKObjectNode,
                             texture: SKTexture,
                             column: Int,
@@ -135,7 +102,7 @@ public class PKMapNode: SKNode {
         }
     }
     
-    /// Add a shape of a single object.
+    /// Add objects following a specific textured structure.
     public func addObject(_ object: PKObjectNode,
                           structure: MapStructure,
                           startingCoordinate: Coordinate = Coordinate.zero,
@@ -300,7 +267,7 @@ public class PKMapNode: SKNode {
         drawTexture(texture, on: tiles)
     }
     
-    /// Draw a single texture on all tiles in a specific row.
+    /// Draw a single texture over a specific row.
     public func drawTexture(_ texture: SKTexture, row: Int, excluding columns: [Coordinate] = []) {
         let tilesOnRow = self.tiles.filter {
             $0.coordinate.x == row && !columns.contains($0.coordinate)
@@ -308,7 +275,7 @@ public class PKMapNode: SKNode {
         drawTexture(texture, on: tilesOnRow)
     }
     
-    /// Draw a single texture on all tiles in a specific column.
+    /// Draw a single texture over a specific column.
     public func drawTexture(_ texture: SKTexture, column: Int, excluding rows: [Coordinate] = []) {
         let tilesOnColumn = self.tiles.filter {
             ($0.coordinate.y == column) && !rows.contains($0.coordinate)
@@ -322,7 +289,7 @@ public class PKMapNode: SKNode {
         tileNode?.texture = texture
     }
     
-    /// Draw a shape of a single texture.
+    /// Draw a single texture over specific coordinates.
     public func drawTexture(_ texture: SKTexture,
                             matrix: Matrix,
                             startingCoordinate: Coordinate) {

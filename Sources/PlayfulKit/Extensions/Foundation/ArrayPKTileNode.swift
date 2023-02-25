@@ -10,7 +10,7 @@ import Utility_Toolbox
 
 public extension Array where Element: PKTileNode {
 
-    /// Attributes coordinates to a PKTileNode array.
+    /// Attributes coordinates to PKTileNode elements.
     mutating func attributeCoordinates(splittedBy columns: Int) {
         var coordinate = Coordinate.zero
         let splittedTiles = self.splitted(into: columns)

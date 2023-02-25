@@ -6,6 +6,7 @@
 //
 
 import SpriteKit
+import Utility_Toolbox
 
 /// A writing text node.
 public class PKTypewriterNode: SKLabelNode {
@@ -55,16 +56,16 @@ public class PKTypewriterNode: SKLabelNode {
         preferredMaxLayoutWidth = container.frame.width - (parameter.padding * 2)
         horizontalAlignmentMode = .left
         verticalAlignmentMode = .top
-        position = container.corner(corner: .topLeft, node: self, padding: parameter.padding, hasAlignment: true)
+        position = container.cornerPosition(corner: .topLeft, node: self, padding: parameter.padding, hasAlignment: parameter.hasAlignment)
     }
     
-    private func isWriting() -> Bool {
+    private var isWriting: Bool {
         currentCharacterIndex < parameter.content.count
     }
     
     private func updateText() {
         switch true {
-        case isWriting():
+        case isWriting:
             currentCharacterIndex += 1
             let currentText = String(parameter.content.prefix(currentCharacterIndex))
             var newParameter = parameter

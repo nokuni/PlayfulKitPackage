@@ -16,6 +16,7 @@ public class TextManager {
                     fontColor: UIColor = .white,
                     strokeWidth: CGFloat = 0,
                     strokeColor: UIColor = .clear,
+                    hasAlignment: Bool = true,
                     lineSpacing: CGFloat = 5,
                     padding: CGFloat = 0) {
             self.content = content
@@ -24,6 +25,7 @@ public class TextManager {
             self.fontColor = fontColor
             self.strokeWidth = strokeWidth
             self.strokeColor = strokeColor
+            self.hasAlignment = hasAlignment
             self.lineSpacing = lineSpacing
             self.padding = padding
         }
@@ -33,6 +35,7 @@ public class TextManager {
         var fontColor: UIColor
         var strokeWidth: CGFloat
         var strokeColor: UIColor
+        var hasAlignment: Bool
         var lineSpacing: CGFloat
         var padding: CGFloat
     }

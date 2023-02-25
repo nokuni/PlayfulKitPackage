@@ -24,14 +24,14 @@ public class PKObjectNode: SKSpriteNode {
     
     // MARK: - ANIMATIONS
 
-    /// Add images to an object animation state.
+    /// Add frames on an animation state.
     public func addFrames(_ frames: [String], on state: ObjectAnimation.State) {
         if let index = animationIndex(from: state) {
             animations[index].frames = frames
         }
     }
 
-    /// Get the action animation from an object animation state.
+    /// Get the action animation from an animation state.
     public func animatedAction(with state: ObjectAnimation.State,
                                filteringMode: SKTextureFilteringMode = .linear,
                                timeInterval: TimeInterval = 0.05,
@@ -71,6 +71,7 @@ public class PKObjectNode: SKSpriteNode {
                         filteringMode: SKTextureFilteringMode = .linear,
                         timeInterval: TimeInterval = 0.05) {
         guard isAnimated else { return removeFromParent() }
+        guard animation(from: .deletion) != nil else { return }
         let sequence = SKAction.sequence([
             animatedAction(with: .deletion,
                            filteringMode: filteringMode,
@@ -84,6 +85,8 @@ public class PKObjectNode: SKSpriteNode {
     public func hitAndDestroy(filteringMode: SKTextureFilteringMode = .linear,
                               hitTimeInterval: TimeInterval = 0.05,
                               deathTimeInterval: TimeInterval = 0.05) {
+        guard animation(from: .hit) != nil else { return }
+        guard animation(from: .deletion) != nil else { return }
         let sequence = SKAction.sequence([
             animatedAction(with: .hit,
                            filteringMode: filteringMode,
