@@ -6,12 +6,13 @@
 //
 
 import SpriteKit
+import Utility_Toolbox
 
 public class TextManager {
     
     public struct Paramater {
         public init(content: String,
-                    fontName: String? = UIFont.randomSystemFontName,
+                    fontName: String? = UIFont.firstSystemFontName,
                     fontSize: CGFloat = 16,
                     fontColor: UIColor = .white,
                     strokeWidth: CGFloat = 0,
