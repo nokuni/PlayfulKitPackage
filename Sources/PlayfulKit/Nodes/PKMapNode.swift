@@ -35,11 +35,15 @@ public class PKMapNode: SKNode {
     // MARK: - OBJECTS
     
     /// Add a single object at a specific coordinate
-    public func addObject(_ object: PKObjectNode, texture: SKTexture, at coordinate: Coordinate) {
+    public func addObject(_ object: PKObjectNode,
+                          image: String,
+                          filteringMode: SKTextureFilteringMode = .linear,
+                          at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
         if let newObject = object.copy() as? PKObjectNode {
             newObject.size = squareSize
-            newObject.texture = texture
+            newObject.texture = SKTexture(imageNamed: image)
+            newObject.texture?.filteringMode = filteringMode
             newObject.coordinate = coordinate
             newObject.position = position
             addChild(newObject)
@@ -48,7 +52,8 @@ public class PKMapNode: SKNode {
     
     /// Add objects over specific coordinates.
     public func addObject(_ object: PKObjectNode,
-                          texture: SKTexture,
+                          image: String,
+                          filteringMode: SKTextureFilteringMode = .linear,
                           matrix: Matrix,
                           startingCoordinate: Coordinate) {
         
@@ -64,7 +69,10 @@ public class PKMapNode: SKNode {
                                                           endingCoordinate: endingCoordinate)
             if isIncluding {
                 if let newObject = object.copy() as? PKObjectNode {
-                    addObject(newObject, texture: texture, at: coordinate)
+                    addObject(newObject,
+                              image: image,
+                              filteringMode: filteringMode,
+                              at: coordinate)
                 }
             }
         }
@@ -72,7 +80,8 @@ public class PKMapNode: SKNode {
     
     /// Add objects over a specific row.
     public func addObject(_ object: PKObjectNode,
-                          texture: SKTexture,
+                          image: String,
+                          filteringMode: SKTextureFilteringMode = .linear,
                           row: Int,
                           excluding columns: [Coordinate] = []) {
         let tilesOnRow = self.tiles.filter {
@@ -81,14 +90,18 @@ public class PKMapNode: SKNode {
         let coordinates = tilesOnRow.map { $0.coordinate }
         for coordinate in coordinates {
             if let newObject = object.copy() as? PKObjectNode {
-                addObject(newObject, texture: texture, at: coordinate)
+                addObject(newObject,
+                          image: image,
+                          filteringMode: filteringMode,
+                          at: coordinate)
             }
         }
     }
     
     /// Add objects over a specific column.
     public func addObject(_ object: PKObjectNode,
-                          texture: SKTexture,
+                          image: String,
+                          filteringMode: SKTextureFilteringMode = .linear,
                           column: Int,
                           excluding rows: [Coordinate] = []) {
         let tilesOnColumn = self.tiles.filter {
@@ -97,7 +110,10 @@ public class PKMapNode: SKNode {
         let coordinates = tilesOnColumn.map { $0.coordinate }
         for coordinate in coordinates {
             if let newObject = object.copy() as? PKObjectNode {
-                addObject(newObject, texture: texture, at: coordinate)
+                addObject(newObject,
+                          image: image,
+                          filteringMode: filteringMode,
+                          at: coordinate)
             }
         }
     }
@@ -105,6 +121,7 @@ public class PKMapNode: SKNode {
     /// Add objects following a specific textured structure.
     public func addObject(_ object: PKObjectNode,
                           structure: MapStructure,
+                          filteringMode: SKTextureFilteringMode = .linear,
                           startingCoordinate: Coordinate = Coordinate.zero,
                           matrix: Matrix) {
         
@@ -118,7 +135,8 @@ public class PKMapNode: SKNode {
         
         // Fill all area with object with middle texture first
         addObject(object,
-                  texture: structure.middle,
+                  image: structure.middle,
+                  filteringMode: filteringMode,
                   matrix: matrix,
                   startingCoordinate: startingCoordinate
         )
@@ -130,16 +148,20 @@ public class PKMapNode: SKNode {
         
         // Fill corners
         addObject(object,
-                  texture: structure.topLeft,
+                  image: structure.topLeft,
+                  filteringMode: filteringMode,
                   at: topLeftCornerCoordinate)
         addObject(object,
-                  texture: structure.topRight,
+                  image: structure.topRight,
+                  filteringMode: filteringMode,
                   at: topRightCornerCoordinate)
         addObject(object,
-                  texture: structure.bottomLeft,
+                  image: structure.bottomLeft,
+                  filteringMode: filteringMode,
                   at: bottomLeftCornerCoordinate)
         addObject(object,
-                  texture: structure.bottomRight,
+                  image: structure.bottomRight,
+                  filteringMode: filteringMode,
                   at: bottomRightCornerCoordinate)
         
         // Fill first column
@@ -150,7 +172,11 @@ public class PKMapNode: SKNode {
             $0.x > lastRow ||
             $0.x < firstRow
         }
-        addObject(object, texture: structure.left, column: firstColumn, excluding: excludedFirstColumns)
+        addObject(object,
+                  image: structure.left,
+                  filteringMode: filteringMode,
+                  column: firstColumn,
+                  excluding: excludedFirstColumns)
         
         // Fill last column
         let lastColumnCoordinates = columnCoordinates(lastColumn)
@@ -160,7 +186,11 @@ public class PKMapNode: SKNode {
             $0.x > lastRow ||
             $0.x < firstRow
         }
-        addObject(object, texture: structure.right, column: lastColumn, excluding: excludedLastColumns)
+        addObject(object,
+                  image: structure.right,
+                  filteringMode: filteringMode,
+                  column: lastColumn,
+                  excluding: excludedLastColumns)
         
         // Fill first row
         let firstRowCoordinates = rowCoordinates(firstRow)
@@ -170,7 +200,11 @@ public class PKMapNode: SKNode {
             $0.y > lastColumn ||
             $0.y < firstColumn
         }
-        addObject(object, texture: structure.top, row: firstRow, excluding: excludedFirstRows)
+        addObject(object,
+                  image: structure.top,
+                  filteringMode: filteringMode,
+                  row: firstRow,
+                  excluding: excludedFirstRows)
         
         // Fill last row
         let lastRowCoordinates = rowCoordinates(lastRow)
@@ -180,12 +214,17 @@ public class PKMapNode: SKNode {
             $0.y > lastColumn ||
             $0.y < firstColumn
         }
-        addObject(object, texture: structure.bottom, row: lastRow, excluding: excludedLastRows)
+        addObject(object,
+                  image: structure.bottom,
+                  filteringMode: filteringMode,
+                  row: lastRow,
+                  excluding: excludedLastRows)
     }
     
     /// Add object with multiples textures over specific coordinates
     public func addMultipleTexturedObject(_ object: PKObjectNode,
-                                          textures: [SKTexture],
+                                          images: [String],
+                                          filteringMode: SKTextureFilteringMode = .linear,
                                           matrix: Matrix,
                                           startingCoordinate: Coordinate) {
         
@@ -201,10 +240,13 @@ public class PKMapNode: SKNode {
                                         endingCoordinate: endingCoordinate)
         }
         
-        guard shapedCoordinates.count == textures.count else { return }
+        guard shapedCoordinates.count == images.count else { return }
         
         for index in shapedCoordinates.indices {
-            addObject(object, texture: textures[index], at: shapedCoordinates[index])
+            addObject(object,
+                      image: images[index],
+                      filteringMode: filteringMode,
+                      at: shapedCoordinates[index])
         }
     }
     
@@ -212,6 +254,7 @@ public class PKMapNode: SKNode {
     
     /// Draw textures following a specific structure.
     public func drawTexture(structure: MapStructure,
+                            filteringMode: SKTextureFilteringMode = .linear,
                             startingCoordinate: Coordinate = Coordinate.zero,
                             matrix: Matrix) {
         
@@ -225,6 +268,7 @@ public class PKMapNode: SKNode {
         
         // Fill all area with middle texture first
         drawTexture(structure.middle,
+                    filteringMode: filteringMode,
                     matrix: matrix,
                     startingCoordinate: startingCoordinate
         )
@@ -236,12 +280,16 @@ public class PKMapNode: SKNode {
         
         // Fill corners
         drawTexture(structure.topLeft,
+                    filteringMode: filteringMode,
                     at: topLeftCornerCoordinate)
         drawTexture(structure.topRight,
+                    filteringMode: filteringMode,
                     at: topRightCornerCoordinate)
         drawTexture(structure.bottomLeft,
+                    filteringMode: filteringMode,
                     at: bottomLeftCornerCoordinate)
         drawTexture(structure.bottomRight,
+                    filteringMode: filteringMode,
                     at: bottomRightCornerCoordinate)
         
         
@@ -253,7 +301,7 @@ public class PKMapNode: SKNode {
             $0.x > lastRow ||
             $0.x < firstRow
         }
-        drawTexture(structure.left, column: firstColumn, excluding: excludedFirstColumns)
+        drawTexture(structure.left, filteringMode: filteringMode, column: firstColumn, excluding: excludedFirstColumns)
         
         // Fill last column
         let lastColumnCoordinates = columnCoordinates(lastColumn)
@@ -263,7 +311,7 @@ public class PKMapNode: SKNode {
             $0.x > lastRow ||
             $0.x < firstRow
         }
-        drawTexture(structure.right, column: lastColumn, excluding: excludedLastColumns)
+        drawTexture(structure.right, filteringMode: filteringMode, column: lastColumn, excluding: excludedLastColumns)
         
         // Fill first row
         let firstRowCoordinates = rowCoordinates(firstRow)
@@ -273,7 +321,7 @@ public class PKMapNode: SKNode {
             $0.y > lastColumn ||
             $0.y < firstColumn
         }
-        drawTexture(structure.top, row: firstRow, excluding: excludedFirstRows)
+        drawTexture(structure.top, filteringMode: filteringMode, row: firstRow, excluding: excludedFirstRows)
         
         // Fill last row
         let lastRowCoordinates = rowCoordinates(lastRow)
@@ -283,39 +331,47 @@ public class PKMapNode: SKNode {
             $0.y > lastColumn ||
             $0.y < firstColumn
         }
-        drawTexture(structure.bottom, row: lastRow, excluding: excludedLastRows)
+        drawTexture(structure.bottom, filteringMode: filteringMode, row: lastRow, excluding: excludedLastRows)
         
     }
     
     /// Draw a single texture on all tiles.
-    public func drawTexture(_ texture: SKTexture) {
-        drawTexture(texture, on: tiles)
+    public func drawTexture(_ image: String, filteringMode: SKTextureFilteringMode = .linear) {
+        drawTexture(image, filteringMode: filteringMode, on: tiles)
     }
     
     /// Draw a single texture over a specific row.
-    public func drawTexture(_ texture: SKTexture, row: Int, excluding columns: [Coordinate] = []) {
+    public func drawTexture(_ image: String,
+                            filteringMode: SKTextureFilteringMode = .linear,
+                            row: Int,
+                            excluding columns: [Coordinate] = []) {
         let tilesOnRow = self.tiles.filter {
             $0.coordinate.x == row && !columns.contains($0.coordinate)
         }
-        drawTexture(texture, on: tilesOnRow)
+        drawTexture(image, filteringMode: filteringMode, on: tilesOnRow)
     }
     
     /// Draw a single texture over a specific column.
-    public func drawTexture(_ texture: SKTexture, column: Int, excluding rows: [Coordinate] = []) {
+    public func drawTexture(_ image: String,
+                            filteringMode: SKTextureFilteringMode = .linear,
+                            column: Int,
+                            excluding rows: [Coordinate] = []) {
         let tilesOnColumn = self.tiles.filter {
             ($0.coordinate.y == column) && !rows.contains($0.coordinate)
         }
-        drawTexture(texture, on: tilesOnColumn)
+        drawTexture(image, filteringMode: filteringMode, on: tilesOnColumn)
     }
     
     /// Draw a single texture on one tile at a specific coordinate.
-    public func drawTexture(_ texture: SKTexture, at coordinate: Coordinate) {
+    public func drawTexture(_ image: String, filteringMode: SKTextureFilteringMode = .linear, at coordinate: Coordinate) {
         let tileNode = self.tiles.tile(at: coordinate)
-        tileNode?.texture = texture
+        tileNode?.texture = SKTexture(imageNamed: image)
+        tileNode?.texture?.filteringMode = filteringMode
     }
     
     /// Draw a single texture over specific coordinates.
-    public func drawTexture(_ texture: SKTexture,
+    public func drawTexture(_ image: String,
+                            filteringMode: SKTextureFilteringMode = .linear,
                             matrix: Matrix,
                             startingCoordinate: Coordinate) {
         
@@ -330,13 +386,14 @@ public class PKMapNode: SKNode {
                                                           startingCoordinate: startingCoordinate,
                                                           endingCoordinate: endingCoordinate)
             if isIncluding {
-                drawTexture(texture, at: coordinate)
+                drawTexture(image, filteringMode: filteringMode, at: coordinate)
             }
         }
     }
     
     /// Draw multiple textures over specific coordinates
-    public func drawMultipleTextures(_ textures: [SKTexture],
+    public func drawMultipleTextures(_ images: [String],
+                                     filteringMode: SKTextureFilteringMode = .linear,
                                      matrix: Matrix,
                                      startingCoordinate: Coordinate) {
         
@@ -352,10 +409,10 @@ public class PKMapNode: SKNode {
                                         endingCoordinate: endingCoordinate)
         }
         
-        guard shapedCoordinates.count == textures.count else { return }
+        guard shapedCoordinates.count == images.count else { return }
         
         for index in shapedCoordinates.indices {
-            drawTexture(textures[index], at: shapedCoordinates[index])
+            drawTexture(images[index], filteringMode: filteringMode, at: shapedCoordinates[index])
         }
     }
     
@@ -379,8 +436,13 @@ public class PKMapNode: SKNode {
                                         in: self,
                                         parameter: .init(columns: matrix.column))
     }
-    private func drawTexture(_ texture: SKTexture, on tiles: [PKTileNode]) {
-        tiles.forEach { $0.texture = texture }
+    private func drawTexture(_ image: String,
+                             filteringMode: SKTextureFilteringMode = .linear,
+                             on tiles: [PKTileNode]) {
+        tiles.forEach {
+            $0.texture = SKTexture(imageNamed: image)
+            $0.texture?.filteringMode = filteringMode
+        }
     }
     private func isIncludingOtherCoordinates(_ coordinate: Coordinate,
                                              startingCoordinate: Coordinate,

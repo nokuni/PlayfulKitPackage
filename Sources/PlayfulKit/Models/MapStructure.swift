@@ -8,17 +8,17 @@
 import SpriteKit
 
 /// A quadrilateral structure of textures
-public struct MapStructure {
+public struct MapStructure: Codable {
     public init(name: String? = nil,
-                topLeft: SKTexture,
-                topRight: SKTexture,
-                bottomLeft: SKTexture,
-                bottomRight: SKTexture,
-                left: SKTexture,
-                right: SKTexture,
-                top: SKTexture,
-                bottom: SKTexture,
-                middle: SKTexture) {
+                topLeft: String,
+                topRight: String,
+                bottomLeft: String,
+                bottomRight: String,
+                left: String,
+                right: String,
+                top: String,
+                bottom: String,
+                middle: String) {
         self.name = name
         self.topLeft = topLeft
         self.topRight = topRight
@@ -32,13 +32,13 @@ public struct MapStructure {
     }
     
     public var name: String?
-    public var topLeft: SKTexture
-    public var topRight: SKTexture
-    public var bottomLeft: SKTexture
-    public var bottomRight: SKTexture
-    public var left: SKTexture
-    public var right: SKTexture
-    public var top: SKTexture
-    public var bottom: SKTexture
-    public var middle: SKTexture
+    public var topLeft: String
+    public var topRight: String
+    public var bottomLeft: String
+    public var bottomRight: String
+    public var left: String
+    public var right: String
+    public var top: String
+    public var bottom: String
+    public var middle: String
 }
