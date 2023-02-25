@@ -47,7 +47,7 @@ public class PKMapNode: SKNode {
     }
     
     /// Add objects over specific coordinates.
-    /*public func addObject(_ object: PKObjectNode,
+    public func addObject(_ object: PKObjectNode,
                           texture: SKTexture,
                           matrix: Matrix,
                           startingCoordinate: Coordinate) {
@@ -68,7 +68,7 @@ public class PKMapNode: SKNode {
                 }
             }
         }
-    }*/
+    }
     
     /// Add objects over a specific row.
     public func addObject(_ object: PKObjectNode,
@@ -103,7 +103,7 @@ public class PKMapNode: SKNode {
     }
     
     /// Add objects following a specific textured structure.
-    /*public func addObject(_ object: PKObjectNode,
+    public func addObject(_ object: PKObjectNode,
                           structure: MapStructure,
                           startingCoordinate: Coordinate = Coordinate.zero,
                           matrix: Matrix) {
@@ -181,7 +181,7 @@ public class PKMapNode: SKNode {
             $0.y < firstColumn
         }
         addObject(object, texture: structure.bottom, row: lastRow, excluding: excludedLastRows)
-    }*/
+    }
     
     /// Add object with multiples textures over specific coordinates
     public func addMultipleTexturedObject(_ object: PKObjectNode,
