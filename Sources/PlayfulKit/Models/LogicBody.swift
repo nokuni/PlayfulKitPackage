@@ -8,6 +8,9 @@
 import Foundation
 
 /// The logic of an object.
-public struct LogicBody: Codable {
+public struct LogicBody {
+    public var health: Int = 1
+    public var healthLost: Int = 0
+    public var damage: Int = 0
     public var isDestructible: Bool = false
 }
