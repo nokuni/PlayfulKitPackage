@@ -9,7 +9,7 @@ import SpriteKit
 
 /// An object node.
 public class PKObjectNode: SKSpriteNode {
-    public var logic = LogicBody()
+    //public var logic = LogicBody(health: 1, damage: 0, isDestructible: false)
     public var coordinate = Coordinate.zero
     
     private var animations: [ObjectAnimation] = []
