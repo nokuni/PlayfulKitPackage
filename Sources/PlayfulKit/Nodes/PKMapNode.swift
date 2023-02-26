@@ -35,6 +35,20 @@ public class PKMapNode: SKNode {
     // MARK: - OBJECTS
     
     /// Add a single object at a specific coordinate
+    public func addUniqueObject(_ object: PKObjectNode,
+                                image: String,
+                                filteringMode: SKTextureFilteringMode = .linear,
+                                at coordinate: Coordinate) {
+        guard let position = tilePosition(from: coordinate) else { return }
+        object.size = squareSize
+        object.texture = SKTexture(imageNamed: image)
+        object.texture?.filteringMode = filteringMode
+        object.coordinate = coordinate
+        object.position = position
+        addChild(object)
+    }
+    
+    /// Add a single object at a specific coordinate
     public func addObject(_ object: PKObjectNode,
                           image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
