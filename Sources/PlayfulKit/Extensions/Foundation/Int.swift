@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-extension Int {
+public extension Int {
     
     func intoSprites(with image: String,
                      filteringMode: SKTextureFilteringMode = .linear,
