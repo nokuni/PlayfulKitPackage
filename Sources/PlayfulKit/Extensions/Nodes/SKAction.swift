@@ -43,6 +43,21 @@ public extension SKAction {
         return animation
     }
     
+    /// Fade out and in a node.
+    static func fadeOutAndIn(fadeOutDuration: TimeInterval = 0.5,
+                             fadeInDuration: TimeInterval = 0.5,
+                             repeating repeatCount: Int = 1,
+                             isRepeatingForever: Bool = false) -> SKAction {
+        let sequence = SKAction.sequence([
+            SKAction.fadeOut(withDuration: fadeOutDuration),
+            SKAction.fadeIn(withDuration: fadeInDuration)
+        ])
+        return isRepeatingForever ?
+        SKAction.repeatForever(sequence) :
+        SKAction.repeat(sequence, count: repeatCount)
+    }
+    
+    /// Scale up and down a node.
     static func scaleUpAndDown(from firstScale: CGFloat,
                                with scaleUpDuration: TimeInterval = 0.5,
                                to secondScale: CGFloat,
@@ -59,7 +74,8 @@ public extension SKAction {
         SKAction.repeat(sequence, count: repeatCount)
     }
     
-    static func moveBackAndForth(startPoint: CGPoint,
+    /// Move forth and back a node.
+    static func moveForthAndBack(startPoint: CGPoint,
                                  endPoint: CGPoint,
                                  startDuration: TimeInterval = 0.5,
                                  endDuration: TimeInterval = 0.5) -> SKAction {
