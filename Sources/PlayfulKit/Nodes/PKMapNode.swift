@@ -34,10 +34,21 @@ public class PKMapNode: SKNode {
     
     // MARK: - OBJECTS
     
+    public func addUniqueObject(_ object: PKObjectNode,
+                                at coordinate: Coordinate) {
+        guard let position = tilePosition(from: coordinate) else { return }
+        object.size = squareSize
+        object.coordinate = coordinate
+        object.position = position
+        addChild(object)
+    }
+    
     /// Add a single object at a specific coordinate
     public func addObject(_ object: PKObjectNode,
                           image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
+                          logic: LogicBody,
+                          animations: [ObjectAnimation],
                           at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
         if let newObject = object.copy() as? PKObjectNode {
@@ -45,6 +56,8 @@ public class PKMapNode: SKNode {
             newObject.texture = SKTexture(imageNamed: image)
             newObject.texture?.filteringMode = filteringMode
             newObject.coordinate = coordinate
+            newObject.logic = logic
+            newObject.animations = animations
             newObject.position = position
             addChild(newObject)
         }
@@ -54,6 +67,8 @@ public class PKMapNode: SKNode {
     public func addObject(_ object: PKObjectNode,
                           image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
+                          logic: LogicBody,
+                          animations: [ObjectAnimation],
                           matrix: Matrix,
                           startingCoordinate: Coordinate) {
         
@@ -72,6 +87,8 @@ public class PKMapNode: SKNode {
                     addObject(newObject,
                               image: image,
                               filteringMode: filteringMode,
+                              logic: logic,
+                              animations: animations,
                               at: coordinate)
                 }
             }
@@ -82,6 +99,8 @@ public class PKMapNode: SKNode {
     public func addObject(_ object: PKObjectNode,
                           image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
+                          logic: LogicBody,
+                          animations: [ObjectAnimation],
                           row: Int,
                           excluding columns: [Coordinate] = []) {
         let tilesOnRow = self.tiles.filter {
@@ -93,6 +112,8 @@ public class PKMapNode: SKNode {
                 addObject(newObject,
                           image: image,
                           filteringMode: filteringMode,
+                          logic: logic,
+                          animations: animations,
                           at: coordinate)
             }
         }
@@ -102,6 +123,8 @@ public class PKMapNode: SKNode {
     public func addObject(_ object: PKObjectNode,
                           image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
+                          logic: LogicBody,
+                          animations: [ObjectAnimation],
                           column: Int,
                           excluding rows: [Coordinate] = []) {
         let tilesOnColumn = self.tiles.filter {
@@ -113,6 +136,8 @@ public class PKMapNode: SKNode {
                 addObject(newObject,
                           image: image,
                           filteringMode: filteringMode,
+                          logic: logic,
+                          animations: animations,
                           at: coordinate)
             }
         }
@@ -122,6 +147,8 @@ public class PKMapNode: SKNode {
     public func addObject(_ object: PKObjectNode,
                           structure: MapStructure,
                           filteringMode: SKTextureFilteringMode = .linear,
+                          logic: LogicBody,
+                          animations: [ObjectAnimation],
                           startingCoordinate: Coordinate = Coordinate.zero,
                           matrix: Matrix) {
         
@@ -137,6 +164,8 @@ public class PKMapNode: SKNode {
         addObject(object,
                   image: structure.middle,
                   filteringMode: filteringMode,
+                  logic: logic,
+                  animations: animations,
                   matrix: matrix,
                   startingCoordinate: startingCoordinate
         )
@@ -150,18 +179,26 @@ public class PKMapNode: SKNode {
         addObject(object,
                   image: structure.topLeft,
                   filteringMode: filteringMode,
+                  logic: logic,
+                  animations: animations,
                   at: topLeftCornerCoordinate)
         addObject(object,
                   image: structure.topRight,
                   filteringMode: filteringMode,
+                  logic: logic,
+                  animations: animations,
                   at: topRightCornerCoordinate)
         addObject(object,
                   image: structure.bottomLeft,
                   filteringMode: filteringMode,
+                  logic: logic,
+                  animations: animations,
                   at: bottomLeftCornerCoordinate)
         addObject(object,
                   image: structure.bottomRight,
                   filteringMode: filteringMode,
+                  logic: logic,
+                  animations: animations,
                   at: bottomRightCornerCoordinate)
         
         // Fill first column
@@ -175,6 +212,8 @@ public class PKMapNode: SKNode {
         addObject(object,
                   image: structure.left,
                   filteringMode: filteringMode,
+                  logic: logic,
+                  animations: animations,
                   column: firstColumn,
                   excluding: excludedFirstColumns)
         
@@ -189,6 +228,8 @@ public class PKMapNode: SKNode {
         addObject(object,
                   image: structure.right,
                   filteringMode: filteringMode,
+                  logic: logic,
+                  animations: animations,
                   column: lastColumn,
                   excluding: excludedLastColumns)
         
@@ -203,6 +244,8 @@ public class PKMapNode: SKNode {
         addObject(object,
                   image: structure.top,
                   filteringMode: filteringMode,
+                  logic: logic,
+                  animations: animations,
                   row: firstRow,
                   excluding: excludedFirstRows)
         
@@ -217,6 +260,8 @@ public class PKMapNode: SKNode {
         addObject(object,
                   image: structure.bottom,
                   filteringMode: filteringMode,
+                  logic: logic,
+                  animations: animations,
                   row: lastRow,
                   excluding: excludedLastRows)
     }
@@ -225,6 +270,8 @@ public class PKMapNode: SKNode {
     public func addMultipleTexturedObject(_ object: PKObjectNode,
                                           images: [String],
                                           filteringMode: SKTextureFilteringMode = .linear,
+                                          logic: LogicBody,
+                                          animations: [ObjectAnimation],
                                           matrix: Matrix,
                                           startingCoordinate: Coordinate) {
         
@@ -246,6 +293,8 @@ public class PKMapNode: SKNode {
             addObject(object,
                       image: images[index],
                       filteringMode: filteringMode,
+                      logic: logic,
+                      animations: animations,
                       at: shapedCoordinates[index])
         }
     }

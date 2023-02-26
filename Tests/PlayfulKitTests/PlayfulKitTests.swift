@@ -12,6 +12,31 @@ final class PlayfulKitTests: XCTestCase {
         rectangle.addChild(scribeNode)
     }
     
+    func testObjectAdd() {
+        let node = SKNode()
+        let collision = Collision(category: .object, collision: [.player], contact: [.structure])
+        let object = PKObjectNode(imageNamed: "redSquare")
+        object.size = CGSize(width: 999, height: 999)
+        object.coordinate = Coordinate(x: 99, y: 99)
+        object.logic.health = 999
+        object.logic.isDestructible = true
+        object.applyPhysicsBody(size: CGSize(width: 50, height: 50), collision: collision)
+        object.addAnimation(ObjectAnimation(identifier: "idle", frames: ["idle0", "idle1"]))
+        
+        node.addChild(object)
+        
+        // The parameters that doesnt get copied are the logic, the animations and the coordinates.
+        for _ in 0..<3 {
+            let anotherObject = object.copy() as? PKObjectNode
+            if let anotherObject = anotherObject {
+                //print(anotherObject.texture?.name)
+                //print(anotherObject.physicsBody)
+                print(anotherObject.size)
+                node.addChild(anotherObject)
+            }
+        }
+    }
+    
     func testCollisions() {
         let result: UInt32 = 48
         let bitMasks: [CollisionCategory] = [.object, .structure] // 0x1 << 4 and 0x1 << 5
