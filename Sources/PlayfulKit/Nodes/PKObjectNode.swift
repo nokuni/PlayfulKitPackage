@@ -45,52 +45,15 @@ public class PKObjectNode: SKSpriteNode {
         }
     }
     
+    public func animation(from identifier: String) -> ObjectAnimation? {
+        guard let index = animationIndex(from: identifier) else { return nil }
+        return animations[index]
+    }
+    
     private func animationIndex(from identifier: String) -> Int? {
         guard let index = animations.firstIndex(where: { $0.identifier == identifier }) else {
             return nil
         }
         return index
     }
-    
-    private func animation(from identifier: String) -> ObjectAnimation? {
-        guard let index = animationIndex(from: identifier) else { return nil }
-        return animations[index]
-    }
-    
-    // MARK: - LOGIC
-    
-    /// Remove the object with or without  an animation.
-    /*public func destroy(isAnimated: Bool = false,
-                        identifier: String = "",
-                        filteringMode: SKTextureFilteringMode = .linear,
-                        timeInterval: TimeInterval = 0.05) {
-        guard isAnimated else { return removeFromParent() }
-        guard animation(from: identifier) != nil else { return }
-        let sequence = SKAction.sequence([
-            animatedAction(with: identifier,
-                           filteringMode: filteringMode,
-                           timeInterval: timeInterval),
-            SKAction.removeFromParent()
-        ])
-        run(sequence)
-    }
-    
-    /// Remove the object with an animation after another animation.
-    public func hitAndDestroy(identifier: String,
-                              filteringMode: SKTextureFilteringMode = .linear,
-                              hitTimeInterval: TimeInterval = 0.05,
-                              deathTimeInterval: TimeInterval = 0.05) {
-        guard animation(from: identifier) != nil else { return }
-        guard animation(from: identifier) != nil else { return }
-        let sequence = SKAction.sequence([
-            animatedAction(with: .hit,
-                           filteringMode: filteringMode,
-                           timeInterval: hitTimeInterval),
-            animatedAction(with: .deletion,
-                           filteringMode: filteringMode,
-                           timeInterval: deathTimeInterval),
-            SKAction.removeFromParent()
-        ])
-        run(sequence)
-    }*/
 }
