@@ -9,22 +9,23 @@ import Foundation
 
 /// The animation of an object.
 public struct ObjectAnimation {
-    public init(state: State,
-                frames: [String] = []) {
-        self.state = state
+    public init(identifier: String,
+                frames: [String]) {
+        self.identifier = identifier
         self.frames = frames
     }
     
-    public let state: State
+    public let identifier: String
     public var frames: [String]
-    
-    public enum State {
-        case idle
-        case walk
-        case run
-        case hit
-        case attack
-        case jump
-        case deletion
-    }
 }
+
+//enum ObjectAnimationCategory {
+//    case idle
+//    case walk
+//    case run
+//    case hit
+//    case attack
+//    case jump
+//    case deletion
+//}
+
