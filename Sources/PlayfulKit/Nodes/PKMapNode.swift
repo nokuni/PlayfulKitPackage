@@ -35,19 +35,30 @@ public class PKMapNode: SKNode {
     // MARK: - OBJECTS
     
     /// Add a single object at a specific coordinate
-    public func addObject(_ object: PKObjectNode,
+    public func addSingleObject(_ object: PKObjectNode,
                           image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
                           at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
-        if let newObject = object.copy() as? PKObjectNode {
-            newObject.size = squareSize
-            newObject.texture = SKTexture(imageNamed: image)
-            newObject.texture?.filteringMode = filteringMode
-            newObject.coordinate = coordinate
-            newObject.position = position
-            addChild(newObject)
-        }
+        object.size = squareSize
+        object.texture = SKTexture(imageNamed: image)
+        object.texture?.filteringMode = filteringMode
+        object.coordinate = coordinate
+        object.position = position
+        addChild(object)
+    }
+    
+    /// Add a single object at a specific coordinate
+    public func addDuplicableObject(image: String,
+                              filteringMode: SKTextureFilteringMode = .linear,
+                              at coordinate: Coordinate) {
+        guard let position = tilePosition(from: coordinate) else { return }
+        let object = PKObjectNode(imageNamed: image)
+        object.size = squareSize
+        object.texture?.filteringMode = filteringMode
+        object.coordinate = coordinate
+        object.position = position
+        addChild(object)
     }
     
     /// Add objects over specific coordinates.
@@ -68,12 +79,7 @@ public class PKMapNode: SKNode {
                                                           startingCoordinate: startingCoordinate,
                                                           endingCoordinate: endingCoordinate)
             if isIncluding {
-                if let newObject = object.copy() as? PKObjectNode {
-                    addObject(newObject,
-                              image: image,
-                              filteringMode: filteringMode,
-                              at: coordinate)
-                }
+                addDuplicableObject(image: image, filteringMode: filteringMode, at: coordinate)
             }
         }
     }
@@ -89,12 +95,7 @@ public class PKMapNode: SKNode {
         }
         let coordinates = tilesOnRow.map { $0.coordinate }
         for coordinate in coordinates {
-            if let newObject = object.copy() as? PKObjectNode {
-                addObject(newObject,
-                          image: image,
-                          filteringMode: filteringMode,
-                          at: coordinate)
-            }
+            addDuplicableObject(image: image, filteringMode: filteringMode, at: coordinate)
         }
     }
     
@@ -109,12 +110,7 @@ public class PKMapNode: SKNode {
         }
         let coordinates = tilesOnColumn.map { $0.coordinate }
         for coordinate in coordinates {
-            if let newObject = object.copy() as? PKObjectNode {
-                addObject(newObject,
-                          image: image,
-                          filteringMode: filteringMode,
-                          at: coordinate)
-            }
+            addDuplicableObject(image: image, filteringMode: filteringMode, at: coordinate)
         }
     }
     
@@ -147,22 +143,21 @@ public class PKMapNode: SKNode {
         let bottomRightCornerCoordinate = Coordinate(x: lastRow, y: lastColumn)
         
         // Fill corners
-        addObject(object,
-                  image: structure.topLeft,
-                  filteringMode: filteringMode,
-                  at: topLeftCornerCoordinate)
-        addObject(object,
-                  image: structure.topRight,
-                  filteringMode: filteringMode,
-                  at: topRightCornerCoordinate)
-        addObject(object,
-                  image: structure.bottomLeft,
-                  filteringMode: filteringMode,
-                  at: bottomLeftCornerCoordinate)
-        addObject(object,
-                  image: structure.bottomRight,
-                  filteringMode: filteringMode,
-                  at: bottomRightCornerCoordinate)
+        addDuplicableObject(image: structure.topLeft,
+                            filteringMode: filteringMode,
+                            at: topLeftCornerCoordinate)
+        
+        addDuplicableObject(image: structure.topRight,
+                            filteringMode: filteringMode,
+                            at: topRightCornerCoordinate)
+        
+        addDuplicableObject(image: structure.bottomLeft,
+                            filteringMode: filteringMode,
+                            at: bottomLeftCornerCoordinate)
+        
+        addDuplicableObject(image: structure.bottomRight,
+                            filteringMode: filteringMode,
+                            at: bottomRightCornerCoordinate)
         
         // Fill first column
         let firstColumnCoordinates = columnCoordinates(firstColumn)
@@ -243,10 +238,9 @@ public class PKMapNode: SKNode {
         guard shapedCoordinates.count == images.count else { return }
         
         for index in shapedCoordinates.indices {
-            addObject(object,
-                      image: images[index],
-                      filteringMode: filteringMode,
-                      at: shapedCoordinates[index])
+            addDuplicableObject(image: images[index],
+                                filteringMode: filteringMode,
+                                at: shapedCoordinates[index])
         }
     }
     
