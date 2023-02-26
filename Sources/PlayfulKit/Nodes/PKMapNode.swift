@@ -36,28 +36,16 @@ public class PKMapNode: SKNode {
     
     /// Add a single object at a specific coordinate
     public func addObject(_ object: PKObjectNode,
-                          isUnique: Bool = true,
                           image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
                           at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
-        if isUnique {
-            object.size = squareSize
-            object.texture = SKTexture(imageNamed: image)
-            object.texture?.filteringMode = filteringMode
-            object.coordinate = coordinate
-            object.position = position
-            addChild(object)
-        } else {
-            if let newObject = object.copy() as? PKObjectNode {
-                newObject.size = squareSize
-                newObject.texture = SKTexture(imageNamed: image)
-                newObject.texture?.filteringMode = filteringMode
-                newObject.coordinate = coordinate
-                newObject.position = position
-                addChild(newObject)
-            }
-        }
+        object.size = squareSize
+        object.texture = SKTexture(imageNamed: image)
+        object.texture?.filteringMode = filteringMode
+        object.coordinate = coordinate
+        object.position = position
+        addChild(object)
     }
     
     /// Add objects over specific coordinates.
@@ -78,11 +66,12 @@ public class PKMapNode: SKNode {
                                                           startingCoordinate: startingCoordinate,
                                                           endingCoordinate: endingCoordinate)
             if isIncluding {
-                addObject(object,
-                          isUnique: false,
-                          image: image,
-                          filteringMode: filteringMode,
-                          at: coordinate)
+                if let newObject = object.copy() as? PKObjectNode {
+                    addObject(newObject,
+                              image: image,
+                              filteringMode: filteringMode,
+                              at: coordinate)
+                }
             }
         }
     }
@@ -98,11 +87,12 @@ public class PKMapNode: SKNode {
         }
         let coordinates = tilesOnRow.map { $0.coordinate }
         for coordinate in coordinates {
-            addObject(object,
-                      isUnique: false,
-                      image: image,
-                      filteringMode: filteringMode,
-                      at: coordinate)
+            if let newObject = object.copy() as? PKObjectNode {
+                addObject(newObject,
+                          image: image,
+                          filteringMode: filteringMode,
+                          at: coordinate)
+            }
         }
     }
     
@@ -117,11 +107,12 @@ public class PKMapNode: SKNode {
         }
         let coordinates = tilesOnColumn.map { $0.coordinate }
         for coordinate in coordinates {
-            addObject(object,
-                      isUnique: false,
-                      image: image,
-                      filteringMode: filteringMode,
-                      at: coordinate)
+            if let newObject = object.copy() as? PKObjectNode {
+                addObject(newObject,
+                          image: image,
+                          filteringMode: filteringMode,
+                          at: coordinate)
+            }
         }
     }
     
@@ -155,22 +146,18 @@ public class PKMapNode: SKNode {
         
         // Fill corners
         addObject(object,
-                  isUnique: false,
                   image: structure.topLeft,
                   filteringMode: filteringMode,
                   at: topLeftCornerCoordinate)
         addObject(object,
-                  isUnique: false,
                   image: structure.topRight,
                   filteringMode: filteringMode,
                   at: topRightCornerCoordinate)
         addObject(object,
-                  isUnique: false,
                   image: structure.bottomLeft,
                   filteringMode: filteringMode,
                   at: bottomLeftCornerCoordinate)
         addObject(object,
-                  isUnique: false,
                   image: structure.bottomRight,
                   filteringMode: filteringMode,
                   at: bottomRightCornerCoordinate)
@@ -255,7 +242,6 @@ public class PKMapNode: SKNode {
         
         for index in shapedCoordinates.indices {
             addObject(object,
-                      isUnique: false,
                       image: images[index],
                       filteringMode: filteringMode,
                       at: shapedCoordinates[index])
