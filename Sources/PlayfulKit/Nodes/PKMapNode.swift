@@ -70,8 +70,7 @@ public class PKMapNode: SKNode {
     }
     
     /// Add objects over specific coordinates.
-    public func addObject(_ object: PKObjectNode,
-                          image: String,
+    public func addObject(image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
                           collision: Collision,
                           logic: LogicBody,
@@ -99,8 +98,7 @@ public class PKMapNode: SKNode {
     }
     
     /// Add objects over a specific row.
-    public func addObject(_ object: PKObjectNode,
-                          image: String,
+    public func addObject(image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
                           collision: Collision,
                           logic: LogicBody,
@@ -120,8 +118,7 @@ public class PKMapNode: SKNode {
     }
     
     /// Add objects over a specific column.
-    public func addObject(_ object: PKObjectNode,
-                          image: String,
+    public func addObject(image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
                           collision: Collision,
                           logic: LogicBody,
@@ -141,8 +138,7 @@ public class PKMapNode: SKNode {
     }
     
     /// Add objects following a specific textured structure.
-    public func addObject(_ object: PKObjectNode,
-                          structure: MapStructure,
+    public func addObject(structure: MapStructure,
                           filteringMode: SKTextureFilteringMode = .linear,
                           collision: Collision,
                           logic: LogicBody,
@@ -158,8 +154,7 @@ public class PKMapNode: SKNode {
         let lastColumn = endingCoordinate.y
         
         // Fill all area with object with middle texture first
-        addObject(object,
-                  image: structure.middle,
+        addObject(image: structure.middle,
                   filteringMode: filteringMode,
                   collision: collision,
                   logic: logic,
@@ -205,8 +200,7 @@ public class PKMapNode: SKNode {
             $0.x > lastRow ||
             $0.x < firstRow
         }
-        addObject(object,
-                  image: structure.left,
+        addObject(image: structure.left,
                   filteringMode: filteringMode,
                   collision: collision,
                   logic: logic,
@@ -221,8 +215,7 @@ public class PKMapNode: SKNode {
             $0.x > lastRow ||
             $0.x < firstRow
         }
-        addObject(object,
-                  image: structure.right,
+        addObject(image: structure.right,
                   filteringMode: filteringMode,
                   collision: collision,
                   logic: logic,
@@ -237,8 +230,7 @@ public class PKMapNode: SKNode {
             $0.y > lastColumn ||
             $0.y < firstColumn
         }
-        addObject(object,
-                  image: structure.top,
+        addObject(image: structure.top,
                   filteringMode: filteringMode,
                   collision: collision,
                   logic: logic,
@@ -253,8 +245,7 @@ public class PKMapNode: SKNode {
             $0.y > lastColumn ||
             $0.y < firstColumn
         }
-        addObject(object,
-                  image: structure.bottom,
+        addObject(image: structure.bottom,
                   filteringMode: filteringMode,
                   collision: collision,
                   logic: logic,
