@@ -35,45 +35,25 @@ public class PKMapNode: SKNode {
     // MARK: - OBJECTS
     
     /// Add a single object at a specific coordinate
-    public func addSingleObject(_ object: PKObjectNode,
-                                image: String,
-                                filteringMode: SKTextureFilteringMode = .linear,
-                                collision: Collision,
-                                logic: LogicBody,
-                                at coordinate: Coordinate) {
+    public func addObject(_ object: PKObjectNode,
+                          image: String,
+                          filteringMode: SKTextureFilteringMode = .linear,
+                          at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
-        object.size = squareSize
-        object.texture = SKTexture(imageNamed: image)
-        object.texture?.filteringMode = filteringMode
-        object.applyPhysicsBody(size: object.size, collision: collision)
-        object.logic = logic
-        object.coordinate = coordinate
-        object.position = position
-        addChild(object)
-    }
-    
-    /// Add a single object at a specific coordinate
-    public func addDuplicableObject(image: String,
-                                    filteringMode: SKTextureFilteringMode = .linear,
-                                    collision: Collision,
-                                    logic: LogicBody,
-                                    at coordinate: Coordinate) {
-        guard let position = tilePosition(from: coordinate) else { return }
-        let object = PKObjectNode(imageNamed: image)
-        object.size = squareSize
-        object.texture?.filteringMode = filteringMode
-        object.applyPhysicsBody(size: object.size, collision: collision)
-        object.logic = logic
-        object.coordinate = coordinate
-        object.position = position
-        addChild(object)
+        if let newObject = object.copy() as? PKObjectNode {
+            newObject.size = squareSize
+            newObject.texture = SKTexture(imageNamed: image)
+            newObject.texture?.filteringMode = filteringMode
+            newObject.coordinate = coordinate
+            newObject.position = position
+            addChild(newObject)
+        }
     }
     
     /// Add objects over specific coordinates.
-    public func addObject(image: String,
+    public func addObject(_ object: PKObjectNode,
+                          image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
-                          collision: Collision,
-                          logic: LogicBody,
                           matrix: Matrix,
                           startingCoordinate: Coordinate) {
         
@@ -88,20 +68,20 @@ public class PKMapNode: SKNode {
                                                           startingCoordinate: startingCoordinate,
                                                           endingCoordinate: endingCoordinate)
             if isIncluding {
-                addDuplicableObject(image: image,
-                                    filteringMode: filteringMode,
-                                    collision: collision,
-                                    logic: logic,
-                                    at: coordinate)
+                if let newObject = object.copy() as? PKObjectNode {
+                    addObject(newObject,
+                              image: image,
+                              filteringMode: filteringMode,
+                              at: coordinate)
+                }
             }
         }
     }
     
     /// Add objects over a specific row.
-    public func addObject(image: String,
+    public func addObject(_ object: PKObjectNode,
+                          image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
-                          collision: Collision,
-                          logic: LogicBody,
                           row: Int,
                           excluding columns: [Coordinate] = []) {
         let tilesOnRow = self.tiles.filter {
@@ -109,19 +89,19 @@ public class PKMapNode: SKNode {
         }
         let coordinates = tilesOnRow.map { $0.coordinate }
         for coordinate in coordinates {
-            addDuplicableObject(image: image,
-                                filteringMode: filteringMode,
-                                collision: collision,
-                                logic: logic,
-                                at: coordinate)
+            if let newObject = object.copy() as? PKObjectNode {
+                addObject(newObject,
+                          image: image,
+                          filteringMode: filteringMode,
+                          at: coordinate)
+            }
         }
     }
     
     /// Add objects over a specific column.
-    public func addObject(image: String,
+    public func addObject(_ object: PKObjectNode,
+                          image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
-                          collision: Collision,
-                          logic: LogicBody,
                           column: Int,
                           excluding rows: [Coordinate] = []) {
         let tilesOnColumn = self.tiles.filter {
@@ -129,19 +109,19 @@ public class PKMapNode: SKNode {
         }
         let coordinates = tilesOnColumn.map { $0.coordinate }
         for coordinate in coordinates {
-            addDuplicableObject(image: image,
-                                filteringMode: filteringMode,
-                                collision: collision,
-                                logic: logic,
-                                at: coordinate)
+            if let newObject = object.copy() as? PKObjectNode {
+                addObject(newObject,
+                          image: image,
+                          filteringMode: filteringMode,
+                          at: coordinate)
+            }
         }
     }
     
     /// Add objects following a specific textured structure.
-    public func addObject(structure: MapStructure,
+    public func addObject(_ object: PKObjectNode,
+                          structure: MapStructure,
                           filteringMode: SKTextureFilteringMode = .linear,
-                          collision: Collision,
-                          logic: LogicBody,
                           startingCoordinate: Coordinate = Coordinate.zero,
                           matrix: Matrix) {
         
@@ -154,10 +134,9 @@ public class PKMapNode: SKNode {
         let lastColumn = endingCoordinate.y
         
         // Fill all area with object with middle texture first
-        addObject(image: structure.middle,
+        addObject(object,
+                  image: structure.middle,
                   filteringMode: filteringMode,
-                  collision: collision,
-                  logic: logic,
                   matrix: matrix,
                   startingCoordinate: startingCoordinate
         )
@@ -168,29 +147,22 @@ public class PKMapNode: SKNode {
         let bottomRightCornerCoordinate = Coordinate(x: lastRow, y: lastColumn)
         
         // Fill corners
-        addDuplicableObject(image: structure.topLeft,
-                            filteringMode: filteringMode,
-                            collision: collision,
-                            logic: logic,
-                            at: topLeftCornerCoordinate)
-        
-        addDuplicableObject(image: structure.topRight,
-                            filteringMode: filteringMode,
-                            collision: collision,
-                            logic: logic,
-                            at: topRightCornerCoordinate)
-        
-        addDuplicableObject(image: structure.bottomLeft,
-                            filteringMode: filteringMode,
-                            collision: collision,
-                            logic: logic,
-                            at: bottomLeftCornerCoordinate)
-        
-        addDuplicableObject(image: structure.bottomRight,
-                            filteringMode: filteringMode,
-                            collision: collision,
-                            logic: logic,
-                            at: bottomRightCornerCoordinate)
+        addObject(object,
+                  image: structure.topLeft,
+                  filteringMode: filteringMode,
+                  at: topLeftCornerCoordinate)
+        addObject(object,
+                  image: structure.topRight,
+                  filteringMode: filteringMode,
+                  at: topRightCornerCoordinate)
+        addObject(object,
+                  image: structure.bottomLeft,
+                  filteringMode: filteringMode,
+                  at: bottomLeftCornerCoordinate)
+        addObject(object,
+                  image: structure.bottomRight,
+                  filteringMode: filteringMode,
+                  at: bottomRightCornerCoordinate)
         
         // Fill first column
         let firstColumnCoordinates = columnCoordinates(firstColumn)
@@ -200,10 +172,9 @@ public class PKMapNode: SKNode {
             $0.x > lastRow ||
             $0.x < firstRow
         }
-        addObject(image: structure.left,
+        addObject(object,
+                  image: structure.left,
                   filteringMode: filteringMode,
-                  collision: collision,
-                  logic: logic,
                   column: firstColumn,
                   excluding: excludedFirstColumns)
         
@@ -215,10 +186,9 @@ public class PKMapNode: SKNode {
             $0.x > lastRow ||
             $0.x < firstRow
         }
-        addObject(image: structure.right,
+        addObject(object,
+                  image: structure.right,
                   filteringMode: filteringMode,
-                  collision: collision,
-                  logic: logic,
                   column: lastColumn,
                   excluding: excludedLastColumns)
         
@@ -230,10 +200,9 @@ public class PKMapNode: SKNode {
             $0.y > lastColumn ||
             $0.y < firstColumn
         }
-        addObject(image: structure.top,
+        addObject(object,
+                  image: structure.top,
                   filteringMode: filteringMode,
-                  collision: collision,
-                  logic: logic,
                   row: firstRow,
                   excluding: excludedFirstRows)
         
@@ -245,10 +214,9 @@ public class PKMapNode: SKNode {
             $0.y > lastColumn ||
             $0.y < firstColumn
         }
-        addObject(image: structure.bottom,
+        addObject(object,
+                  image: structure.bottom,
                   filteringMode: filteringMode,
-                  collision: collision,
-                  logic: logic,
                   row: lastRow,
                   excluding: excludedLastRows)
     }
@@ -257,8 +225,6 @@ public class PKMapNode: SKNode {
     public func addMultipleTexturedObject(_ object: PKObjectNode,
                                           images: [String],
                                           filteringMode: SKTextureFilteringMode = .linear,
-                                          collision: Collision,
-                                          logic: LogicBody,
                                           matrix: Matrix,
                                           startingCoordinate: Coordinate) {
         
@@ -277,11 +243,10 @@ public class PKMapNode: SKNode {
         guard shapedCoordinates.count == images.count else { return }
         
         for index in shapedCoordinates.indices {
-            addDuplicableObject(image: images[index],
-                                filteringMode: filteringMode,
-                                collision: collision,
-                                logic: logic,
-                                at: shapedCoordinates[index])
+            addObject(object,
+                      image: images[index],
+                      filteringMode: filteringMode,
+                      at: shapedCoordinates[index])
         }
     }
     
