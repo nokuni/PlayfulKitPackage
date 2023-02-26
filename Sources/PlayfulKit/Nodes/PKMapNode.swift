@@ -40,12 +40,14 @@ public class PKMapNode: SKNode {
                           filteringMode: SKTextureFilteringMode = .linear,
                           at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
-        object.size = squareSize
-        object.texture = SKTexture(imageNamed: image)
-        object.texture?.filteringMode = filteringMode
-        object.coordinate = coordinate
-        object.position = position
-        addChild(object)
+        if let newObject = object.copy() as? PKObjectNode {
+            newObject.size = squareSize
+            newObject.texture = SKTexture(imageNamed: image)
+            newObject.texture?.filteringMode = filteringMode
+            newObject.coordinate = coordinate
+            newObject.position = position
+            addChild(newObject)
+        }
     }
     
     /// Add objects over specific coordinates.
