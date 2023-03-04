@@ -9,6 +9,11 @@ import SpriteKit
 
 public extension SKAction {
     
+    static var empty: SKAction {
+        let action = SKAction.run { }
+        return action
+    }
+    
     static func setTexture(_ texture: SKTexture,
                            with filteringMode: SKTextureFilteringMode = .linear) -> SKAction {
         let sequence = SKAction.sequence([
