@@ -16,9 +16,9 @@ public struct CollisionCategory: OptionSet {
     public let rawValue: UInt32
 
     /// No collision.
-    public static let allClear         = CollisionCategory([])
+    public static let allClear         = CollisionCategory(rawValue: UInt32.allClear)
     /// Collision with any nodes.
-    public static let allSet           = CollisionCategory(rawValue: 0xFFFFFFFF)
+    public static let allSet           = CollisionCategory(rawValue: UInt32.allSet)
     /// Player collision.
     public static let player           = CollisionCategory(rawValue: 0x1 << 0)
     /// Player projectiles collision.
