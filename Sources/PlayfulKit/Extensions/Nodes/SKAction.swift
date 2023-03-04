@@ -39,12 +39,10 @@ public extension SKAction {
         return SKAction.sequence(actionsArray)
     }
     
-    static func animate(with images: [String],
-                        filteringMode: SKTextureFilteringMode = .linear,
-                        timePerFrame: TimeInterval = 0.5) -> SKAction {
-        let textures = images.map { SKTexture(imageNamed: $0) }
-        textures.forEach { $0.filteringMode = filteringMode }
-        let animation = SKAction.animate(with: textures, timePerFrame: timePerFrame)
+    static func animate(with objectAnimation: ObjectAnimation) -> SKAction {
+        let textures = objectAnimation.frames.map { SKTexture(imageNamed: $0) }
+        textures.forEach { $0.filteringMode = objectAnimation.filteringMode }
+        let animation = SKAction.animate(with: textures, timePerFrame: objectAnimation.timeInterval)
         return animation
     }
     
