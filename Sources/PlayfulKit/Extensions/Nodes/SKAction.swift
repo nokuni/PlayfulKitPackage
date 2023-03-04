@@ -9,8 +9,8 @@ import SpriteKit
 
 public extension SKAction {
     
-    static var empty: SKAction {
-        let action = SKAction.run { }
+    static func empty() -> SKAction {
+        let action = SKAction.wait(forDuration: 0)
         return action
     }
     
@@ -39,10 +39,12 @@ public extension SKAction {
         return SKAction.sequence(actionsArray)
     }
     
-    static func animate(with objectAnimation: ObjectAnimation) -> SKAction {
-        let textures = objectAnimation.frames.map { SKTexture(imageNamed: $0) }
-        textures.forEach { $0.filteringMode = objectAnimation.filteringMode }
-        let animation = SKAction.animate(with: textures, timePerFrame: objectAnimation.timeInterval)
+    static func animate(with images: [String],
+                        filteringMode: SKTextureFilteringMode = .linear,
+                        timePerFrame: TimeInterval = 0.5) -> SKAction {
+        let textures = images.map { SKTexture(imageNamed: $0) }
+        textures.forEach { $0.filteringMode = filteringMode }
+        let animation = SKAction.animate(with: textures, timePerFrame: timePerFrame)
         return animation
     }
     

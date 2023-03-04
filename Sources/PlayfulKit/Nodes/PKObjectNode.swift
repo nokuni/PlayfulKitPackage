@@ -26,12 +26,16 @@ public class PKObjectNode: SKSpriteNode {
     }
     
     /// Get the action animation from an animation state.
-    public func animatedAction(with objectAnimation: ObjectAnimation,
+    public func animatedAction(with identifier: String,
+                               filteringMode: SKTextureFilteringMode = .linear,
+                               timeInterval: TimeInterval = 0.05,
                                repeatCount: Int = 0,
                                isRepeatingForever: Bool = false) -> SKAction {
-        guard let animation = animation(from: objectAnimation.identifier) else { return SKAction() }
+        guard let animation = animation(from: identifier) else { return SKAction() }
         guard !animation.frames.isEmpty else { return SKAction() }
-        let action = SKAction.animate(with: objectAnimation)
+        let action = SKAction.animate(with: animation.frames,
+                                      filteringMode: filteringMode,
+                                      timePerFrame: timeInterval)
         switch true {
         case isRepeatingForever:
             return SKAction.repeatForever(action)

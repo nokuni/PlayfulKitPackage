@@ -26,7 +26,7 @@ final class PlayfulKitTests: XCTestCase {
         object.logic.health = 999
         object.logic.isDestructible = true
         object.applyPhysicsBody(size: CGSize(width: 50, height: 50), collision: collision)
-        object.addAnimation(ObjectAnimation(identifier: "idle", frames: ["idle0", "idle1"], timeInterval: 0.1))
+        object.addAnimation(ObjectAnimation(identifier: "idle", frames: ["idle0", "idle1"]))
         
         object.addChild(child)
         
