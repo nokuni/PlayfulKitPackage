@@ -17,8 +17,6 @@ final public class CameraManager {
         self.position = position
         self.zoom = zoom
         self.catchUpDelay = catchUpDelay
-        
-        setUpCamera()
     }
     
     public var scene: SKScene?
@@ -42,7 +40,7 @@ final public class CameraManager {
     }
     
     // MARK: - Private
-    private func setUpCamera() {
+    private func add() {
         let cameraNode = SKCameraNode()
         
         scene?.addChild(cameraNode)
