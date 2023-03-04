@@ -38,9 +38,8 @@ final public class CameraManager {
         panGesture.addTarget(self, action: #selector(cameraGestureAction))
         view.addGestureRecognizer(panGesture)
     }
-    
-    // MARK: - Private
-    private func add() {
+    /// Add the camera to the scene.
+    public func add() {
         let cameraNode = SKCameraNode()
         
         scene?.addChild(cameraNode)
@@ -52,6 +51,8 @@ final public class CameraManager {
         
         cameraNode.run(zoomAction)
     }
+    
+    // MARK: - Private
     @objc private func cameraGestureAction(_ sender: UIPanGestureRecognizer) {
         // The camera has a weak reference, so test it
         guard let camera = scene?.camera else { return }
