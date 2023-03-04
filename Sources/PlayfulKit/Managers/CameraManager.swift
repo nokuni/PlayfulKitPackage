@@ -9,7 +9,7 @@ import SpriteKit
 
 final public class CameraManager {
     
-    public init(scene: SKScene,
+    public init(scene: SKScene? = nil,
                 position: CGPoint = .center,
                 zoom: CGFloat = 1,
                 catchUpDelay: CGFloat = 0) {
@@ -21,7 +21,7 @@ final public class CameraManager {
         setUpCamera()
     }
     
-    public var scene: SKScene
+    public var scene: SKScene?
     public var position: CGPoint
     public var zoom: CGFloat
     public var catchUpDelay: CGFloat
@@ -31,8 +31,7 @@ final public class CameraManager {
     // MARK: - Public
     /// Move the camera to a specific position.
     public func move(to position: CGPoint) {
-        guard scene.isExistingChildNode(named: "Player") else { return }
-        scene.camera?.run(SKAction.move(to: position, duration: catchUpDelay))
+        scene?.camera?.run(SKAction.move(to: position, duration: catchUpDelay))
     }
     /// Allow the camera to be moved on screen by gestures.
     public func cameraGesture(_ view: SKView) {
@@ -46,10 +45,10 @@ final public class CameraManager {
     private func setUpCamera() {
         let cameraNode = SKCameraNode()
         
-        scene.addChild(cameraNode)
-        scene.camera = cameraNode
+        scene?.addChild(cameraNode)
+        scene?.camera = cameraNode
         
-        scene.camera?.position = position
+        scene?.camera?.position = position
         
         let zoomAction = SKAction.scale(to: zoom, duration: 0)
         
@@ -57,11 +56,11 @@ final public class CameraManager {
     }
     @objc private func cameraGestureAction(_ sender: UIPanGestureRecognizer) {
         // The camera has a weak reference, so test it
-        guard let camera = scene.camera else { return }
+        guard let camera = scene?.camera else { return }
         // If the movement just began, save the first camera position
         if sender.state == .began { previousCameraPoint = camera.position }
         // Perform the translation
-        let translation = sender.translation(in: scene.view)
+        let translation = sender.translation(in: scene?.view)
         let newPosition = CGPoint(
             x: previousCameraPoint.x - translation.x,
             y: previousCameraPoint.y + translation.y
