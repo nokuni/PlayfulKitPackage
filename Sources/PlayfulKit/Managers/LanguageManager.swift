@@ -44,7 +44,7 @@ public extension String {
     }
 }
 
-public class LanguageManager {
+final public class LanguageManager {
 
     public static let shared = LanguageManager()
     public static let changedLanguage = Notification.Name("changedLanguage")

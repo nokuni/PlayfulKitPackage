@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-public class AssemblyManager {
+final public class AssemblyManager {
     
     public init() { }
     

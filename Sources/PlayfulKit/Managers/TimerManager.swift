@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-public class TimerManager: SKNode {
+final public class TimerManager: SKNode {
     
     public var staticCountdown: Int
     public var onGoingCountdown: Int

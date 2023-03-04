@@ -8,7 +8,7 @@
 import CoreHaptics
 import UIKit
 
-public class HapticsManager {
+final public class HapticsManager {
     
     public init() { }
     

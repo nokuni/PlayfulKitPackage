@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-public struct SceneViewManager<S: RawRepresentable> {
+final public struct SceneViewManager<S: RawRepresentable> {
     
     public init(currentViewState: S) {
         self.currentViewState = currentViewState

@@ -8,7 +8,7 @@
 import SpriteKit
 import Utility_Toolbox
 
-public class TextManager {
+final public class TextManager {
     
     public struct Paramater {
         public init(content: String,

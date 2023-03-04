@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-public class AnimationManager {
+final public class AnimationManager {
     
     public init() { }
     

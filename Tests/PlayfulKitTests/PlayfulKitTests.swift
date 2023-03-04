@@ -14,7 +14,12 @@ final class PlayfulKitTests: XCTestCase {
     
     func testObjectAdd() {
         let node = SKNode()
-        let collision = Collision(category: .object, collision: [.player], contact: [.structure])
+        let collision = Collision(category: .object,
+                                  collision: [.player, .enemy, .structure],
+                                  contact: [.structure])
+        
+        let child = SKSpriteNode(imageNamed: "blueSquare")
+        
         let object = PKObjectNode(imageNamed: "redSquare")
         object.size = CGSize(width: 999, height: 999)
         object.coordinate = Coordinate(x: 99, y: 99)
@@ -23,16 +28,15 @@ final class PlayfulKitTests: XCTestCase {
         object.applyPhysicsBody(size: CGSize(width: 50, height: 50), collision: collision)
         object.addAnimation(ObjectAnimation(identifier: "idle", frames: ["idle0", "idle1"]))
         
+        object.addChild(child)
+        
         node.addChild(object)
         
         // The parameters that doesnt get copied are the logic, the animations and the coordinates.
         for _ in 0..<3 {
             let anotherObject = object.copy() as? PKObjectNode
             if let anotherObject = anotherObject {
-                //print(anotherObject.texture?.name)
-                //print(anotherObject.physicsBody)
-                print(anotherObject.size)
-                node.addChild(anotherObject)
+                print(anotherObject.children)
             }
         }
     }

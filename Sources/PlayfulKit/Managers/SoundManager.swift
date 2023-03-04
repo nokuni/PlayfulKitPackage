@@ -10,7 +10,7 @@ import SwiftUI
 
 // I noticed that if a sound duration is very short, the infinite loop (numberOfLoops = -1) works on the simulator but not on a real device. It starts playing the sound for 1 second then stops.
 
-public class SoundManager {
+final public class SoundManager {
     
     public init() { }
     
