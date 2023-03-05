@@ -12,15 +12,18 @@ public struct LogicBody {
     public init(health: Int = 1,
                 healthLost: Int = 0,
                 damage: Int = 0,
-                isDestructible: Bool = false) {
+                isDestructible: Bool = false,
+                isIntangible: Bool = false) {
         self.health = health
         self.healthLost = healthLost
         self.damage = damage
         self.isDestructible = isDestructible
+        self.isIntangible =  isIntangible
     }
     
     public var health: Int
     public var healthLost: Int
     public var damage: Int
     public var isDestructible: Bool
+    public var isIntangible: Bool
 }
