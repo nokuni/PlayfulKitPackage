@@ -9,6 +9,14 @@ import SpriteKit
 
 public extension SKAction {
     
+    private static func constantDuration(pointA: CGPoint, pointB: CGPoint, speed: CGFloat) -> TimeInterval {
+        let xDist = (pointB.x - pointA.x)
+        let yDist = (pointB.y - pointA.y)
+        let distance = sqrt((xDist * xDist) + (yDist * yDist))
+        let duration : TimeInterval = TimeInterval(distance / speed)
+        return duration
+    }
+    
     static func empty() -> SKAction {
         let action = SKAction.wait(forDuration: 0)
         return action
@@ -46,6 +54,15 @@ public extension SKAction {
         textures.forEach { $0.filteringMode = filteringMode }
         let animation = SKAction.animate(with: textures, timePerFrame: timePerFrame)
         return animation
+    }
+    
+    /// Move a node from a position to another at a specific speed.
+    static func move(from pointA: CGPoint,
+                     to pointB: CGPoint,
+                     at speed: CGFloat) -> SKAction {
+        let duration = SKAction.constantDuration(pointA: pointA, pointB: pointB, speed: speed)
+        let action = SKAction.move(to: pointB, duration: duration)
+        return action
     }
     
     /// Fade out and in a node.
