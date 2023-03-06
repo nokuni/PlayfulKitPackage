@@ -15,4 +15,12 @@ public extension SKNode {
         self.physicsBody?.collisionBitMask = collision.collisionBitMask ?? CollisionCategory.allSet.rawValue
         self.physicsBody?.contactTestBitMask = collision.contactBitMask ?? CollisionCategory.allClear.rawValue
     }
+
+    func touchedNodes(_ touches: Set<UITouch>) -> [SKNode] {
+        guard let touch = touches.first else { return [] }
+        let location = touch.location(in: self)
+        let touchedNodes = nodes(at: location)
+        guard !touchedNodes.isEmpty else { return [] }
+        return touchedNodes
+    }
 }
