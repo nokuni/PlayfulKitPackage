@@ -30,7 +30,8 @@ public extension SKAction {
         ])
         return sequence
     }
-    
+
+    /// Shaking animation.
     static func shake(duration: Double = 0.5,
                       amplitudeX: CGFloat = 3,
                       amplitudeY: CGFloat = 3) -> SKAction {
