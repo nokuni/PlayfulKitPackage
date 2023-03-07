@@ -7,15 +7,20 @@
 
 import SpriteKit
 
-class CollisionManager {
+public class CollisionManager {
     
-    struct NodeBody {
-        let body: SKPhysicsBody
-        let bitmaskCategory: UInt32
+    public struct NodeBody {
+        public init(body: SKPhysicsBody, bitmaskCategory: UInt32) {
+            self.body = body
+            self.bitmaskCategory = bitmaskCategory
+        }
+        
+        public let body: SKPhysicsBody
+        public let bitmaskCategory: UInt32
     }
     
     /// Compare two physics bodies and return true if they are colliding, false if they are not.
-    func isColliding(_ first: NodeBody, with second: NodeBody) -> Bool {
+    public func isColliding(_ first: NodeBody, with second: NodeBody) -> Bool {
         return first.body.categoryBitMask == first.bitmaskCategory && second.body.categoryBitMask == second.bitmaskCategory
     }
 }
