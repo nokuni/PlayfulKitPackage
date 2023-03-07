@@ -93,7 +93,7 @@ public class ControllerManager {
         public var dpad: DPadAction?
     }
     
-    private var virtualController: GCVirtualController?
+    public var virtualController: GCVirtualController?
     
     public var scene: SKScene
     public var action: ControllerAction?
@@ -120,58 +120,57 @@ public class ControllerManager {
     }
     
     // MARK: - Setup
-    private func connectController(_ notification: Notification) {
+    public func connectController(_ notification: Notification) {
         guard let controller = notification.object as? GCController else { return }
         unregister()
-        disconnectVirtualController(controller)
+        if controller != virtualController?.controller {
+            disconnectVirtualController()
+        }
         register(controller)
     }
-    private func disconnectController(_ notification: Notification) {
+    public func disconnectController(_ notification: Notification) {
         unregister()
         connectVirtualController()
     }
-    private func unregister() {
-        guard let controller = virtualController?.controller else { return }
-        disconnectVirtualController(controller)
+    public func unregister() {
+        
     }
     
     // MARK: - Virtual
-    private var virtualControllerElementNames: Set<String> {
+    public var virtualControllerElementNames: Set<String> {
         let names = virtualControllerElements.map { $0.name }
         let elements = Set(names)
         return elements
     }
-    private var virtualControllerConfiguration: GCVirtualController.Configuration {
+    public var virtualControllerConfiguration: GCVirtualController.Configuration {
         let configuration = GCVirtualController.Configuration()
         configuration.elements = virtualControllerElementNames
         return configuration
     }
-    private func setupVirtualController() {
+    public func setupVirtualController() {
         virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
         connectVirtualController()
         registerVirtualInputs()
     }
-    private func connectVirtualController() {
+    public func connectVirtualController() {
         guard GCController.controllers().isEmpty else { return }
         virtualController?.connect()
     }
-    private func disconnectVirtualController(_ controller: GCController) {
-        if controller != virtualController?.controller {
-            virtualController?.disconnect()
-        }
+    public func disconnectVirtualController() {
+        virtualController?.disconnect()
     }
     
     // MARK: - Controls
-    private func register(_ controller: GCController?) {
+    public func register(_ controller: GCController?) {
         controller?.extendedGamepad?.valueChangedHandler = {
             (gamepad: GCExtendedGamepad, element: GCControllerElement) in
             self.input(on: gamepad)
         }
     }
-    private func pressButton(_ button: GCControllerButtonInput, action: ButtonAction?) {
+    public func pressButton(_ button: GCControllerButtonInput, action: ButtonAction?) {
         if button.isPressed { action?.press?() } else { action?.release?() }
     }
-    private func pressDpad(_ directionPad: GCControllerDirectionPad,
+    public func pressDpad(_ directionPad: GCControllerDirectionPad,
                            action: DPadAction?) {
         if directionPad.right.isPressed && !directionPad.left.isPressed { action?.right() }
         if directionPad.left.isPressed && !directionPad.right.isPressed { action?.left() }
@@ -179,7 +178,7 @@ public class ControllerManager {
         if directionPad.up.isPressed && !directionPad.down.isPressed { action?.up() }
         if directionPad.down.isPressed && !directionPad.up.isPressed { action?.down() }
     }
-    private func input(on gamepad: GCExtendedGamepad) {
+    public func input(on gamepad: GCExtendedGamepad) {
         pressButton(gamepad.buttonMenu, action: action?.buttonMenu)
         pressButton(gamepad.buttonA, action: action?.buttonA)
         pressButton(gamepad.buttonB, action: action?.buttonA)
@@ -188,18 +187,18 @@ public class ControllerManager {
         pressDpad(gamepad.dpad, action: action?.dpad)
     }
     
-    private func registerButton(_ button: GCControllerButtonInput?, action: ButtonAction?) {
+    public func registerButton(_ button: GCControllerButtonInput?, action: ButtonAction?) {
         button?.valueChangedHandler = { button, value, isPressed in
             self.pressButton(button, action: action)
         }
     }
-    private func registerDpad(_ dpad: GCControllerDirectionPad?) {
+    public func registerDpad(_ dpad: GCControllerDirectionPad?) {
         guard let dpad = dpad else { return }
         dpad.valueChangedHandler = { button, value, isPressed in
             self.pressDpad(dpad, action: self.action?.dpad)
         }
     }
-    private func registerVirtualInputs() {
+    public func registerVirtualInputs() {
         registerDpad(virtualController?.controller?.extendedGamepad?.dpad)
         
         registerButton(virtualController?.controller?.extendedGamepad?.buttonA, action: action?.buttonA)
