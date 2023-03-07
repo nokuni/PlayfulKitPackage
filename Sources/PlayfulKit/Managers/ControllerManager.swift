@@ -131,7 +131,8 @@ public class ControllerManager {
         connectVirtualController()
     }
     private func unregister() {
-        
+        guard let controller = virtualController?.controller else { return }
+        disconnectVirtualController(controller)
     }
     
     // MARK: - Virtual
