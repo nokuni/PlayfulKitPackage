@@ -54,20 +54,20 @@ public class ControllerManager {
         public var release: (() -> Void)?
     }
     public struct DPadAction {
-        public  init(left: @escaping (() -> Void),
-                     right: @escaping (() -> Void),
-                     up: @escaping (() -> Void),
-                     down: @escaping (() -> Void)) {
+        public  init(left: (() -> Void)?,
+                     right: (() -> Void)?,
+                     up: (() -> Void)?,
+                     down: (() -> Void)?) {
             self.left = left
             self.right = right
             self.up = up
             self.down = down
         }
         
-        var left: (() -> Void)
-        var right: (() -> Void)
-        var up: (() -> Void)
-        var down: (() -> Void)
+        var left: (() -> Void)?
+        var right: (() -> Void)?
+        var up: (() -> Void)?
+        var down: (() -> Void)?
     }
     
     public struct ControllerAction {
@@ -172,11 +172,11 @@ public class ControllerManager {
     }
     public func pressDpad(_ directionPad: GCControllerDirectionPad,
                            action: DPadAction?) {
-        if directionPad.right.isPressed && !directionPad.left.isPressed { action?.right() }
-        if directionPad.left.isPressed && !directionPad.right.isPressed { action?.left() }
+        if directionPad.right.isPressed && !directionPad.left.isPressed { action?.right?() }
+        if directionPad.left.isPressed && !directionPad.right.isPressed { action?.left?() }
         
-        if directionPad.up.isPressed && !directionPad.down.isPressed { action?.up() }
-        if directionPad.down.isPressed && !directionPad.up.isPressed { action?.down() }
+        if directionPad.up.isPressed && !directionPad.down.isPressed { action?.up?() }
+        if directionPad.down.isPressed && !directionPad.up.isPressed { action?.down?() }
     }
     public func input(on gamepad: GCExtendedGamepad) {
         pressButton(gamepad.buttonMenu, action: action?.buttonMenu)
