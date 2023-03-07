@@ -1,5 +1,5 @@
 //
-//  GameControllerManager.swift
+//  ControllerManager.swift
 //  
 //
 //  Created by Maertens Yann-Christophe on 06/03/23.
@@ -9,7 +9,7 @@ import SpriteKit
 import GameController
 
 /// Manage and configure your game controllers.
-public class GameControllerManager {
+public class ControllerManager {
     
     public init(scene: SKScene) {
         self.scene = scene
