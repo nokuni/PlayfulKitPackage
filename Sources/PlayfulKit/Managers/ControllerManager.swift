@@ -172,8 +172,8 @@ public class ControllerManager {
     }
     private func pressDpad(_ directionPad: GCControllerDirectionPad,
                            action: DPadAction?) {
-        if directionPad.right.isPressed && !directionPad.left.isPressed { action?.left() }
-        if directionPad.left.isPressed && !directionPad.right.isPressed { action?.right() }
+        if directionPad.right.isPressed && !directionPad.left.isPressed { action?.right() }
+        if directionPad.left.isPressed && !directionPad.right.isPressed { action?.left() }
         
         if directionPad.up.isPressed && !directionPad.down.isPressed { action?.up() }
         if directionPad.down.isPressed && !directionPad.up.isPressed { action?.down() }
