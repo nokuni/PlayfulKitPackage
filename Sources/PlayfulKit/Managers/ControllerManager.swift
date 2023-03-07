@@ -13,7 +13,6 @@ public class ControllerManager {
     
     public init(scene: SKScene) {
         self.scene = scene
-        observeControllers()
     }
     
     public enum VirtualControllerElement {
