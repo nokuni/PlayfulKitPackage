@@ -9,6 +9,8 @@ import SpriteKit
 
 public class CollisionManager {
     
+    public init() { }
+    
     public struct NodeBody {
         public init(body: SKPhysicsBody, bitmaskCategory: UInt32) {
             self.body = body
