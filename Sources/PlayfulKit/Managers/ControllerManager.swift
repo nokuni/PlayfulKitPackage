@@ -77,7 +77,7 @@ public class ControllerManager {
         return elements
     }
     
-    private func observeControllers() {
+    public func observeControllers() {
         NotificationCenter.default.addObserver(self, selector: #selector(connectControllers), name: NSNotification.Name.GCControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(disconnectControllers), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
     }
