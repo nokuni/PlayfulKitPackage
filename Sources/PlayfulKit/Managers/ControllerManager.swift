@@ -117,6 +117,7 @@ public class ControllerManager {
     
     // MARK: - Setup
     @objc public func connectControllers() {
+        print(GCController.controllers())
         guard let controller = GCController.controllers().first else {
             print("No Hardware Controller detected... Virtual Controller created !")
             virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
@@ -124,6 +125,7 @@ public class ControllerManager {
             registerVirtualInputs()
             return
         }
+        print(GCController.controllers())
         print("Virtual Controller disconnected ... Hardware Controller connected and registered !")
         disconnectVirtualController()
         register(controller)
