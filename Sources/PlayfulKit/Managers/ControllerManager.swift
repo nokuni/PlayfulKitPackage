@@ -104,15 +104,15 @@ public class ControllerManager {
         NotificationCenter.default.addObserver(self, selector: #selector(connectControllers), name: NSNotification.Name.GCControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(disconnectControllers), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
         
-        if GCController.controllers().isEmpty {
-            virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-            connectVirtualController()
-            registerVirtualInputs()
-        }
-        
-        guard let controller = GCController.controllers().first else { return }
-        
-        register(controller)
+//        if GCController.controllers().isEmpty {
+//            virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
+//            connectVirtualController()
+//            registerVirtualInputs()
+//        }
+//        
+//        guard let controller = GCController.controllers().first else { return }
+//        
+//        register(controller)
     }
     
     // MARK: - Setup
@@ -125,9 +125,9 @@ public class ControllerManager {
     
     @objc public func disconnectControllers() {
         print("Hardware Controller disconnected ...")
-        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-        connectVirtualController()
-        registerVirtualInputs()
+//        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
+//        connectVirtualController()
+//        registerVirtualInputs()
     }
     
     // MARK: - Virtual
