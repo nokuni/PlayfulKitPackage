@@ -120,7 +120,13 @@ public class ControllerManager {
         virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
         connectVirtualController()
         registerVirtualInputs()
-        print(GCController.controllers())
+        
+        for controller in GCController.controllers() {
+            if controller.vendorName != nil {
+                disconnectVirtualController()
+                register(controller)
+            }
+        }
     }
     
     @objc public func disconnectControllers() {
