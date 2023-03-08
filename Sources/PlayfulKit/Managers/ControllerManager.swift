@@ -101,20 +101,8 @@ public class ControllerManager {
     
     /// Observe the controllers and establish a connexion.
     public func observeControllers() {
-        NotificationCenter.default.addObserver(forName: .GCControllerDidConnect, object: nil, queue: nil) { notification in
-            if let controller = notification.object as? GCController {
-                print("Hardware Controller Registered")
-                self.register(controller)
-            }
-        }
-        
-        NotificationCenter.default.addObserver(forName: .GCControllerDidDisconnect, object: nil, queue: nil) { notification in
-            if notification.object is GCController {
-                self.disconnectControllers()
-            }
-        }
-//        NotificationCenter.default.addObserver(self, selector: #selector(connectControllers), name: NSNotification.Name.GCControllerDidConnect, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(disconnectControllers), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(connectControllers), name: NSNotification.Name.GCControllerDidConnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(disconnectControllers), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
         
 //        if GCController.controllers().isEmpty {
 //            virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
@@ -130,17 +118,17 @@ public class ControllerManager {
     // MARK: - Setup
     @objc public func connectControllers() {
         guard let controller = GCController.controllers().first else { return }
-        virtualController?.disconnect()
-        print("Hardware Controller connected !")
+        //virtualController?.disconnect()
+        print("Hardware Controller connected and registered !")
         register(controller)
     }
     
     @objc public func disconnectControllers() {
         print("Hardware Controller disconnected ...")
-        print("Virtual Controller created ...")
-        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-        connectVirtualController()
-        registerVirtualInputs()
+//        print("Virtual Controller created ...")
+//        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
+//        connectVirtualController()
+//        registerVirtualInputs()
     }
     
     // MARK: - Virtual
