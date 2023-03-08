@@ -101,8 +101,18 @@ public class ControllerManager {
     
     /// Observe the controllers and establish a connexion.
     public func observeControllers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(connectControllers), name: NSNotification.Name.GCControllerDidConnect, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(disconnectControllers), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
+        NotificationCenter.default.addObserver(forName: .GCControllerDidConnect, object: nil, queue: .main) { notification in
+            if let controller = notification.object as? GCController {
+                self.register(controller)
+            }
+        }
+        NotificationCenter.default.addObserver(forName: .GCControllerDidDisconnect, object: nil, queue: .main) { notification in
+            if notification.object is GCController {
+                self.disconnectControllers()
+            }
+        }
+//        NotificationCenter.default.addObserver(self, selector: #selector(connectControllers), name: NSNotification.Name.GCControllerDidConnect, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(disconnectControllers), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
         
 //        if GCController.controllers().isEmpty {
 //            virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
@@ -110,9 +120,9 @@ public class ControllerManager {
 //            registerVirtualInputs()
 //        }
 //
-        guard let controller = GCController.controllers().first else { return }
+//        guard let controller = GCController.controllers().first else { return }
 //
-        register(controller)
+//        register(controller)
     }
     
     // MARK: - Setup
