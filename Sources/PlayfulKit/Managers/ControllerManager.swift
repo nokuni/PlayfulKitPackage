@@ -104,29 +104,29 @@ public class ControllerManager {
         NotificationCenter.default.addObserver(self, selector: #selector(connectControllers), name: NSNotification.Name.GCControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(disconnectControllers), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
         
-//        if GCController.controllers().isEmpty {
-//            virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-//            connectVirtualController()
-//            registerVirtualInputs()
-//        }
-//
-//        guard let controller = GCController.controllers().first else { return }
-//
-//        register(controller)
+        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
+        
+        if GCController.controllers().isEmpty {
+            print("Virtual Controller connected !")
+            connectVirtualController()
+            registerVirtualInputs()
+        }
+
+        guard let controller = GCController.controllers().first else { return }
+
+        register(controller)
     }
     
     // MARK: - Setup
-    @objc public func connectControllers() {
-        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-        connectVirtualController()
-        registerVirtualInputs()
+    @objc public func connectControllers(notification: Notification) {
+        guard let controller = notification.object as? GCController else { return }
         
-        for controller in GCController.controllers() {
-            if controller.vendorName != nil {
-                disconnectVirtualController()
-                register(controller)
-            }
+        if controller != virtualController?.controller {
+            print("Virtual Controller disconnected ...")
+            disconnectVirtualController()
         }
+        
+        register(controller)
     }
     
     @objc public func disconnectControllers() {
@@ -154,6 +154,7 @@ public class ControllerManager {
     
     // MARK: - Controls
     public func register(_ controller: GCController?) {
+        print("Register Controller ...")
         controller?.extendedGamepad?.valueChangedHandler = {
             (gamepad: GCExtendedGamepad, element: GCControllerElement) in
             self.input(on: gamepad)
