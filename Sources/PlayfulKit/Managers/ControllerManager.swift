@@ -118,8 +118,8 @@ public class ControllerManager {
     }
     
     // MARK: - Setup
-    @objc public func connectControllers(notification: Notification) {
-        guard let controller = notification.object as? GCController else { return }
+    @objc public func connectControllers() {
+        guard let controller = GCController.current else { return }
         
         if controller != virtualController?.controller {
             print("Virtual Controller disconnected ...")
