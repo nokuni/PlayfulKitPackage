@@ -132,6 +132,11 @@ public class ControllerManager {
     @objc public func disconnectControllers() {
         print("Hardware and Virtual Controller disconnected ...")
         disconnectVirtualController()
+        
+        if GCController.controllers().isEmpty {
+            connectVirtualController()
+            registerVirtualInputs()
+        }
     }
     
     // MARK: - Virtual
