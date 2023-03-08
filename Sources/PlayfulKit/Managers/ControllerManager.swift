@@ -101,39 +101,20 @@ public class ControllerManager {
     
     /// Observe the controllers and establish a connexion.
     public func observeControllers() {
-        NotificationCenter.default.addObserver(forName: .GCControllerDidConnect,
-                                               object: nil,
-                                               queue: nil) { notification in
-            self.connectController(notification)
-        }
-        NotificationCenter.default.addObserver(forName: .GCControllerDidDisconnect,
-                                               object: nil,
-                                               queue: nil) { notification in
-            self.disconnectController(notification)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(connectControllers), name: NSNotification.Name.GCControllerDidConnect, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(disconnectControllers), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
         
-        setupVirtualController()
-        
-        guard let controller = GCController.controllers().first else { return }
-        
-        register(controller)
+        connectVirtualController()
     }
     
     // MARK: - Setup
-    public func connectController(_ notification: Notification) {
-        guard let controller = notification.object as? GCController else { return }
-        unregister()
-        if controller != virtualController?.controller {
-            disconnectVirtualController()
-        }
+    @objc public func connectControllers() {
+        guard let controller = GCController.current else { return }
+        disconnectVirtualController()
         register(controller)
     }
-    public func disconnectController(_ notification: Notification) {
-        unregister()
+    @objc public func disconnectControllers() {
         connectVirtualController()
-    }
-    public func unregister() {
-        
     }
     
     // MARK: - Virtual
@@ -147,14 +128,10 @@ public class ControllerManager {
         configuration.elements = virtualControllerElementNames
         return configuration
     }
-    public func setupVirtualController() {
-        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-        connectVirtualController()
-        registerVirtualInputs()
-    }
     public func connectVirtualController() {
-        guard GCController.controllers().isEmpty else { return }
+        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
         virtualController?.connect()
+        registerVirtualInputs()
     }
     public func disconnectVirtualController() {
         virtualController?.disconnect()
