@@ -109,10 +109,10 @@ public class ControllerManager {
 //            connectVirtualController()
 //            registerVirtualInputs()
 //        }
-//        
-//        guard let controller = GCController.controllers().first else { return }
-//        
-//        register(controller)
+//
+        guard let controller = GCController.controllers().first else { return }
+//
+        register(controller)
     }
     
     // MARK: - Setup
