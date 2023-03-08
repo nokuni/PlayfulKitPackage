@@ -23,4 +23,8 @@ public extension SKNode {
         guard !touchedNodes.isEmpty else { return [] }
         return touchedNodes
     }
+    
+    func addChildSafely(_ node: SKNode) {
+        if !children.contains(node) { addChild(node) }
+    }
 }
