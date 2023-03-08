@@ -19,12 +19,12 @@
       }
     },
     {
-      "identity" : "utility-toolbox",
+      "identity" : "utilitytoolbox",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/nokuni/Utility-Toolbox",
+      "location" : "https://github.com/nokuni/UtilityToolbox",
       "state" : {
         "branch" : "main",
-        "revision" : "9cc98005367c8c217f5524e92e9a90f3954e630a"
+        "revision" : "e1867f4f9b013009ac38ee5cdf329d4b07bfae79"
       }
     }
   ],
