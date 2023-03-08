@@ -134,6 +134,7 @@ public class ControllerManager {
         disconnectVirtualController()
         
         if GCController.controllers().isEmpty {
+            virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
             connectVirtualController()
             registerVirtualInputs()
         }
