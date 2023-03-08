@@ -103,16 +103,23 @@ public class ControllerManager {
     public func observeControllers() {
         NotificationCenter.default.addObserver(self, selector: #selector(connectControllers), name: NSNotification.Name.GCControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(disconnectControllers), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
+        
+        if GCController.controllers().isEmpty {
+            virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
+            connectVirtualController()
+            registerVirtualInputs()
+        }
+        
+        guard let controller = GCController.controllers().first else { return }
+        
+        register(controller)
     }
     
     // MARK: - Setup
     @objc public func connectControllers() {
-        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-        connectVirtualController()
-        registerVirtualInputs()
-        guard let controller = GCController.current else { return }
+        guard let controller = GCController.controllers().first else { return }
+        if controller != virtualController?.controller { virtualController?.disconnect() }
         print("Hardware Controller connected !")
-        disconnectVirtualController()
         register(controller)
     }
     
@@ -154,7 +161,7 @@ public class ControllerManager {
         if button.isPressed { action?.press?() } else { action?.release?() }
     }
     public func pressDpad(_ directionPad: GCControllerDirectionPad,
-                           action: DPadAction?) {
+                          action: DPadAction?) {
         if directionPad.right.isPressed && !directionPad.left.isPressed { action?.right?() }
         if directionPad.left.isPressed && !directionPad.right.isPressed { action?.left?() }
         
