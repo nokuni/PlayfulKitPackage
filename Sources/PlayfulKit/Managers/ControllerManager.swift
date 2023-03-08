@@ -101,14 +101,14 @@ public class ControllerManager {
     
     /// Observe the controllers and establish a connexion.
     public func observeControllers() {
-        NotificationCenter.default.addObserver(forName: .GCControllerDidConnect, object: nil, queue: .main) { notification in
+        NotificationCenter.default.addObserver(forName: .GCControllerDidConnect, object: nil, queue: nil) { notification in
             if let controller = notification.object as? GCController {
                 print("Hardware Controller Registered")
                 self.register(controller)
             }
         }
         
-        NotificationCenter.default.addObserver(forName: .GCControllerDidDisconnect, object: nil, queue: .main) { notification in
+        NotificationCenter.default.addObserver(forName: .GCControllerDidDisconnect, object: nil, queue: nil) { notification in
             if notification.object is GCController {
                 self.disconnectControllers()
             }
@@ -130,7 +130,7 @@ public class ControllerManager {
     // MARK: - Setup
     @objc public func connectControllers() {
         guard let controller = GCController.controllers().first else { return }
-        if controller != virtualController?.controller { virtualController?.disconnect() }
+        virtualController?.disconnect()
         print("Hardware Controller connected !")
         register(controller)
     }
