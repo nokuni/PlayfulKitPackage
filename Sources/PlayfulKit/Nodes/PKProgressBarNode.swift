@@ -140,7 +140,7 @@ public class PKProgressBarNode: SKNode {
     
     private func imageCrop() {
         guard let imageProgressBar = imageProgressBar else { return }
-        cropNode.addChild(barNode)
+        cropNode.addChildSafely(barNode)
         cropNode.maskNode =
         SKSpriteNode(
             color: UIColor.white,
@@ -152,7 +152,7 @@ public class PKProgressBarNode: SKNode {
         CGPoint(x: -barNode.size.width / 2,
                 y: -barNode.size.height / 2)
         cropNode.zPosition = 0.1
-        addChild(cropNode)
+        addChildSafely(cropNode)
     }
     
     private func createImageBar() {
@@ -163,12 +163,12 @@ public class PKProgressBarNode: SKNode {
     private func createImageUnderBar() {
         guard let imageProgressBar = imageProgressBar else { return }
         underBarNode = SKSpriteNode(imageNamed: imageProgressBar.underImage)
-        addChild(underBarNode)
+        addChildSafely(underBarNode)
     }
     
     private func crop() {
         guard let progressBar = progressBar else { return }
-        cropNode.addChild(barNode)
+        cropNode.addChildSafely(barNode)
         cropNode.maskNode =
         SKSpriteNode(
             color: UIColor.white,
@@ -180,7 +180,7 @@ public class PKProgressBarNode: SKNode {
         CGPoint(x: -barNode.size.width / 2,
                 y: -barNode.size.height / 2)
         cropNode.zPosition = 0.1
-        addChild(cropNode)
+        addChildSafely(cropNode)
     }
     
     private func createBar() {
@@ -200,7 +200,7 @@ public class PKProgressBarNode: SKNode {
                                          cornerRadius: progressBar.cornerRadius) {
             let texture = SKTexture(image: image)
             underBarNode = SKSpriteNode(texture: texture)
-            addChild(underBarNode)
+            addChildSafely(underBarNode)
         }
     }
 }

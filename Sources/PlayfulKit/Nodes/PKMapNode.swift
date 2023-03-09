@@ -40,7 +40,7 @@ public class PKMapNode: SKNode {
         object.size = squareSize
         object.coordinate = coordinate
         object.position = position
-        addChild(object)
+        addChildSafely(object)
     }
     
     /// Add a single object at a specific coordinate
@@ -59,7 +59,7 @@ public class PKMapNode: SKNode {
             newObject.logic = logic
             newObject.animations = animations
             newObject.position = position
-            addChild(newObject)
+            addChildSafely(newObject)
         }
     }
     

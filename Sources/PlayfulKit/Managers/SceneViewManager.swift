@@ -21,7 +21,7 @@ public struct SceneViewManager<S: RawRepresentable> {
     
     public mutating func setUpRootView(scene: SKScene) {
         if let currentViewState = currentViewState.rawValue as? String {
-            scene.addChild(rootView)
+            scene.addChildSafely(rootView)
             rootView.name = currentViewState
             currentView = rootView
         }
@@ -47,7 +47,7 @@ public struct SceneViewManager<S: RawRepresentable> {
     public mutating func goToViewFromRootView(view: SKNode, viewState: S) {
         currentViewState = viewState
         view.name = viewState.rawValue as? String
-        rootView.addChild(view)
+        rootView.addChildSafely(view)
         viewCount += 1
         previousView = rootView
         currentView = view
@@ -56,7 +56,7 @@ public struct SceneViewManager<S: RawRepresentable> {
     public mutating func goToViewFromPreviousView(view: SKNode, viewState: S) {
         currentViewState = viewState
         view.name = viewState.rawValue as? String
-        currentView.addChild(view)
+        currentView.addChildSafely(view)
         viewCount += 1
         previousView = currentView
         currentView = view

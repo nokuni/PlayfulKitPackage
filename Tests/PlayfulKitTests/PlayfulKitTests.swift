@@ -9,7 +9,7 @@ final class PlayfulKitTests: XCTestCase {
         rectangle.name = "Window"
         let scribeNode = PKTypewriterNode(container: rectangle,
                                           parameter: .init(content: "Hello World"))
-        rectangle.addChild(scribeNode)
+        rectangle.addChildSafely(scribeNode)
     }
     
     func testObjectAdd() {
@@ -28,9 +28,9 @@ final class PlayfulKitTests: XCTestCase {
         object.applyPhysicsBody(size: CGSize(width: 50, height: 50), collision: collision)
         object.addAnimation(ObjectAnimation(identifier: "idle", frames: ["idle0", "idle1"]))
         
-        object.addChild(child)
+        object.addChildSafely(child)
         
-        node.addChild(object)
+        node.addChildSafely(object)
         
         // The parameters that doesnt get copied are the logic, the animations and the coordinates.
         for _ in 0..<3 {

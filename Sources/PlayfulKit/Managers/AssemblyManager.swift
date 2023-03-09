@@ -99,7 +99,7 @@ final public class AssemblyManager {
         var initialPosition = initialListPosition(from: nodes, on: startingPosition, with: alignment, and: spacing)
         for index in nodes.indices {
             nodes[index].position = initialPosition
-            node.addChild(nodes[index])
+            node.addChildSafely(nodes[index])
             initialPosition = axesIncrementedValue(axes: axes, alignment: alignment, node: nodes[index], position: initialPosition, spacing: spacing)
         }
     }
@@ -129,7 +129,7 @@ final public class AssemblyManager {
             if count < nodes.count {
                 actionWhile?()
                 nodes[count].position = initialPosition
-                node.addChild(nodes[count])
+                node.addChildSafely(nodes[count])
                 let updatedPosition = self.axesIncrementedValue(axes: axes, alignment: alignment, node: nodes[count], position: initialPosition, spacing: spacing)
                 initialPosition = updatedPosition
                 if (count + 1) % maximumLineCount == 0 {
@@ -171,7 +171,7 @@ final public class AssemblyManager {
                                    firstPosition: CGPoint,
                                    position: inout CGPoint) {
         nodes[index].position = position
-        node.addChild(nodes[index])
+        node.addChildSafely(nodes[index])
         let updatedPosition = axesIncrementedValue(axes: parameter.axes, alignment: parameter.alignment, node: nodes[index], position: position, spacing: parameter.horizontalSpacing)
         position = updatedPosition
         if (index + 1) % parameter.columns == 0 {

@@ -69,8 +69,8 @@ public class PKScrollListNode: SKSpriteNode {
         // Apply a mask to the scroll node.
         let mask = SKSpriteNode(color: UIColor.orange, size: size)
         cropNode.maskNode = mask
-        addChild(cropNode)
-        cropNode.addChild(scrollNode)
+        addChildSafely(cropNode)
+        cropNode.addChildSafely(scrollNode)
     }
     
     // MARK: - Touch
@@ -209,7 +209,7 @@ public class PKScrollListNode: SKSpriteNode {
     
     // Append a row on the scroll list
     public func addNode(node: SKSpriteNode) {
-        scrollNode.addChild(node)
+        scrollNode.addChildSafely(node)
         rows.append(node)
         setupRows()
     }
@@ -222,7 +222,7 @@ public class PKScrollListNode: SKSpriteNode {
     
     // Insert a row on the scroll list
     public func insertNode(node: SKSpriteNode, at index: Int) {
-        scrollNode.addChild(node)
+        scrollNode.addChildSafely(node)
         rows.insert(node, at: index)
         setupRows()
     }

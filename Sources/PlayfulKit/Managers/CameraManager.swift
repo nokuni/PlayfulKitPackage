@@ -42,7 +42,7 @@ final public class CameraManager {
     public func add() {
         let cameraNode = SKCameraNode()
         
-        scene?.addChild(cameraNode)
+        scene?.addChildSafely(cameraNode)
         scene?.camera = cameraNode
         
         scene?.camera?.position = position
