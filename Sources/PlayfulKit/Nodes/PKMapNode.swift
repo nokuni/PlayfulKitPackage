@@ -491,6 +491,7 @@ public class PKMapNode: SKNode {
         tiles.forEach {
             $0.texture = SKTexture(imageNamed: image)
             $0.texture?.filteringMode = filteringMode
+            $0.texture?.preload { }
         }
     }
     private func isIncludingOtherCoordinates(_ coordinate: Coordinate,
