@@ -37,4 +37,17 @@ public extension PKMapNode {
         let coordinates = tiles.map { $0.coordinate }
         return coordinates
     }
+    
+    func centerPosition() -> CGPoint {
+        let size = matrix.row == matrix.column ?
+        CGSize(width: (squareSize.width / 2) * (CGFloat(matrix.column - 1)),
+               height: (squareSize.height / 2) * (CGFloat(matrix.column - 1)))
+        :
+        CGSize(width: (squareSize.width / 2) * (CGFloat(matrix.column - 1)),
+               height: (squareSize.height / 2) * (CGFloat(matrix.row - 1)))
+        
+        let position = CGPoint(x: CGPoint.center.x + size.width, y: CGPoint.center.y - size.height)
+        
+        return position
+    }
 }
