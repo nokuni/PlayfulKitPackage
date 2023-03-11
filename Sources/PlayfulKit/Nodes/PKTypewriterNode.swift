@@ -33,6 +33,7 @@ public class PKTypewriterNode: SKLabelNode {
     public var timeInterval: TimeInterval
     
     private var currentCharacterIndex: Int = 0
+    private var currentImageIndex: Int = 0
     private var timer: Timer?
     
     // MARK: - PUBLIC
@@ -48,10 +49,9 @@ public class PKTypewriterNode: SKLabelNode {
     // MARK: - PRIVATE
     private func setupWriting() {
         guard let container = container else { return }
-//        if let attributedText = textManager.attributedText(parameter: parameter) {
-//            self.attributedText = attributedText
-//        }
-        text = parameter.content
+        if let attributedText = textManager.attributedText(parameter: parameter) {
+            self.attributedText = attributedText
+        }
         lineBreakMode = NSLineBreakMode.byWordWrapping
         numberOfLines = 0
         preferredMaxLayoutWidth = container.frame.width - (parameter.padding * 2)

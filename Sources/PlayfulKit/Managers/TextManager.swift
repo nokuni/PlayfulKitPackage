@@ -49,6 +49,7 @@ final public class TextManager {
                                         size: parameter.fontSize) else {
             return nil
         }
+        
         let color: UIColor = parameter.fontColor
         
         let paragraphStyle = NSMutableParagraphStyle()
@@ -62,8 +63,17 @@ final public class TextManager {
             .paragraphStyle: paragraphStyle
         ]
         
-        let attributedText = NSAttributedString(string: parameter.content,
-                                                attributes: attributes)
+        guard !parameter.content.isEmpty else { return nil }
+        
+        let attributedText = NSMutableAttributedString(string: parameter.content, attributes: attributes)
+        
+        if parameter.content.contains("@") {
+            let imageAttachment = NSTextAttachment()
+            imageAttachment.image = UIImage(systemName: "star")
+            let imageString = NSAttributedString(attachment: imageAttachment)
+            attributedText.append(imageString)
+        }
+        
         return attributedText
     }
 }
