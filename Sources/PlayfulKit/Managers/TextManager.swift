@@ -30,15 +30,15 @@ final public class TextManager {
             self.lineSpacing = lineSpacing
             self.padding = padding
         }
-        var content: String
-        var fontName: String?
-        var fontSize: CGFloat
-        var fontColor: UIColor
-        var strokeWidth: CGFloat
-        var strokeColor: UIColor
-        var hasAlignment: Bool
-        var lineSpacing: CGFloat
-        var padding: CGFloat
+        public var content: String
+        public var fontName: String?
+        public var fontSize: CGFloat
+        public var fontColor: UIColor
+        public var strokeWidth: CGFloat
+        public var strokeColor: UIColor
+        public var hasAlignment: Bool
+        public var lineSpacing: CGFloat
+        public var padding: CGFloat
     }
     
     public func attributedText(parameter: Paramater) -> NSAttributedString? {
@@ -69,7 +69,7 @@ final public class TextManager {
         
         if parameter.content.contains("@") {
             let imageAttachment = NSTextAttachment()
-            imageAttachment.image = UIImage(systemName: "star")
+            imageAttachment.image = UIImage(systemName: "star.fill")
             let imageString = NSAttributedString(attachment: imageAttachment)
             attributedText.append(imageString)
         }
