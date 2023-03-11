@@ -65,16 +65,7 @@ final public class TextManager {
             .paragraphStyle: paragraphStyle
         ]
         
-        guard !parameter.content.isEmpty else { return nil }
-        
         let attributedText = NSMutableAttributedString(string: parameter.content, attributes: attributes)
-        
-        if parameter.content.contains("@") {
-            let imageAttachment = NSTextAttachment()
-            imageAttachment.image = UIImage(systemName: "star.fill")
-            let imageString = NSAttributedString(attachment: imageAttachment)
-            attributedText.append(imageString)
-        }
         
         return attributedText
     }
