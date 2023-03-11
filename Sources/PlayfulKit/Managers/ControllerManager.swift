@@ -43,6 +43,12 @@ public class ControllerManager {
             }
         }
     }
+    public enum ButtonSymbol {
+        case a
+        case b
+        case x
+        case y
+    }
     
     public struct ButtonAction {
         public init(press: (() -> Void)? = nil, release: (() -> Void)? = nil) {
@@ -119,6 +125,21 @@ public class ControllerManager {
         connectControllers()
     }
     
+    /// Symbols
+    public func buttonSymbol(_ symbol: ButtonSymbol) -> String? {
+        guard let gamepad = GCController.current?.extendedGamepad else { return nil }
+        switch symbol {
+        case .a:
+            return gamepad.buttonA.sfSymbolsName
+        case .b:
+            return gamepad.buttonB.sfSymbolsName
+        case .x:
+            return gamepad.buttonX.sfSymbolsName
+        case .y:
+            return gamepad.buttonY.sfSymbolsName
+        }
+    }
+    
     // MARK: - Setup
     @objc public func connectControllers() {
         guard let controller = GCController.current else { return }
@@ -130,7 +151,6 @@ public class ControllerManager {
         
         register(controller)
     }
-    
     @objc public func disconnectControllers() {
         print("Hardware and Virtual Controller disconnected ...")
         disconnectVirtualController()
