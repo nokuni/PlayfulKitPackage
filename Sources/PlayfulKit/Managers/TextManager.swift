@@ -10,6 +10,8 @@ import Utility_Toolbox
 
 final public class TextManager {
     
+    public init() { }
+    
     public struct Paramater {
         public init(content: String,
                     fontName: String? = UIFont.firstSystemFontName,
