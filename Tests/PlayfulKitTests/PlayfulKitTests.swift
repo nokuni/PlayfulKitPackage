@@ -8,8 +8,9 @@ final class PlayfulKitTests: XCTestCase {
         let rectangle = SKShapeNode(rectOf: CGSize(width: 300, height: 100))
         rectangle.name = "Window"
         let scribeNode = PKTypewriterNode(container: rectangle,
-                                          parameter: .init(content: "Hello World"))
+                                          parameter: .init(content: "Hello World 􀋃"))
         rectangle.addChildSafely(scribeNode)
+        print(scribeNode.text)
     }
     
     func testObjectAdd() {

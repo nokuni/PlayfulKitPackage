@@ -48,9 +48,10 @@ public class PKTypewriterNode: SKLabelNode {
     // MARK: - PRIVATE
     private func setupWriting() {
         guard let container = container else { return }
-        if let attributedText = textManager.attributedText(parameter: parameter) {
-            self.attributedText = attributedText
-        }
+//        if let attributedText = textManager.attributedText(parameter: parameter) {
+//            self.attributedText = attributedText
+//        }
+        text = parameter.content
         lineBreakMode = NSLineBreakMode.byWordWrapping
         numberOfLines = 0
         preferredMaxLayoutWidth = container.frame.width - (parameter.padding * 2)
