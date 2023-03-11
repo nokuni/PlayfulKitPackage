@@ -126,17 +126,17 @@ public class ControllerManager {
     }
     
     /// Symbols
-    public func buttonSymbol(_ symbol: ButtonSymbol) -> String? {
+    public func buttonName(_ symbol: ButtonSymbol) -> String? {
         guard let gamepad = GCController.current?.extendedGamepad else { return nil }
         switch symbol {
         case .a:
-            return gamepad.buttonA.sfSymbolsName
+            return gamepad.buttonA.localizedName
         case .b:
-            return gamepad.buttonB.sfSymbolsName
+            return gamepad.buttonB.localizedName
         case .x:
-            return gamepad.buttonX.sfSymbolsName
+            return gamepad.buttonX.localizedName
         case .y:
-            return gamepad.buttonY.sfSymbolsName
+            return gamepad.buttonY.localizedName
         }
     }
     

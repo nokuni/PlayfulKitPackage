@@ -13,6 +13,14 @@ final class PlayfulKitTests: XCTestCase {
         print(scribeNode.text)
     }
     
+    func testButtonNanes() {
+        let scene = SKScene()
+        let controllerManager = ControllerManager(scene: scene)
+        controllerManager.observeControllers()
+        controllerManager.connectControllers()
+        print(controllerManager.buttonName(.a))
+    }
+    
     func testObjectAdd() {
         let node = SKNode()
         let collision = Collision(category: .object,
