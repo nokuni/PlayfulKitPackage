@@ -229,9 +229,9 @@ public class ControllerManager {
     public func input(on gamepad: GCExtendedGamepad) {
         pressButton(gamepad.buttonMenu, action: action?.buttonMenu)
         pressButton(gamepad.buttonA, action: action?.buttonA)
-        pressButton(gamepad.buttonB, action: action?.buttonA)
-        pressButton(gamepad.buttonX, action: action?.buttonA)
-        pressButton(gamepad.buttonY, action: action?.buttonA)
+        pressButton(gamepad.buttonB, action: action?.buttonB)
+        pressButton(gamepad.buttonX, action: action?.buttonX)
+        pressButton(gamepad.buttonY, action: action?.buttonY)
         pressDpad(gamepad.dpad, action: action?.dpad)
     }
     
