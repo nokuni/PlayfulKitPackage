@@ -12,6 +12,8 @@ public class PKObjectNode: SKSpriteNode {
     public var logic = LogicBody()
     public var coordinate = Coordinate.zero
     
+    public var drops: [Any] = []
+    
     /// Animations of the object.
     public var animations: [ObjectAnimation] = []
     
