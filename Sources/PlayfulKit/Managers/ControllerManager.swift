@@ -49,6 +49,11 @@ public class ControllerManager {
         case x
         case y
     }
+    public enum ProductCategory {
+        case xbox
+        case playstation
+        case nintendo
+    }
     
     public struct ButtonAction {
         public init(press: (() -> Void)? = nil, release: (() -> Void)? = nil) {
@@ -125,7 +130,7 @@ public class ControllerManager {
         connectControllers()
     }
     
-    /// Symbols
+    /// Name of the button
     public func buttonName(_ symbol: ButtonSymbol) -> String? {
         guard let gamepad = GCController.current?.extendedGamepad else { return nil }
         switch symbol {
@@ -137,6 +142,28 @@ public class ControllerManager {
             return gamepad.buttonX.localizedName
         case .y:
             return gamepad.buttonY.localizedName
+        }
+    }
+    public var currentProductCategory: ProductCategory? {
+        // "Nintendo Switch Joy-Con (L/R)" -> Nintendo
+        // DualShock -> Playstation
+        // DualSense -> Playstation
+        // ??? -> Xbox
+        let productCategory = GCController.current?.productCategory
+        
+        guard let productCategory = productCategory else { return nil }
+        
+        switch true {
+        case productCategory.localizedCaseInsensitiveContains("joy-con"):
+            return .nintendo
+        case productCategory.localizedCaseInsensitiveContains("dualshock"):
+            return .playstation
+        case productCategory.localizedCaseInsensitiveContains("dualsense"):
+            return .playstation
+        case productCategory.localizedCaseInsensitiveContains("xbox"):
+            return .xbox
+        default:
+            return nil
         }
     }
     
