@@ -48,6 +48,7 @@ public class PKMapNode: SKNode {
                           image: String,
                           filteringMode: SKTextureFilteringMode = .linear,
                           logic: LogicBody,
+                          drops: [Any] = [],
                           animations: [ObjectAnimation],
                           at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
@@ -57,6 +58,7 @@ public class PKMapNode: SKNode {
             newObject.texture?.filteringMode = filteringMode
             newObject.coordinate = coordinate
             newObject.logic = logic
+            newObject.drops = drops
             newObject.animations = animations
             newObject.position = position
             addChildSafely(newObject)
