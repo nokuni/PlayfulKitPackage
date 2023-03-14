@@ -46,7 +46,7 @@ final public class CameraManager {
     
     // MARK: - Public
     /// The camera follows a node constantly with a catch up delay.
-    public func move(to position: CGPoint, with catchUpDelay: CGFloat = 0) {
+    public func move(to position: CGPoint, catchUpDelay: CGFloat = 0) {
         let action = SKAction.move(to: position, duration: catchUpDelay)
         scene?.camera?.run(action)
     }
