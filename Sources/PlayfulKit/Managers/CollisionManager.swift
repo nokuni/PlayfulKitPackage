@@ -23,6 +23,8 @@ public class CollisionManager {
     
     /// Compare two physics bodies and return true if they are colliding, false if they are not.
     public func isColliding(_ first: NodeBody, with second: NodeBody) -> Bool {
-        return first.body.categoryBitMask == first.bitmaskCategory && second.body.categoryBitMask == second.bitmaskCategory
+        let firstBody = first.body.categoryBitMask == first.bitmaskCategory
+        let secondBody = second.body.categoryBitMask == second.bitmaskCategory
+        return firstBody && secondBody
     }
 }

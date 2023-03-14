@@ -19,13 +19,3 @@ public struct ObjectAnimation {
     public var frames: [String]
 }
 
-//enum ObjectAnimationCategory {
-//    case idle
-//    case walk
-//    case run
-//    case hit
-//    case attack
-//    case jump
-//    case deletion
-//}
-

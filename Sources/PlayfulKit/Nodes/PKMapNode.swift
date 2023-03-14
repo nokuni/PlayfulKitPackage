@@ -414,7 +414,9 @@ public class PKMapNode: SKNode {
     }
     
     /// Draw a single texture on one tile at a specific coordinate.
-    public func drawTexture(_ image: String, filteringMode: SKTextureFilteringMode = .linear, at coordinate: Coordinate) {
+    public func drawTexture(_ image: String,
+                            filteringMode: SKTextureFilteringMode = .linear,
+                            at coordinate: Coordinate) {
         let tileNode = self.tiles.tile(at: coordinate)
         tileNode?.texture = SKTexture(imageNamed: image)
         tileNode?.texture?.filteringMode = filteringMode

@@ -18,8 +18,8 @@ public class PKTypewriterNode: SKLabelNode {
         self.parameter = parameter
         self.timeInterval = timeInterval
         super.init()
-        setupWriting()
-        write()
+        setup()
+        startWriting()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -40,6 +40,8 @@ public class PKTypewriterNode: SKLabelNode {
     
     /// Stop the writing text.
     public func stop() { timer?.invalidate() }
+
+    public func start() { timer?.fire() }
     
     /// Check if the text has finished writing.
     public func hasFinished() -> Bool {
@@ -47,7 +49,7 @@ public class PKTypewriterNode: SKLabelNode {
     }
     
     // MARK: - PRIVATE
-    private func setupWriting() {
+    private func setup() {
         guard let container = container else { return }
         if let attributedText = textManager.attributedText(parameter: parameter) {
             self.attributedText = attributedText
@@ -64,24 +66,28 @@ public class PKTypewriterNode: SKLabelNode {
         currentCharacterIndex < parameter.content.count
     }
     
-    private func updateText() {
+    private func write() {
         switch true {
         case isWriting:
-            currentCharacterIndex += 1
-            let currentText = String(parameter.content.prefix(currentCharacterIndex))
-            var newParameter = parameter
-            newParameter.content = currentText
-            attributedText = textManager.attributedText(parameter: newParameter)
+            updateText()
         default:
             stop()
         }
     }
+
+    private func updateText() {
+        currentCharacterIndex += 1
+        let currentText = String(parameter.content.prefix(currentCharacterIndex))
+        var newParameter = parameter
+        newParameter.content = currentText
+        attributedText = textManager.attributedText(parameter: newParameter)
+    }
     
-    private func write() {
+    private func startWriting() {
         timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { [weak self] timer in
             guard let self = self else { return }
-            self.updateText()
+            self.write()
         }
-        timer?.fire()
+        start()
     }
 }
