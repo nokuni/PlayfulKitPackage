@@ -19,23 +19,17 @@ final public class CameraManager {
 
     public struct Showcase {
 
-        public init(startingPoint: CGPoint,
-                    endingPoint: CGPoint,
+        public init(targetPoint: CGPoint,
                     stayDuration: CGFloat = 2,
-                    moveInDuration: CGFloat = 2,
-                    moveOutDuration: CGFloat = 0) {
-            self.startingPoint = startingPoint
-            self.endingPoint = endingPoint
+                    moveInDuration: CGFloat = 2) {
+            self.targetPoint = targetPoint
             self.stayDuration = stayDuration
             self.moveInDuration = moveInDuration
-            self.moveOutDuration = moveOutDuration
         }
 
-        public var startingPoint: CGPoint
-        public var endingPoint: CGPoint
+        public var targetPoint: CGPoint
         public var stayDuration: CGFloat
         public var moveInDuration: CGFloat
-        public var moveOutDuration: CGFloat
     }
     
     public var scene: SKScene?
@@ -51,8 +45,8 @@ final public class CameraManager {
         scene?.camera?.run(action)
     }
 
-    public func showcase(_ showcase: Showcase) {
-        scene?.camera?.run(showcaseAnimation(showcase))
+    public func showcase(_ showcase: Showcase, completion: (() -> Void)?) {
+        scene?.camera?.run(showcaseAnimation(showcase, completion: completion))
     }
 
     /// Allow the camera to be moved on screen by gestures.
@@ -78,11 +72,11 @@ final public class CameraManager {
     }
     
     // MARK: - Private
-    private func showcaseAnimation(_ showcase: Showcase) -> SKAction {
+    private func showcaseAnimation(_ showcase: Showcase, completion: (() -> Void)?) -> SKAction {
         let sequence = SKAction.sequence([
-            SKAction.move(to: showcase.endingPoint, duration: showcase.moveInDuration),
+            SKAction.move(to: showcase.targetPoint, duration: showcase.moveInDuration),
             SKAction.wait(forDuration: showcase.stayDuration),
-            SKAction.move(to: showcase.startingPoint, duration: showcase.moveOutDuration)
+            SKAction.run { completion?() }
         ])
         return sequence
     }
