@@ -115,17 +115,17 @@ public class ControllerManager {
         NotificationCenter.default.addObserver(self, selector: #selector(connectControllers), name: NSNotification.Name.GCControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(disconnectControllers), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
         
-//        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-//
-//        if GCController.controllers().isEmpty {
-//            print("Virtual Controller connected !")
-//            connectVirtualController()
-//            registerVirtualInputs()
-//        }
-//
-//        guard let controller = GCController.controllers().first else { return }
-//
-//        register(controller)
+        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
+
+        if GCController.controllers().isEmpty {
+            print("Virtual Controller connected !")
+            connectVirtualController()
+            registerVirtualInputs()
+        }
+
+        guard let controller = GCController.controllers().first else { return }
+
+        register(controller)
         
         connectControllers()
     }
@@ -171,10 +171,10 @@ public class ControllerManager {
     @objc public func connectControllers() {
         guard let controller = GCController.current else { return }
         
-//        if controller != virtualController?.controller {
-//            print("Virtual Controller disconnected ...")
-//            disconnectVirtualController()
-//        }
+        if controller != virtualController?.controller {
+            print("Virtual Controller disconnected ...")
+            disconnectVirtualController()
+        }
         
         register(controller)
     }
@@ -182,11 +182,11 @@ public class ControllerManager {
         print("Hardware and Virtual Controller disconnected ...")
         disconnectVirtualController()
         
-//        if GCController.controllers().isEmpty {
-//            virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-//            connectVirtualController()
-//            registerVirtualInputs()
-//        }
+        if GCController.controllers().isEmpty {
+            virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
+            connectVirtualController()
+            registerVirtualInputs()
+        }
     }
     
     // MARK: - Virtual
