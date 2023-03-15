@@ -28,7 +28,7 @@ public extension Int {
                                   at: position,
                                   in: node,
                                   axes: .horizontal,
-                                  alignment: .center,
+                                  adjustement: .center,
                                   spacing: spacing)
     }
     
