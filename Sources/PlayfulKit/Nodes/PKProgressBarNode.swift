@@ -10,7 +10,7 @@ import Utility_Toolbox
 
 public class PKProgressBarNode: SKNode {
     
-    public init(configuration: Configuration) {
+    public init(configuration: ShapeConfiguration) {
         self.configuration = configuration
         
         super.init()
@@ -33,7 +33,7 @@ public class PKProgressBarNode: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var configuration: Configuration?
+    private var configuration: ShapeConfiguration?
     private var imageConfiguration: ImageConfiguration?
     
     private var cropNode = SKCropNode()
@@ -41,7 +41,7 @@ public class PKProgressBarNode: SKNode {
     private var underBarNode = SKSpriteNode()
     
     /// A progress bar synthesized with colors.
-    public struct Configuration {
+    public struct ShapeConfiguration {
         public init(amount: CGFloat = 1,
                     size: CGSize,
                     color: UIColor = .blue,

@@ -9,7 +9,7 @@ import SpriteKit
 
 final public class PKTimerNode: SKNode {
     
-    public init(label: SKLabelNode, configuration: Configuration) {
+    public init(label: SKLabelNode, configuration: TimerConfiguration) {
         self.label = label
         self.configuration = configuration
         super.init()
@@ -20,17 +20,19 @@ final public class PKTimerNode: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public struct Configuration {
+    public struct TimerConfiguration {
         public init(countdown: Int = 10,
                     timeInterval: TimeInterval = 1,
                     actionOnLaunch: (() -> Void)? = nil,
                     actionOnGoing: (() -> Void)? = nil,
-                    actionOnEnd: (() -> Void)? = nil) {
+                    actionOnEnd: (() -> Void)? = nil,
+                    isRepeating: Bool = false) {
             self.countdown = countdown
             self.timeInterval = timeInterval
             self.actionOnLaunch = actionOnLaunch
             self.actionOnGoing = actionOnGoing
             self.actionOnEnd = actionOnEnd
+            self.isRepeating = isRepeating
         }
         
         public var countdown: Int
@@ -38,10 +40,11 @@ final public class PKTimerNode: SKNode {
         public var actionOnLaunch: (() -> Void)?
         public var actionOnGoing: (() -> Void)?
         public var actionOnEnd: (() -> Void)?
+        public var isRepeating: Bool
     }
     
     public var label: SKLabelNode
-    public var configuration = Configuration()
+    public var configuration = TimerConfiguration()
     
     private var initialCountdown: Int = 0
     
@@ -59,6 +62,11 @@ final public class PKTimerNode: SKNode {
     /// Reset the timer countdown.
     public func reset() {
         configuration.countdown = initialCountdown
+    }
+    /// Reset the timer countdown and stop it.
+    public func resetAndStop() {
+        configuration.countdown = initialCountdown
+        cancel()
     }
     
     // MARK: - PRIVATE
@@ -84,9 +92,12 @@ final public class PKTimerNode: SKNode {
         case configuration.countdown > 0:
             configuration.countdown -= 1
             configuration.actionOnGoing?()
-        default:
+        case configuration.isRepeating:
             configuration.actionOnEnd?()
             reset()
+        default:
+            configuration.actionOnEnd?()
+            cancel()
         }
     }
 }
