@@ -6,6 +6,7 @@
 //
 
 import SpriteKit
+import SwiftUI
 import Utility_Toolbox
 
 final public class TextManager {
@@ -22,7 +23,7 @@ final public class TextManager {
                     horizontalAlignmentMode: SKLabelHorizontalAlignmentMode = .left,
                     verticalAlignmentMode: SKLabelVerticalAlignmentMode = .top,
                     lineSpacing: CGFloat = 5,
-                    padding: CGFloat = 0) {
+                    padding: EdgeInsets = EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)) {
             self.content = content
             self.fontName = fontName
             self.fontSize = fontSize
@@ -43,7 +44,7 @@ final public class TextManager {
         public var horizontalAlignmentMode: SKLabelHorizontalAlignmentMode
         public var verticalAlignmentMode: SKLabelVerticalAlignmentMode
         public var lineSpacing: CGFloat
-        public var padding: CGFloat
+        public var padding: EdgeInsets
     }
     
     public func attributedText(parameter: Paramater) -> NSAttributedString? {
