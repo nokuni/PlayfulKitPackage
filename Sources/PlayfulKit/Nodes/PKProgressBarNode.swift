@@ -10,8 +10,8 @@ import Utility_Toolbox
 
 public class PKProgressBarNode: SKNode {
     
-    public init(progressBar: ProgressBar) {
-        self.progressBar = progressBar
+    public init(configuration: Configuration) {
+        self.configuration = configuration
         
         super.init()
         
@@ -19,8 +19,8 @@ public class PKProgressBarNode: SKNode {
         crop()
         createUnderBar()
     }
-    public init(imageProgressBar: ImageProgressBar) {
-        self.imageProgressBar = imageProgressBar
+    public init(imageConfiguration: ImageConfiguration) {
+        self.imageConfiguration = imageConfiguration
         
         super.init()
         
@@ -33,15 +33,15 @@ public class PKProgressBarNode: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var progressBar: ProgressBar?
-    private var imageProgressBar: ImageProgressBar?
+    private var configuration: Configuration?
+    private var imageConfiguration: ImageConfiguration?
     
     private var cropNode = SKCropNode()
     private var barNode = SKSpriteNode()
     private var underBarNode = SKSpriteNode()
     
     /// A progress bar synthesized with colors.
-    public struct ProgressBar {
+    public struct Configuration {
         public init(amount: CGFloat = 1,
                     size: CGSize,
                     color: UIColor = .blue,
@@ -60,7 +60,7 @@ public class PKProgressBarNode: SKNode {
         var cornerRadius: CGFloat
     }
     /// A progress bar synthesized with custom images.
-    public struct ImageProgressBar {
+    public struct ImageConfiguration {
         public init(amount: CGFloat = 1,
                     size: CGSize,
                     image: String,
@@ -139,7 +139,7 @@ public class PKProgressBarNode: SKNode {
     }
     
     private func imageCrop() {
-        guard let imageProgressBar = imageProgressBar else { return }
+        guard let imageConfiguration = imageConfiguration else { return }
         cropNode.addChildSafely(barNode)
         cropNode.maskNode =
         SKSpriteNode(
@@ -147,7 +147,7 @@ public class PKProgressBarNode: SKNode {
             size: CGSize(width: barNode.size.width * 2,
                          height: barNode.size.height * 2)
         )
-        cropNode.maskNode?.xScale = imageProgressBar.amount
+        cropNode.maskNode?.xScale = imageConfiguration.amount
         cropNode.maskNode?.position =
         CGPoint(x: -barNode.size.width / 2,
                 y: -barNode.size.height / 2)
@@ -156,18 +156,18 @@ public class PKProgressBarNode: SKNode {
     }
     
     private func createImageBar() {
-        guard let imageProgressBar = imageProgressBar else { return }
-        barNode = SKSpriteNode(imageNamed: imageProgressBar.image)
+        guard let imageConfiguration = imageConfiguration else { return }
+        barNode = SKSpriteNode(imageNamed: imageConfiguration.image)
     }
     
     private func createImageUnderBar() {
-        guard let imageProgressBar = imageProgressBar else { return }
-        underBarNode = SKSpriteNode(imageNamed: imageProgressBar.underImage)
+        guard let imageConfiguration = imageConfiguration else { return }
+        underBarNode = SKSpriteNode(imageNamed: imageConfiguration.underImage)
         addChildSafely(underBarNode)
     }
     
     private func crop() {
-        guard let progressBar = progressBar else { return }
+        guard let configuration = configuration else { return }
         cropNode.addChildSafely(barNode)
         cropNode.maskNode =
         SKSpriteNode(
@@ -175,7 +175,7 @@ public class PKProgressBarNode: SKNode {
             size: CGSize(width: barNode.size.width * 2,
                          height: barNode.size.height * 2)
         )
-        cropNode.maskNode?.xScale = progressBar.amount
+        cropNode.maskNode?.xScale = configuration.amount
         cropNode.maskNode?.position =
         CGPoint(x: -barNode.size.width / 2,
                 y: -barNode.size.height / 2)
@@ -184,20 +184,20 @@ public class PKProgressBarNode: SKNode {
     }
     
     private func createBar() {
-        guard let progressBar = progressBar else { return }
-        if let image = UIImage.rectangle(size: progressBar.size,
-                                         color: progressBar.color,
-                                         cornerRadius: progressBar.cornerRadius) {
+        guard let configuration = configuration else { return }
+        if let image = UIImage.rectangle(size: configuration.size,
+                                         color: configuration.color,
+                                         cornerRadius: configuration.cornerRadius) {
             let texture = SKTexture(image: image)
             barNode = SKSpriteNode(texture: texture)
         }
     }
     
     private func createUnderBar() {
-        guard let progressBar = progressBar else { return }
-        if let image = UIImage.rectangle(size: progressBar.size,
-                                         color: progressBar.underColor,
-                                         cornerRadius: progressBar.cornerRadius) {
+        guard let configuration = configuration else { return }
+        if let image = UIImage.rectangle(size: configuration.size,
+                                         color: configuration.underColor,
+                                         cornerRadius: configuration.cornerRadius) {
             let texture = SKTexture(image: image)
             underBarNode = SKSpriteNode(texture: texture)
             addChildSafely(underBarNode)
