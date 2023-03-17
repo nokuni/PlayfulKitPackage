@@ -19,7 +19,8 @@ final public class TextManager {
                     fontColor: UIColor = .white,
                     strokeWidth: CGFloat = 0,
                     strokeColor: UIColor = .clear,
-                    hasAlignment: Bool = true,
+                    horizontalAlignmentMode: SKLabelHorizontalAlignmentMode = .left,
+                    verticalAlignmentMode: SKLabelVerticalAlignmentMode = .top,
                     lineSpacing: CGFloat = 5,
                     padding: CGFloat = 0) {
             self.content = content
@@ -28,7 +29,8 @@ final public class TextManager {
             self.fontColor = fontColor
             self.strokeWidth = strokeWidth
             self.strokeColor = strokeColor
-            self.hasAlignment = hasAlignment
+            self.horizontalAlignmentMode = horizontalAlignmentMode
+            self.verticalAlignmentMode = verticalAlignmentMode
             self.lineSpacing = lineSpacing
             self.padding = padding
         }
@@ -38,7 +40,8 @@ final public class TextManager {
         public var fontColor: UIColor
         public var strokeWidth: CGFloat
         public var strokeColor: UIColor
-        public var hasAlignment: Bool
+        public var horizontalAlignmentMode: SKLabelHorizontalAlignmentMode
+        public var verticalAlignmentMode: SKLabelVerticalAlignmentMode
         public var lineSpacing: CGFloat
         public var padding: CGFloat
     }

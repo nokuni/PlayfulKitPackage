@@ -57,9 +57,9 @@ public class PKTypewriterNode: SKLabelNode {
         lineBreakMode = NSLineBreakMode.byWordWrapping
         numberOfLines = 0
         preferredMaxLayoutWidth = container.frame.width - (parameter.padding * 2)
-        horizontalAlignmentMode = .left
-        verticalAlignmentMode = .top
-        position = container.cornerPosition(corner: .topLeft, node: self, padding: parameter.padding, hasAlignment: parameter.hasAlignment)
+        horizontalAlignmentMode = parameter.horizontalAlignmentMode
+        verticalAlignmentMode = parameter.verticalAlignmentMode
+        //position = container.cornerPosition(corner: .topLeft, node: self, padding: parameter.padding)
     }
     
     private var isWriting: Bool {
