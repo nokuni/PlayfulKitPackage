@@ -185,7 +185,9 @@ public class PKProgressBarNode: SKNode {
     
     private func createBar() {
         guard let progressBar = progressBar else { return }
-        if let image = UIImage.rectangle(size: progressBar.size,
+        guard let parent = parent else { return }
+        if let image = UIImage.rectangle(origin: parent.frame.origin,
+                                         size: progressBar.size,
                                          color: progressBar.color,
                                          cornerRadius: progressBar.cornerRadius) {
             let texture = SKTexture(image: image)
@@ -195,7 +197,9 @@ public class PKProgressBarNode: SKNode {
     
     private func createUnderBar() {
         guard let progressBar = progressBar else { return }
-        if let image = UIImage.rectangle(size: progressBar.size,
+        guard let parent = parent else { return }
+        if let image = UIImage.rectangle(origin: parent.frame.origin,
+                                         size: progressBar.size,
                                          color: progressBar.underColor,
                                          cornerRadius: progressBar.cornerRadius) {
             let texture = SKTexture(image: image)
