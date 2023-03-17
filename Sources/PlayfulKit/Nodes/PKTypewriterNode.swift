@@ -59,7 +59,7 @@ public class PKTypewriterNode: SKLabelNode {
         preferredMaxLayoutWidth = container.frame.width - (parameter.padding * 2)
         horizontalAlignmentMode = parameter.horizontalAlignmentMode
         verticalAlignmentMode = parameter.verticalAlignmentMode
-        //position = container.cornerPosition(corner: .topLeft, node: self, padding: parameter.padding)
+        position = container.cornerPosition(corner: .topLeft, node: self, padding: parameter.padding)
     }
     
     private var isWriting: Bool {
