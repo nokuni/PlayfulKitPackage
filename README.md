@@ -26,11 +26,11 @@ addChild(map)
 
 setup()
 
-let configuration = PKProgressBarNode.Configuration(amount: 0.4, 
-                                                    size: CGSize(width: 200, height: 20), 
-                                                    color: .green, 
-                                                    underColor: .gray, 
-                                                    cornerRadius: 15)
+let configuration = PKProgressBarNode.ShapeConfiguration(amount: 0.4, 
+                                                         size: CGSize(width: 200, height: 20),
+                                                         color: .green,
+                                                         underColor: .gray,
+                                                         cornerRadius: 15)
 
 let progressBar = PKProgressBarNode(configuration: configuration)
 progressBar.position = .center
@@ -54,6 +54,25 @@ let parameter = TextManager.Paramater(content: content, padding: padding)
 let typewriterNode = PKTypewriterNode(container: self, parameter: parameter)
 
 addChild(typewriterNode)
+```
+### **PKTimerNode**
+*Create a timer node.*
+```swift
+setup()
+let countdown: Int = 5
+
+let label = SKLabelNode(text: "\(countdown)")
+label.position = .center
+
+addChild(label)
+
+let configuration = PKTimerNode.TimerConfiguration(countdown: countdown)
+
+let timer = PKTimerNode(label: label, configuration: configuration)
+
+label.addChild(timer)
+
+timer.start()
 ```
 
 # UTILITIES

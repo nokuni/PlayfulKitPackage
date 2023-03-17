@@ -27,17 +27,17 @@ final public class CameraManager {
         
         public init(targetPoint: CGPoint,
                     moveInDuration: CGFloat = 2,
-                    showDuration: CGFloat = 2,
+                    showAction: SKAction,
                     afterShow: (() -> Void)?) {
             self.targetPoint = targetPoint
             self.moveInDuration = moveInDuration
-            self.showDuration = showDuration
+            self.showAction = showAction
             self.afterShow = afterShow
         }
         
         public var targetPoint: CGPoint
         public var moveInDuration: CGFloat
-        public var showDuration: CGFloat
+        public var showAction: SKAction
         public var afterShow: (() -> Void)?
     }
     
@@ -78,7 +78,7 @@ final public class CameraManager {
     private func showcaseAnimation(_ showcase: Showcase, completion: (() -> Void)?) -> SKAction {
         let sequence = SKAction.sequence([
             SKAction.move(to: showcase.targetPoint, duration: showcase.moveInDuration),
-            SKAction.wait(forDuration: showcase.showDuration),
+            showcase.showAction,
             SKAction.run { completion?() }
         ])
         return sequence
