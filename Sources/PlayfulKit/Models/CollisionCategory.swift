@@ -31,8 +31,10 @@ public struct CollisionCategory: OptionSet {
     public static let npc              = CollisionCategory(rawValue: 0x1 << 4)
     /// NPC projectiles collision.
     public static let npcProjectile    = CollisionCategory(rawValue: 0x1 << 5)
+    /// Item collision.
+    public static let item             = CollisionCategory(rawValue: 0x1 << 6)
     /// Object collision.
-    public static let object           = CollisionCategory(rawValue: 0x1 << 6)
+    public static let object           = CollisionCategory(rawValue: 0x1 << 7)
     /// Structure collision.
-    public static let structure        = CollisionCategory(rawValue: 0x1 << 7)
+    public static let structure        = CollisionCategory(rawValue: 0x1 << 8)
 }
