@@ -9,8 +9,9 @@ import SpriteKit
 
 final public class PKTimerNode: SKNode {
     
-    public init(label: SKLabelNode) {
+    public init(label: SKLabelNode, configuration: Configuration) {
         self.label = label
+        self.configuration = configuration
         super.init()
         initialCountdown = configuration.countdown
     }
@@ -19,7 +20,7 @@ final public class PKTimerNode: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public struct TimerConfiguration {
+    public struct Configuration {
         public init(countdown: Int = 10,
                     timeInterval: TimeInterval = 1,
                     actionOnLaunch: (() -> Void)? = nil,
@@ -40,7 +41,7 @@ final public class PKTimerNode: SKNode {
     }
     
     public var label: SKLabelNode
-    public var configuration = TimerConfiguration()
+    public var configuration = Configuration()
     
     private var initialCountdown: Int = 0
     
