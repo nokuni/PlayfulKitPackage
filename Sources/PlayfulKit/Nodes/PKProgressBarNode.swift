@@ -62,18 +62,15 @@ public class PKProgressBarNode: SKNode {
     /// A progress bar synthesized with custom images.
     public struct ImageConfiguration {
         public init(amount: CGFloat = 1,
-                    size: CGSize,
-                    image: String,
-                    underImage: String) {
+                    sprite: SKSpriteNode,
+                    underSprite: SKSpriteNode) {
             self.amount = amount
-            self.size = size
-            self.image = image
-            self.underImage = image
+            self.sprite = sprite
+            self.underSprite = underSprite
         }
         var amount: CGFloat
-        var size: CGSize
-        var image: String
-        var underImage: String
+        var sprite: SKSpriteNode
+        var underSprite: SKSpriteNode
     }
     
     // MARK: - PUBLIC
@@ -140,8 +137,7 @@ public class PKProgressBarNode: SKNode {
     
     private func createImageBar() {
         guard let imageConfiguration = imageConfiguration else { return }
-        barNode = SKSpriteNode(imageNamed: imageConfiguration.image)
-        barNode.size = imageConfiguration.size
+        barNode = imageConfiguration.sprite
     }
     private func imageCrop() {
         guard let imageConfiguration = imageConfiguration else { return }
@@ -161,7 +157,7 @@ public class PKProgressBarNode: SKNode {
     }
     private func createImageUnderBar() {
         guard let imageConfiguration = imageConfiguration else { return }
-        underBarNode = SKSpriteNode(imageNamed: imageConfiguration.underImage)
+        underBarNode = imageConfiguration.underSprite
         addChildSafely(underBarNode)
     }
     
