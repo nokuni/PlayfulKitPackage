@@ -9,7 +9,8 @@ import SpriteKit
 
 final public class PKTimerNode: SKNode {
     
-    public init(label: SKLabelNode, configuration: TimerConfiguration) {
+    public init(label: SKLabelNode? = nil,
+                configuration: TimerConfiguration = TimerConfiguration()) {
         self.label = label
         self.configuration = configuration
         super.init()
@@ -22,12 +23,14 @@ final public class PKTimerNode: SKNode {
     
     public struct TimerConfiguration {
         public init(countdown: Int = 10,
+                    counter: Int = 1,
                     timeInterval: TimeInterval = 1,
                     actionOnLaunch: (() -> Void)? = nil,
                     actionOnGoing: (() -> Void)? = nil,
                     actionOnEnd: (() -> Void)? = nil,
                     isRepeating: Bool = false) {
             self.countdown = countdown
+            self.counter = counter
             self.timeInterval = timeInterval
             self.actionOnLaunch = actionOnLaunch
             self.actionOnGoing = actionOnGoing
@@ -36,6 +39,7 @@ final public class PKTimerNode: SKNode {
         }
         
         public var countdown: Int
+        public var counter: Int
         public var timeInterval: TimeInterval
         public var actionOnLaunch: (() -> Void)?
         public var actionOnGoing: (() -> Void)?
@@ -43,7 +47,7 @@ final public class PKTimerNode: SKNode {
         public var isRepeating: Bool
     }
     
-    public var label: SKLabelNode
+    public var label: SKLabelNode?
     public var configuration = TimerConfiguration()
     
     private var initialCountdown: Int = 0
@@ -85,12 +89,12 @@ final public class PKTimerNode: SKNode {
         "\(configuration.countdown)"
     }
     private func updateLabel() {
-        label.text = timerText
+        label?.text = timerText
     }
     private func countdown() {
         switch true {
         case configuration.countdown > 0:
-            configuration.countdown -= 1
+            configuration.countdown -= configuration.counter
             configuration.actionOnGoing?()
         case configuration.isRepeating:
             configuration.actionOnEnd?()
