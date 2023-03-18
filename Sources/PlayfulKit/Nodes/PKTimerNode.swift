@@ -22,8 +22,8 @@ final public class PKTimerNode: SKNode {
     }
     
     public struct TimerConfiguration {
-        public init(countdown: Int = 10,
-                    counter: Int = 1,
+        public init(countdown: Double = 10,
+                    counter: Double = 1,
                     timeInterval: TimeInterval = 1,
                     actionOnLaunch: (() -> Void)? = nil,
                     actionOnGoing: (() -> Void)? = nil,
@@ -38,8 +38,8 @@ final public class PKTimerNode: SKNode {
             self.isRepeating = isRepeating
         }
         
-        public var countdown: Int
-        public var counter: Int
+        public var countdown: Double
+        public var counter: Double
         public var timeInterval: TimeInterval
         public var actionOnLaunch: (() -> Void)?
         public var actionOnGoing: (() -> Void)?
@@ -50,7 +50,7 @@ final public class PKTimerNode: SKNode {
     public var label: SKLabelNode?
     public var configuration = TimerConfiguration()
     
-    private var initialCountdown: Int = 0
+    private var initialCountdown: Double = 0
     
     // MARK: - PUBLIC
     
