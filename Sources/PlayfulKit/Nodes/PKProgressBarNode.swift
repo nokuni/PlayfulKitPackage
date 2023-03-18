@@ -24,7 +24,7 @@ public class PKProgressBarNode: SKNode {
         
         super.init()
         
-        createUnderBar()
+        createImageBar()
         imageCrop()
         createImageUnderBar()
     }
@@ -138,6 +138,11 @@ public class PKProgressBarNode: SKNode {
         return scaleAnimation
     }
     
+    private func createImageBar() {
+        guard let imageConfiguration = imageConfiguration else { return }
+        barNode = SKSpriteNode(imageNamed: imageConfiguration.image)
+        barNode.size = imageConfiguration.size
+    }
     private func imageCrop() {
         guard let imageConfiguration = imageConfiguration else { return }
         cropNode.addChildSafely(barNode)
@@ -154,18 +159,21 @@ public class PKProgressBarNode: SKNode {
         cropNode.zPosition = 0.1
         addChildSafely(cropNode)
     }
-    
-    private func createImageBar() {
-        guard let imageConfiguration = imageConfiguration else { return }
-        barNode = SKSpriteNode(imageNamed: imageConfiguration.image)
-    }
-    
     private func createImageUnderBar() {
         guard let imageConfiguration = imageConfiguration else { return }
         underBarNode = SKSpriteNode(imageNamed: imageConfiguration.underImage)
         addChildSafely(underBarNode)
     }
     
+    private func createBar() {
+        guard let configuration = configuration else { return }
+        if let image = UIImage.rectangle(size: configuration.size,
+                                         color: configuration.color,
+                                         cornerRadius: configuration.cornerRadius) {
+            let texture = SKTexture(image: image)
+            barNode = SKSpriteNode(texture: texture)
+        }
+    }
     private func crop() {
         guard let configuration = configuration else { return }
         cropNode.addChildSafely(barNode)
@@ -182,17 +190,6 @@ public class PKProgressBarNode: SKNode {
         cropNode.zPosition = 0.1
         addChildSafely(cropNode)
     }
-    
-    private func createBar() {
-        guard let configuration = configuration else { return }
-        if let image = UIImage.rectangle(size: configuration.size,
-                                         color: configuration.color,
-                                         cornerRadius: configuration.cornerRadius) {
-            let texture = SKTexture(image: image)
-            barNode = SKSpriteNode(texture: texture)
-        }
-    }
-    
     private func createUnderBar() {
         guard let configuration = configuration else { return }
         if let image = UIImage.rectangle(size: configuration.size,
