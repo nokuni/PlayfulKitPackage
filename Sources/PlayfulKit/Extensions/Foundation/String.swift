@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
     var coordinate: Coordinate {
         guard self.count == 4 else { return .zero }
         guard let x = Int("\(digits[0])\(digits[1])") else { return .zero }
