@@ -4,6 +4,11 @@ import SpriteKit
 
 final class PlayfulKitTests: XCTestCase {
     
+    func testCoordinate() {
+        let data = "0709"
+        print(data.coordinate)
+    }
+    
     func testScribe() {
         let rectangle = SKShapeNode(rectOf: CGSize(width: 300, height: 100))
         rectangle.name = "Window"
