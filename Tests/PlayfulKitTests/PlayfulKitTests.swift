@@ -15,7 +15,6 @@ final class PlayfulKitTests: XCTestCase {
         let scribeNode = PKTypewriterNode(container: rectangle,
                                           parameter: .init(content: "Hello World 􀋃"))
         rectangle.addChildSafely(scribeNode)
-        print(scribeNode.text)
     }
     
     func testButtonNanes() {
@@ -23,7 +22,6 @@ final class PlayfulKitTests: XCTestCase {
         let controllerManager = ControllerManager(scene: scene)
         controllerManager.observeControllers()
         controllerManager.connectControllers()
-        print(controllerManager.buttonName(.a))
     }
     
     func testObjectAdd() {
