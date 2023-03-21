@@ -125,7 +125,7 @@ final public class AssemblyManager {
         
         switch adjustement {
         case .center:
-            initialPosition = CGPoint(x: centerAlignmentValue, y: startingPosition.y)
+            initialPosition = CGPoint(x: startingPosition.x + centerAlignmentValue, y: startingPosition.y)
         case .leading:
             initialPosition = startingPosition
         case .trailing:
