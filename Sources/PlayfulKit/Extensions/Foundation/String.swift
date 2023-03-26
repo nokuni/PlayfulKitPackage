@@ -15,4 +15,12 @@ public extension String {
         let result = Coordinate(x: x, y: y)
         return result
     }
+    
+    var matrix: Matrix {
+        guard self.count == 4 else { return .zero }
+        guard let row = Int("\(digits[0])\(digits[1])") else { return .zero }
+        guard let column = Int("\(digits[2])\(digits[3])") else { return .zero }
+        let result = Matrix(row: row, column: column)
+        return result
+    }
 }
