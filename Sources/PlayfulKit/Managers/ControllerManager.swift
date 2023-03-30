@@ -235,21 +235,6 @@ public class ControllerManager {
         default:
             action?.release?()
         }
-//        if directionPad.right.isPressed && !directionPad.left.isPressed { action?.rightPress?() } else {
-//            action?.rightRelease?()
-//        }
-//        
-//        if directionPad.left.isPressed && !directionPad.right.isPressed { action?.leftPress?() } else {
-//            action?.leftRelease?()
-//        }
-//        
-//        if directionPad.up.isPressed && !directionPad.down.isPressed { action?.upPress?() } else {
-//            action?.upRelease?()
-//        }
-//        
-//        if directionPad.down.isPressed && !directionPad.up.isPressed { action?.downPress?() } else {
-//            action?.downRelease?()
-//        }
     }
     public func input(on gamepad: GCExtendedGamepad) {
         pressButton(gamepad.buttonMenu, action: action?.buttonMenu)
