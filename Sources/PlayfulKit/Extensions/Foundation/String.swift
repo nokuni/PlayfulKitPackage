@@ -13,8 +13,8 @@ public extension String {
         guard let number = Int(self) else { return .zero}
         guard number.isEven else { return .zero }
         let numbers = number.digits.split()
-        guard let x = numbers.firstPart.numericValue else { return .zero }
-        guard let y = numbers.lastPart.numericValue else { return .zero }
+        guard let x = numbers.firstPart.intValue else { return .zero }
+        guard let y = numbers.lastPart.intValue else { return .zero }
         let result = Coordinate(x: x, y: y)
         return result
     }
@@ -23,8 +23,8 @@ public extension String {
         guard let number = Int(self) else { return .zero}
         guard number.isEven else { return .zero }
         let numbers = number.digits.split()
-        guard let row = numbers.firstPart.numericValue else { return .zero }
-        guard let column = numbers.lastPart.numericValue else { return .zero }
+        guard let row = numbers.firstPart.intValue else { return .zero }
+        guard let column = numbers.lastPart.intValue else { return .zero }
         let result = Matrix(row: row, column: column)
         return result
     }
