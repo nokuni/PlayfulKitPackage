@@ -65,20 +65,32 @@ public class ControllerManager {
         public var release: (() -> Void)?
     }
     public struct DPadAction {
-        public  init(left: (() -> Void)?,
-                     right: (() -> Void)?,
-                     up: (() -> Void)?,
-                     down: (() -> Void)?) {
-            self.left = left
-            self.right = right
-            self.up = up
-            self.down = down
+        public  init(leftPress: (() -> Void)?,
+                     leftRelease: (() -> Void)?,
+                     rightPress: (() -> Void)?,
+                     rightRelease: (() -> Void)?,
+                     upPress: (() -> Void)?,
+                     upRelease: (() -> Void)?,
+                     downPress: (() -> Void)?,
+                     downRelease: (() -> Void)?) {
+            self.leftPress = leftPress
+            self.leftRelease = leftRelease
+            self.rightPress = rightPress
+            self.rightRelease = rightRelease
+            self.upPress = upPress
+            self.upRelease = upRelease
+            self.downPress = downPress
+            self.downRelease = downRelease
         }
         
-        var left: (() -> Void)?
-        var right: (() -> Void)?
-        var up: (() -> Void)?
-        var down: (() -> Void)?
+        var leftPress: (() -> Void)?
+        var leftRelease: (() -> Void)?
+        var rightPress: (() -> Void)?
+        var rightRelease: (() -> Void)?
+        var upPress: (() -> Void)?
+        var upRelease: (() -> Void)?
+        var downPress: (() -> Void)?
+        var downRelease: (() -> Void)?
     }
     
     public struct ControllerAction {
@@ -220,16 +232,20 @@ public class ControllerManager {
     }
     public func pressDpad(_ directionPad: GCControllerDirectionPad,
                           action: DPadAction?) {
-        if directionPad.right.isPressed && !directionPad.left.isPressed { action?.right?() }
-        if directionPad.left.isPressed && !directionPad.right.isPressed { action?.left?() }
+        if directionPad.right.isPressed && !directionPad.left.isPressed { action?.rightPress?() } else {
+            action?.rightRelease?()
+        }
         
-        if directionPad.up.isPressed && !directionPad.down.isPressed { action?.up?() }
-        if directionPad.down.isPressed && !directionPad.up.isPressed { action?.down?() }
+        if directionPad.left.isPressed && !directionPad.right.isPressed { action?.leftPress?() } else {
+            action?.leftRelease?()
+        }
         
-        directionPad.valueChangedHandler = { value1, value2, value3 in
-            print(value1)
-            print(value2)
-            print(value3)
+        if directionPad.up.isPressed && !directionPad.down.isPressed { action?.upPress?() } else {
+            action?.upRelease?()
+        }
+        
+        if directionPad.down.isPressed && !directionPad.up.isPressed { action?.downPress?() } else {
+            action?.downRelease?()
         }
     }
     public func input(on gamepad: GCExtendedGamepad) {
