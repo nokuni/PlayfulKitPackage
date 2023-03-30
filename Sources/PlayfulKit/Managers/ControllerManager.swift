@@ -65,14 +65,14 @@ public class ControllerManager {
         public var release: (() -> Void)?
     }
     public struct DPadAction {
-        public  init(leftPress: (() -> Void)?,
-                     leftRelease: (() -> Void)?,
-                     rightPress: (() -> Void)?,
-                     rightRelease: (() -> Void)?,
-                     upPress: (() -> Void)?,
-                     upRelease: (() -> Void)?,
-                     downPress: (() -> Void)?,
-                     downRelease: (() -> Void)?) {
+        public  init(leftPress: (() -> Void)? = nil,
+                     leftRelease: (() -> Void)? = nil,
+                     rightPress: (() -> Void)? = nil,
+                     rightRelease: (() -> Void)? = nil,
+                     upPress: (() -> Void)? = nil,
+                     upRelease: (() -> Void)? = nil,
+                     downPress: (() -> Void)? = nil,
+                     downRelease: (() -> Void)? = nil) {
             self.leftPress = leftPress
             self.leftRelease = leftRelease
             self.rightPress = rightPress
