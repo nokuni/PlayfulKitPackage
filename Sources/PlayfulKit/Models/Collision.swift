@@ -6,6 +6,7 @@
 //
 
 import SpriteKit
+import Utility_Toolbox
 
 /// Node collision.
 public struct Collision {
