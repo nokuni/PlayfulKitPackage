@@ -66,31 +66,22 @@ public class ControllerManager {
     }
     public struct DPadAction {
         public  init(leftPress: (() -> Void)? = nil,
-                     leftRelease: (() -> Void)? = nil,
                      rightPress: (() -> Void)? = nil,
-                     rightRelease: (() -> Void)? = nil,
                      upPress: (() -> Void)? = nil,
-                     upRelease: (() -> Void)? = nil,
                      downPress: (() -> Void)? = nil,
-                     downRelease: (() -> Void)? = nil) {
+                     release: (() -> Void)? = nil) {
             self.leftPress = leftPress
-            self.leftRelease = leftRelease
             self.rightPress = rightPress
-            self.rightRelease = rightRelease
             self.upPress = upPress
-            self.upRelease = upRelease
             self.downPress = downPress
-            self.downRelease = downRelease
+            self.release = release
         }
         
         var leftPress: (() -> Void)?
-        var leftRelease: (() -> Void)?
         var rightPress: (() -> Void)?
-        var rightRelease: (() -> Void)?
         var upPress: (() -> Void)?
-        var upRelease: (() -> Void)?
         var downPress: (() -> Void)?
-        var downRelease: (() -> Void)?
+        var release: (() -> Void)?
     }
     
     public struct ControllerAction {
@@ -128,15 +119,15 @@ public class ControllerManager {
         NotificationCenter.default.addObserver(self, selector: #selector(disconnectControllers), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
         
         virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-
+        
         if GCController.controllers().isEmpty {
             print("Virtual Controller connected !")
             connectVirtualController()
             registerVirtualInputs()
         }
-
+        
         guard let controller = GCController.controllers().first else { return }
-
+        
         register(controller)
         
         connectControllers()
@@ -232,21 +223,33 @@ public class ControllerManager {
     }
     public func pressDpad(_ directionPad: GCControllerDirectionPad,
                           action: DPadAction?) {
-        if directionPad.right.isPressed && !directionPad.left.isPressed { action?.rightPress?() } else {
-            action?.rightRelease?()
+        switch true {
+        case directionPad.right.isPressed && !directionPad.left.isPressed:
+            action?.rightPress?()
+        case directionPad.left.isPressed && !directionPad.right.isPressed:
+            action?.leftPress?()
+        case directionPad.up.isPressed && !directionPad.down.isPressed:
+            action?.upPress?()
+        case directionPad.down.isPressed && !directionPad.up.isPressed:
+            action?.downPress?()
+        default:
+            action?.release?()
         }
-        
-        if directionPad.left.isPressed && !directionPad.right.isPressed { action?.leftPress?() } else {
-            action?.leftRelease?()
-        }
-        
-        if directionPad.up.isPressed && !directionPad.down.isPressed { action?.upPress?() } else {
-            action?.upRelease?()
-        }
-        
-        if directionPad.down.isPressed && !directionPad.up.isPressed { action?.downPress?() } else {
-            action?.downRelease?()
-        }
+//        if directionPad.right.isPressed && !directionPad.left.isPressed { action?.rightPress?() } else {
+//            action?.rightRelease?()
+//        }
+//        
+//        if directionPad.left.isPressed && !directionPad.right.isPressed { action?.leftPress?() } else {
+//            action?.leftRelease?()
+//        }
+//        
+//        if directionPad.up.isPressed && !directionPad.down.isPressed { action?.upPress?() } else {
+//            action?.upRelease?()
+//        }
+//        
+//        if directionPad.down.isPressed && !directionPad.up.isPressed { action?.downPress?() } else {
+//            action?.downRelease?()
+//        }
     }
     public func input(on gamepad: GCExtendedGamepad) {
         pressButton(gamepad.buttonMenu, action: action?.buttonMenu)
