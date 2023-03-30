@@ -4,7 +4,16 @@ import SpriteKit
 
 final class PlayfulKitTests: XCTestCase {
     
-    func testCoordinate() {
+    func testCoordinateString() {
+        let coordinateString = "0835"
+        let coordinate = coordinateString.coordinate
+        print(coordinate)
+        let expectedResult = Coordinate(x: 8, y: 35)
+        
+        XCTAssertEqual(coordinate, expectedResult)
+    }
+    
+    func testMatrixString() {
         let data = "0709"
         print(data.coordinate)
     }

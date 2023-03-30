@@ -10,8 +10,8 @@ import Utility_Toolbox
 public extension String {
     
     var coordinate: Coordinate {
+        guard self.count.isEven else { return .zero }
         guard let number = Int(self) else { return .zero}
-        guard number.isEven else { return .zero }
         let numbers = number.digits.split()
         guard let x = numbers.firstPart.intValue else { return .zero }
         guard let y = numbers.lastPart.intValue else { return .zero }
@@ -20,8 +20,8 @@ public extension String {
     }
     
     var matrix: Matrix {
+        guard self.count.isEven else { return .zero }
         guard let number = Int(self) else { return .zero}
-        guard number.isEven else { return .zero }
         let numbers = number.digits.split()
         guard let row = numbers.firstPart.intValue else { return .zero }
         guard let column = numbers.lastPart.intValue else { return .zero }
