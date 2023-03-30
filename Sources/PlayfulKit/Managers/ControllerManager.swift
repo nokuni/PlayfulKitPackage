@@ -225,6 +225,12 @@ public class ControllerManager {
         
         if directionPad.up.isPressed && !directionPad.down.isPressed { action?.up?() }
         if directionPad.down.isPressed && !directionPad.up.isPressed { action?.down?() }
+        
+        directionPad.valueChangedHandler = { value1, value2, value3 in
+            print(value1)
+            print(value2)
+            print(value3)
+        }
     }
     public func input(on gamepad: GCExtendedGamepad) {
         pressButton(gamepad.buttonMenu, action: action?.buttonMenu)
