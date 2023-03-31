@@ -33,12 +33,12 @@ final public class AssemblyManager {
     // MARK: - Public
     
     /// Create a list of sprites
-    public func createSpriteList(of nodes: [SKNode],
-                                 at startingPosition: CGPoint = .zero,
-                                 in node: SKNode,
-                                 axes: Axes = .vertical,
-                                 adjustement: Adjustement = .leading,
-                                 spacing: CGFloat = 1) {
+    public func createNodeList(of nodes: [SKNode],
+                               at startingPosition: CGPoint = .zero,
+                               in node: SKNode,
+                               axes: Axes = .vertical,
+                               adjustement: Adjustement = .leading,
+                               spacing: CGFloat = 1) {
         guard !nodes.isEmpty else { return }
         var nodes = nodes
         nodes.reserveCapacity(nodes.count)
@@ -51,13 +51,13 @@ final public class AssemblyManager {
     }
     
     /// Create a collection of sprite nodes delayed on each sprite node creation.
-    public func createSpriteCollectionWithDelay(of nodes: [SKSpriteNode],
-                                                at startingPosition: CGPoint = .zero,
-                                                in node: SKNode,
-                                                parameter: Parameter,
-                                                delay: TimeInterval = 0.5,
-                                                actionOnGoing: (() -> Void)?,
-                                                actionOnEnd: (() -> Void)?) {
+    public func createNodeCollectionWithDelay(of nodes: [SKSpriteNode],
+                                              at startingPosition: CGPoint = .zero,
+                                              in node: SKNode,
+                                              parameter: Parameter,
+                                              delay: TimeInterval = 0.5,
+                                              actionOnGoing: (() -> Void)?,
+                                              actionOnEnd: (() -> Void)?) {
         guard !nodes.isEmpty else { return }
         
         var timer: Timer?
@@ -84,10 +84,10 @@ final public class AssemblyManager {
     }
     
     /// Create a collection of sprite nodes
-    public func createSpriteCollection(of nodes: [SKNode],
-                                       at startingPosition: CGPoint = .zero,
-                                       in node: SKNode,
-                                       parameter: Parameter = Parameter()) {
+    public func createNodeCollection(of nodes: [SKNode],
+                                     at startingPosition: CGPoint = .zero,
+                                     in node: SKNode,
+                                     parameter: Parameter = Parameter()) {
         
         guard !nodes.isEmpty else { return }
         

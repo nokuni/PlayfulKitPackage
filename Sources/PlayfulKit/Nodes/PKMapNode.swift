@@ -473,7 +473,7 @@ public class PKMapNode: SKNode {
     private func createMap() {
         var tileNodes = tiles(count: matrix.total)
         tileNodes.attributeCoordinates(splittedBy: matrix.column)
-        assembly.createSpriteCollection(of: tileNodes,
+        assembly.createNodeCollection(of: tileNodes,
                                         at: origin,
                                         in: self,
                                         parameter: .init(columns: matrix.column))

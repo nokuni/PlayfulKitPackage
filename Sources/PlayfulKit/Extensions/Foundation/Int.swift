@@ -24,7 +24,7 @@ public extension Int {
             sprites.append(sprite)
         }
         
-        assembly.createSpriteList(of: sprites,
+        assembly.createNodeList(of: sprites,
                                   at: position,
                                   in: node,
                                   axes: .horizontal,
