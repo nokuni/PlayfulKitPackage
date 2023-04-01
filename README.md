@@ -75,4 +75,49 @@ label.addChild(timer)
 timer.start()
 ```
 
+## SOUND MANAGER
 
+```swift
+// Instanciate the manager
+let soundManager = SoundManager()
+```
+
+*Play a music.*
+```swift
+try? soundManager.playMusic(name: "sound.wav")
+```
+
+*Play a music sequence.*
+```swift
+try? soundManager.playMusicSequence(names: ["sound1.wav", "sound2.wav", "sound3.wav"])
+```
+
+*Play a SFX.*
+```swift
+try? soundManager.playSFX(name: "step.wav")
+```
+
+## ASSEMBLY MANAGER
+
+```swift
+// Instanciate the manager
+let assemblyManager = AssemblyManager()
+
+// Create your nodes
+var nodes: [SKSpriteNode] = []
+for _ in 0..<10 {
+   let node = SKSpriteNode(imageNamed: "sprite")
+   node.size = CGSize(width: 50, height: 50)
+   nodes.append(node)
+}
+```
+
+*Create a non scrollable list of nodes.*
+```swift
+assemblyManager.createNodeList(of nodes: nodes, in node: self)
+```
+
+*Play a non scrollable grid collection of nodes.*
+```swift
+assemblyManager.createNodeCollection(of: nodes, in: self)
+```

@@ -22,11 +22,17 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         public let name: String
         public var audio: AVAudioPlayer?
     }
+    private struct SoundConfiguration {
+        var numberOfLoops: Int
+        var volume: Float
+    }
     
     private enum SoundError: String {
         case soundNameNotFound = "The sound name provided has not been found."
         case audioPlayerIssue = "The audio player may have an issue."
-        case sequenceSoundIssue = "One or few sounds have issues being added to the sequence."
+        case soundPlayIssue = "The sound has an issue being played."
+        case sequenceSoundPlayIssue = "One or few sounds have issues being played."
+        case sequenceSoundAddIssue = "One or few sounds have issues being added to the sequence."
     }
     
     private var musics = [Music]()
@@ -40,119 +46,78 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
     private var timer: Timer?
     private var numberOfRepeat: Int = 0
     private var isPlayingInSequence: Bool = false
+    private var isMusicSequenceLooping: Bool = true
     private var currentMusicSequenceIndex: Int = 0
+    
+    // MARK: - PUBLIC
     
     /// Play a music (Usually medium/long duration sound).
     public func playMusic(name: String,
                           volume: Float = 0.1,
                           loops: Int = 0,
-                          isRepeatingForever: Bool = false) {
+                          isRepeatingForever: Bool = false) throws {
         guard isMusicEnabled else { return }
-        try? addMusic(name: name)
+        do {
+            try addMusic(name: name)
+        } catch {
+            throw SoundError.soundNameNotFound.rawValue
+        }
         if let index = musics.firstIndex(where: { $0.name == name }) {
-            if !musics[index].audio!.isPlaying {
-                musics[index].audio!.numberOfLoops = isRepeatingForever ? -1 : loops
-                musics[index].audio!.volume = volume
-                musics[index].audio!.prepareToPlay()
-                musics[index].audio!.play()
-            }
+            let configuration = SoundConfiguration(numberOfLoops: isRepeatingForever ? -1 : loops,
+                                                   volume: volume)
+            configureMusic(index: index, configuration: configuration)
         }
     }
     
+    /// Play a sequence of music one after another and looping when all sound have been played.
     public func playMusicSequence(names: [String],
-                                  volume: Float = 0.1) throws {
+                                  volume: Float = 0.1,
+                                  isLooping: Bool = true) throws {
         isPlayingInSequence = true
+        isMusicSequenceLooping = isLooping
         do {
             try addMusicSequence(names: names)
         } catch {
-            throw SoundError.sequenceSoundIssue.rawValue
+            throw SoundError.sequenceSoundAddIssue.rawValue
         }
         let selectedMusics = musics.filter { names.contains($0.name) }
         musicSequence = selectedMusics
         let currentMusic = musicSequence[currentMusicSequenceIndex]
-        playMusic(name: currentMusic.name, volume: volume)
+        do {
+            try playMusic(name: currentMusic.name, volume: volume)
+        } catch {
+            throw SoundError.soundPlayIssue.rawValue
+        }
         currentMusicSequenceIndex += 1
     }
     
-    public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        if flag {
-            print("Audio stopped playing")
-            stopMusic()
-            playNextMusicInSequence()
-        }
-    }
-    
-    private func addMusic(name: String) throws {
-        guard let url = Bundle.main.url(forResource: name, withExtension: nil) else {
-            throw SoundError.soundNameNotFound.rawValue
-        }
-        guard let audio = try? AVAudioPlayer(contentsOf: url) else {
-            throw SoundError.audioPlayerIssue.rawValue
-        }
-        
-        if !musics.contains(where: { $0.name == name }) {
-            let music = Music(name: name, audio: audio)
-            music.audio?.delegate = self
-            musics.append(music)
-        }
-    }
-    
-    private func addMusicSequence(names: [String]) throws {
-        for name in names {
-            do {
-                try addMusic(name: name)
-            } catch {
-                throw SoundError.sequenceSoundIssue.rawValue
-            }
-        }
-    }
-    
-    private func playNextMusicInSequence() {
-        guard isPlayingInSequence else { return }
-        guard currentMusicSequenceIndex < musicSequence.count else { return }
-        let music = musicSequence[currentMusicSequenceIndex]
-        playMusic(name: music.name, volume: music.audio?.volume ?? 0.1)
-        currentMusicSequenceIndex = music == musicSequence.last ? 0 : currentMusicSequenceIndex + 1
-    }
-    
     /// Play a SFX (Usually short duration sound).
+    /// - isSpammable: If true, the current sound can be interrupted by a new one. Otherwise, the current sound is played until it's finished to play the new one.
     public func playSFX(name: String,
-                        loops: Int,
-                        volume: Float,
+                        loops: Int = 0,
+                        volume: Float = 0.1,
                         isSpammable: Bool = false) {
         guard isSFXEnabled else { return }
         addSFX(name: name)
         if let index = soundEffects.firstIndex(where: { $0.name == name }) {
+            let configuration = SoundConfiguration(numberOfLoops: loops, volume: volume)
             if isSpammable {
                 stopSFX()
-                soundEffects[index].audio!.numberOfLoops = loops
-                soundEffects[index].audio!.volume = volume
-                soundEffects[index].audio!.prepareToPlay()
-                soundEffects[index].audio!.play()
+                configureSFX(index: index, configuration: configuration)
             } else if !soundEffects[index].audio!.isPlaying {
-                soundEffects[index].audio!.numberOfLoops = loops
-                soundEffects[index].audio!.volume = volume
-                soundEffects[index].audio!.prepareToPlay()
-                soundEffects[index].audio!.play()
+                configureSFX(index: index, configuration: configuration)
             }
         }
         
     }
     
-    private func addSFX(name: String) {
-        guard let url = Bundle.main.url(forResource: name, withExtension: nil),
-              let audio = try? AVAudioPlayer(contentsOf: url) else { return }
-        if !soundEffects.contains(where: { $0.name == name }) {
-            let soundEffect = SFX(name: name, audio: audio)
-            soundEffect.audio?.delegate = self
-            soundEffects.append(soundEffect)
+    /// Triggers when an audio finishes playing.
+    public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if flag {
+            print("Audio stopped playing")
+            stopMusic()
+            try? playNextMusicInSequence()
         }
-    }
-    
-    /// Stop the current music to play another.
-    public func changeMusic(name: String, volume: Float, loops: Int, isRepeatedForever: Bool) {
-        stopMusic()
-        playMusic(name: name, volume: volume, loops: loops, isRepeatingForever: isRepeatedForever)
     }
     
     /// Stop the current music and SFX playing.
@@ -202,5 +167,74 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         }
         
         timer?.fire()
+    }
+    
+    // MARK: - PRIVATE
+    
+    private func configureMusic(index: Int, configuration: SoundConfiguration) {
+        if !musics[index].audio!.isPlaying {
+            musics[index].audio?.numberOfLoops = configuration.numberOfLoops
+            musics[index].audio?.volume = configuration.volume
+            musics[index].audio?.prepareToPlay()
+            musics[index].audio?.play()
+        }
+    }
+    
+    private func addMusic(name: String) throws {
+        guard let url = Bundle.main.url(forResource: name, withExtension: nil) else {
+            throw SoundError.soundNameNotFound.rawValue
+        }
+        guard let audio = try? AVAudioPlayer(contentsOf: url) else {
+            throw SoundError.audioPlayerIssue.rawValue
+        }
+        
+        if !musics.contains(where: { $0.name == name }) {
+            let music = Music(name: name, audio: audio)
+            music.audio?.delegate = self
+            musics.append(music)
+        }
+    }
+    
+    private func addMusicSequence(names: [String]) throws {
+        for name in names {
+            do {
+                try addMusic(name: name)
+            } catch {
+                throw SoundError.sequenceSoundAddIssue.rawValue
+            }
+        }
+    }
+    
+    private func playNextMusicInSequence() throws {
+        guard isPlayingInSequence else { return }
+        guard currentMusicSequenceIndex < musicSequence.count else { return }
+        let music = musicSequence[currentMusicSequenceIndex]
+        do {
+            try playMusic(name: music.name, volume: music.audio?.volume ?? 0.1)
+        } catch {
+            throw SoundError.sequenceSoundPlayIssue.rawValue
+        }
+        if music == musicSequence.last {
+            if isMusicSequenceLooping { currentMusicSequenceIndex = 0 }
+        } else {
+            currentMusicSequenceIndex += 1
+        }
+    }
+    
+    private func addSFX(name: String) {
+        guard let url = Bundle.main.url(forResource: name, withExtension: nil),
+              let audio = try? AVAudioPlayer(contentsOf: url) else { return }
+        if !soundEffects.contains(where: { $0.name == name }) {
+            let soundEffect = SFX(name: name, audio: audio)
+            soundEffect.audio?.delegate = self
+            soundEffects.append(soundEffect)
+        }
+    }
+    
+    private func configureSFX(index: Int, configuration: SoundConfiguration) {
+        soundEffects[index].audio?.numberOfLoops = configuration.numberOfLoops
+        soundEffects[index].audio?.volume = configuration.volume
+        soundEffects[index].audio?.prepareToPlay()
+        soundEffects[index].audio?.play()
     }
 }
