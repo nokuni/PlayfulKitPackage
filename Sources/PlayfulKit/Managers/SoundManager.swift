@@ -237,7 +237,6 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         
         if !soundEffects.contains(where: { $0.name == name }) {
             let soundEffect = SFX(name: name, audio: audio)
-            soundEffect.audio?.delegate = self
             soundEffects.append(soundEffect)
         }
     }
