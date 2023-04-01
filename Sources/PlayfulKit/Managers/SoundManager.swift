@@ -24,32 +24,26 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         public var audio: AVAudioPlayer?
     }
     
-    private var musics = Set<Music>()
-    private var soundEffects = Set<SFX>()
+    private var musics = [Music]()
+    private var soundEffects = [SFX]()
     
-    private var musicsThatAlreadyPlayed = Set<Music>()
+    private var musicSequence = [Music]()
     
     @AppStorage("music") public var isMusicEnabled = true
     @AppStorage("sfx") public var isSFXEnabled = true
     
     private var timer: Timer?
     private var numberOfRepeat: Int = 0
+    private var isPlayingInSequence: Bool = false
+    private var currentMusicSequenceIndex: Int = 0
     
+    /// Play a music (Usually medium/long duration sound).
     public func playMusic(name: String,
                           volume: Float = 0.1,
-                          loops: Int = 1,
+                          loops: Int = 0,
                           isRepeatingForever: Bool = false) {
-        
         guard isMusicEnabled else { return }
-        guard let url = Bundle.main.url(forResource: name, withExtension: nil),
-              let audio = try? AVAudioPlayer(contentsOf: url) else { return }
-        
-        if !musics.contains(where: { $0.name == name }) {
-            let music = Music(name: name, audio: audio)
-            music.audio?.delegate = self
-            musics.insert(music)
-        }
-        
+        addMusic(name: name)
         if let index = musics.firstIndex(where: { $0.name == name }) {
             if !musics[index].audio!.isPlaying {
                 musics[index].audio!.numberOfLoops = isRepeatingForever ? -1 : loops
@@ -61,33 +55,55 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
     }
     
     public func playMusicSequence(names: [String],
-                                  volume: Float = 0.1,
-                                  loops: Int = 1,
-                                  isRepeatingForever: Bool = false) {
-        guard let randomMusicName = names.randomElement() else { return }
-        playMusic(name: randomMusicName, volume: volume, loops: loops, isRepeatingForever: isRepeatingForever)
+                                  volume: Float = 0.1) {
+        isPlayingInSequence = true
+        addMusicSequence(names: names)
+        let selectedMusics = musics.filter { names.contains($0.name) }
+        musicSequence = selectedMusics
+        let currentMusic = musicSequence[currentMusicSequenceIndex]
+        playMusic(name: currentMusic.name, volume: volume)
     }
     
     public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if flag {
             print("Audio stopped playing")
             stopMusic()
+            playNextMusicInSequence()
         }
     }
     
+    private func addMusic(name: String) {
+        guard let url = Bundle.main.url(forResource: name, withExtension: nil),
+              let audio = try? AVAudioPlayer(contentsOf: url) else { return }
+        if !musics.contains(where: { $0.name == name }) {
+            let music = Music(name: name, audio: audio)
+            music.audio?.delegate = self
+            musics.append(music)
+        }
+    }
+    
+    private func addMusicSequence(names: [String]) {
+        for name in names { addMusic(name: name) }
+    }
+    
+    private func playNextMusicInSequence() {
+        guard isPlayingInSequence else { return }
+        guard currentMusicSequenceIndex < (musicSequence.count - 1) else {
+            currentMusicSequenceIndex = 0
+            return
+        }
+        currentMusicSequenceIndex += 1
+        let music = musicSequence[currentMusicSequenceIndex]
+        playMusic(name: music.name, volume: music.audio?.volume ?? 0.1)
+    }
+    
+    /// Play a SFX (Usually short duration sound).
     public func playSFX(name: String,
                         loops: Int,
                         volume: Float,
                         isSpammable: Bool = false) {
         guard isSFXEnabled else { return }
-        guard let url = Bundle.main.url(forResource: name, withExtension: nil),
-              let audio = try? AVAudioPlayer(contentsOf: url) else { return }
-        
-        if !soundEffects.contains(where: { $0.name == name }) {
-            let soundEffect = SFX(name: name, audio: audio)
-            soundEffects.insert(soundEffect)
-        }
-        
+        addSFX(name: name)
         if let index = soundEffects.firstIndex(where: { $0.name == name }) {
             if isSpammable {
                 stopSFX()
@@ -105,10 +121,20 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         
     }
     
-    // Stop the actual background music to play another.
-    public func changeMusic(name: String, volume: Float, loops: Int) {
+    private func addSFX(name: String) {
+        guard let url = Bundle.main.url(forResource: name, withExtension: nil),
+              let audio = try? AVAudioPlayer(contentsOf: url) else { return }
+        if !soundEffects.contains(where: { $0.name == name }) {
+            let soundEffect = SFX(name: name, audio: audio)
+            soundEffect.audio?.delegate = self
+            soundEffects.append(soundEffect)
+        }
+    }
+    
+    /// Stop the current music to play another.
+    public func changeMusic(name: String, volume: Float, loops: Int, isRepeatedForever: Bool) {
         stopMusic()
-        playMusic(name: name, volume: volume, loops: loops)
+        playMusic(name: name, volume: volume, loops: loops, isRepeatingForever: isRepeatedForever)
     }
     
     /// Stop the current music and SFX playing.
@@ -121,6 +147,7 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
     /// Stop the current music playing.
     public func stopMusic() {
         musics.forEach { $0.audio?.stop() }
+        musicSequence.forEach { $0.audio?.stop() }
     }
     
     /// Stop the current SFX playing.
