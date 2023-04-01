@@ -31,6 +31,7 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         case soundNameNotFound = "The sound name provided has not been found."
         case audioPlayerIssue = "The audio player may have an issue."
         case soundPlayIssue = "The sound has an issue being played."
+        case soundAddIssue = "The sound have issues being added."
         case sequenceSoundPlayIssue = "One or few sounds have issues being played."
         case sequenceSoundAddIssue = "One or few sounds have issues being added to the sequence."
     }
@@ -96,9 +97,13 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
     public func playSFX(name: String,
                         loops: Int = 0,
                         volume: Float = 0.1,
-                        isSpammable: Bool = false) {
+                        isSpammable: Bool = false) throws {
         guard isSFXEnabled else { return }
-        addSFX(name: name)
+        do {
+            try addSFX(name: name)
+        } catch {
+            throw SoundError.soundAddIssue.rawValue
+        }
         if let index = soundEffects.firstIndex(where: { $0.name == name }) {
             let configuration = SoundConfiguration(numberOfLoops: loops, volume: volume)
             if isSpammable {
@@ -156,9 +161,9 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { timer in
             switch true {
             case self.numberOfRepeat == -1:
-                self.playSFX(name: name, loops: 0, volume: volume, isSpammable: true)
+                try? self.playSFX(name: name, loops: 0, volume: volume, isSpammable: true)
             case self.numberOfRepeat > 0:
-                self.playSFX(name: name, loops: 0, volume: volume, isSpammable: true)
+                try? self.playSFX(name: name, loops: 0, volume: volume, isSpammable: true)
                 self.numberOfRepeat -= 1
             default:
                 timer.invalidate()
@@ -221,9 +226,15 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         }
     }
     
-    private func addSFX(name: String) {
-        guard let url = Bundle.main.url(forResource: name, withExtension: nil),
-              let audio = try? AVAudioPlayer(contentsOf: url) else { return }
+    private func addSFX(name: String) throws {
+        
+        guard let url = Bundle.main.url(forResource: name, withExtension: nil) else {
+            throw SoundError.soundNameNotFound.rawValue
+        }
+        guard let audio = try? AVAudioPlayer(contentsOf: url) else {
+            throw SoundError.audioPlayerIssue.rawValue
+        }
+        
         if !soundEffects.contains(where: { $0.name == name }) {
             let soundEffect = SFX(name: name, audio: audio)
             soundEffect.audio?.delegate = self
