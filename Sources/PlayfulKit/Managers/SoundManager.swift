@@ -71,6 +71,7 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         musicSequence = selectedMusics
         let currentMusic = musicSequence[currentMusicSequenceIndex]
         playMusic(name: currentMusic.name, volume: volume)
+        currentMusicSequenceIndex += 1
     }
     
     public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
@@ -109,10 +110,9 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
     private func playNextMusicInSequence() {
         guard isPlayingInSequence else { return }
         guard currentMusicSequenceIndex < (musicSequence.count - 1) else { return }
-        if currentMusicSequenceIndex > 0 { currentMusicSequenceIndex += 1 }
         let music = musicSequence[currentMusicSequenceIndex]
         playMusic(name: music.name, volume: music.audio?.volume ?? 0.1)
-        if music == musicSequence.last { currentMusicSequenceIndex = 0 }
+        currentMusicSequenceIndex = music == musicSequence.last ? 0 : currentMusicSequenceIndex + 1
     }
     
     /// Play a SFX (Usually short duration sound).
