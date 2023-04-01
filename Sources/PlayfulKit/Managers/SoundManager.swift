@@ -109,7 +109,7 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
     
     private func playNextMusicInSequence() {
         guard isPlayingInSequence else { return }
-        guard currentMusicSequenceIndex < (musicSequence.count - 1) else { return }
+        guard currentMusicSequenceIndex < musicSequence.count else { return }
         let music = musicSequence[currentMusicSequenceIndex]
         playMusic(name: music.name, volume: music.audio?.volume ?? 0.1)
         currentMusicSequenceIndex = music == musicSequence.last ? 0 : currentMusicSequenceIndex + 1
