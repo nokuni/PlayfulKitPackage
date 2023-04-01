@@ -26,6 +26,7 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
     private enum SoundError: String {
         case soundNameNotFound = "The sound name provided has not been found."
         case audioPlayerIssue = "The audio player may have an issue."
+        case sequenceSoundIssue = "One or few sounds have issues being added to the sequence."
     }
     
     private var musics = [Music]()
@@ -59,12 +60,15 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
     }
     
     public func playMusicSequence(names: [String],
-                                  volume: Float = 0.1) {
+                                  volume: Float = 0.1) throws {
         isPlayingInSequence = true
-        addMusicSequence(names: names)
+        do {
+            try addMusicSequence(names: names)
+        } catch {
+            throw SoundError.sequenceSoundIssue.rawValue
+        }
         let selectedMusics = musics.filter { names.contains($0.name) }
         musicSequence = selectedMusics
-        guard !musicSequence.isEmpty else { return }
         let currentMusic = musicSequence[currentMusicSequenceIndex]
         playMusic(name: currentMusic.name, volume: volume)
     }
@@ -92,8 +96,14 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         }
     }
     
-    private func addMusicSequence(names: [String]) {
-        for name in names { try? addMusic(name: name) }
+    private func addMusicSequence(names: [String]) throws {
+        for name in names {
+            do {
+                try addMusic(name: name)
+            } catch {
+                throw SoundError.sequenceSoundIssue.rawValue
+            }
+        }
     }
     
     private func playNextMusicInSequence() {
