@@ -46,6 +46,7 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         
         if !musics.contains(where: { $0.name == name }) {
             let music = Music(name: name, audio: audio)
+            music.audio?.delegate = self
             musics.insert(music)
         }
         
