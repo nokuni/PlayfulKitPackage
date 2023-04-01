@@ -10,22 +10,24 @@ import SwiftUI
 
 // I noticed that if a sound duration is very short, the infinite loop (numberOfLoops = -1) works on the simulator but not on a real device. It starts playing the sound for 1 second then stops.
 
-final public class SoundManager {
+final public class SoundManager: NSObject, AVAudioPlayerDelegate {
     
-    public init() { }
+    public override init() { }
     
-    public struct BackgroundMusic {
-        let name: String
+    private struct Music: Hashable {
+        public let name: String
         public var audio: AVAudioPlayer?
     }
     
-    public struct SFX {
-        let name: String
+    private struct SFX: Hashable {
+        public let name: String
         public var audio: AVAudioPlayer?
     }
     
-    public var backgroundMusic: BackgroundMusic?
-    public var soundEffects = [SFX]()
+    private var musics = Set<Music>()
+    private var soundEffects = Set<SFX>()
+    
+    private var musicsThatAlreadyPlayed = Set<Music>()
     
     @AppStorage("music") public var isMusicEnabled = true
     @AppStorage("sfx") public var isSFXEnabled = true
@@ -33,18 +35,42 @@ final public class SoundManager {
     private var timer: Timer?
     private var numberOfRepeat: Int = 0
     
-    public func playMusic(name: String, volume: Float, loops: Int) {
-        if isMusicEnabled {
-            if let url = Bundle.main.url(forResource: name, withExtension: nil),
-               let audio = try? AVAudioPlayer(contentsOf: url) {
-                if backgroundMusic == nil {
-                    backgroundMusic = BackgroundMusic(name: name, audio: audio)
-                    backgroundMusic!.audio!.numberOfLoops = loops
-                    backgroundMusic!.audio!.volume = volume
-                    backgroundMusic!.audio!.prepareToPlay()
-                    backgroundMusic!.audio!.play()
-                }
+    public func playMusic(name: String,
+                          volume: Float = 0.1,
+                          loops: Int = 1,
+                          isRepeatingForever: Bool = false) {
+        
+        guard isMusicEnabled else { return }
+        guard let url = Bundle.main.url(forResource: name, withExtension: nil),
+              let audio = try? AVAudioPlayer(contentsOf: url) else { return }
+        
+        if !musics.contains(where: { $0.name == name }) {
+            let music = Music(name: name, audio: audio)
+            musics.insert(music)
+        }
+        
+        if let index = musics.firstIndex(where: { $0.name == name }) {
+            if !musics[index].audio!.isPlaying {
+                musics[index].audio!.numberOfLoops = isRepeatingForever ? -1 : loops
+                musics[index].audio!.volume = volume
+                musics[index].audio!.prepareToPlay()
+                musics[index].audio!.play()
             }
+        }
+    }
+    
+    public func playMusicSequence(names: [String],
+                                  volume: Float = 0.1,
+                                  loops: Int = 1,
+                                  isRepeatingForever: Bool = false) {
+        guard let randomMusicName = names.randomElement() else { return }
+        playMusic(name: randomMusicName, volume: volume, loops: loops, isRepeatingForever: isRepeatingForever)
+    }
+    
+    public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if flag {
+            print("Audio stopped playing")
+            stopMusic()
         }
     }
     
@@ -52,33 +78,51 @@ final public class SoundManager {
                         loops: Int,
                         volume: Float,
                         isSpammable: Bool = false) {
-        if isSFXEnabled {
-            if let url = Bundle.main.url(forResource: name, withExtension: nil),
-               let audio = try? AVAudioPlayer(contentsOf: url) {
-                
-                if !soundEffects.contains(where: { $0.name == name }) {
-                    let soundEffect = SFX(name: name, audio: audio)
-                    soundEffects.append(soundEffect)
-                }
-                
-                if let index = soundEffects.firstIndex(where: { $0.name == name }) {
-                    if isSpammable {
-                        stopSFX()
-                        soundEffects[index].audio!.numberOfLoops = loops
-                        soundEffects[index].audio!.volume = volume
-                        soundEffects[index].audio!.prepareToPlay()
-                        soundEffects[index].audio!.play()
-                    } else if !soundEffects[index].audio!.isPlaying {
-                        soundEffects[index].audio!.numberOfLoops = loops
-                        soundEffects[index].audio!.volume = volume
-                        soundEffects[index].audio!.prepareToPlay()
-                        soundEffects[index].audio!.play()
-                    }
-                }
+        guard isSFXEnabled else { return }
+        guard let url = Bundle.main.url(forResource: name, withExtension: nil),
+              let audio = try? AVAudioPlayer(contentsOf: url) else { return }
+        
+        if !soundEffects.contains(where: { $0.name == name }) {
+            let soundEffect = SFX(name: name, audio: audio)
+            soundEffects.insert(soundEffect)
+        }
+        
+        if let index = soundEffects.firstIndex(where: { $0.name == name }) {
+            if isSpammable {
+                stopSFX()
+                soundEffects[index].audio!.numberOfLoops = loops
+                soundEffects[index].audio!.volume = volume
+                soundEffects[index].audio!.prepareToPlay()
+                soundEffects[index].audio!.play()
+            } else if !soundEffects[index].audio!.isPlaying {
+                soundEffects[index].audio!.numberOfLoops = loops
+                soundEffects[index].audio!.volume = volume
+                soundEffects[index].audio!.prepareToPlay()
+                soundEffects[index].audio!.play()
             }
         }
+        
     }
     
+    // Stop the actual background music to play another.
+    public func changeMusic(name: String, volume: Float, loops: Int) {
+        stopMusic()
+        playMusic(name: name, volume: volume, loops: loops)
+    }
+    
+    /// Stop the current music and SFX playing.
+    public func stopAllSounds() {
+        stopMusic()
+        stopSFX()
+        stopRepeatedSFX()
+    }
+    
+    /// Stop the current music playing.
+    public func stopMusic() {
+        musics.forEach { $0.audio?.stop() }
+    }
+    
+    /// Stop the current SFX playing.
     public func stopSFX() {
         soundEffects.forEach {
             $0.audio?.stop()
@@ -86,25 +130,7 @@ final public class SoundManager {
         }
     }
     
-    // Stop the actual background music to play another.
-    public func changeBackgroundMusic(name: String, volume: Float, loops: Int) {
-        backgroundMusic?.audio?.stop()
-        backgroundMusic = nil
-        playMusic(name: name, volume: volume, loops: loops)
-    }
-    
-    // Stop the background music and the sound effects
-    public func stopAllSounds() {
-        backgroundMusic?.audio?.stop()
-        soundEffects.forEach { $0.audio?.stop() }
-    }
-    
-    // Stop the background music
-    public func stopBackgroundSound() {
-        backgroundMusic?.audio?.stop()
-        backgroundMusic = nil
-    }
-    
+    /// Stop the current SFX playing repeatedly.
     public func stopRepeatedSFX() {
         timer?.invalidate()
     }
