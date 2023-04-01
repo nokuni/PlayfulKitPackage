@@ -18,10 +18,14 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         public let name: String
         public var audio: AVAudioPlayer?
     }
-    
     private struct SFX: Hashable {
         public let name: String
         public var audio: AVAudioPlayer?
+    }
+    
+    private enum SoundError: String {
+        case soundNameNotFound = "The sound name provided has not been found."
+        case audioPlayerIssue = "The audio player may have an issue."
     }
     
     private var musics = [Music]()
@@ -43,7 +47,7 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
                           loops: Int = 0,
                           isRepeatingForever: Bool = false) {
         guard isMusicEnabled else { return }
-        addMusic(name: name)
+        try? addMusic(name: name)
         if let index = musics.firstIndex(where: { $0.name == name }) {
             if !musics[index].audio!.isPlaying {
                 musics[index].audio!.numberOfLoops = isRepeatingForever ? -1 : loops
@@ -60,6 +64,7 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         addMusicSequence(names: names)
         let selectedMusics = musics.filter { names.contains($0.name) }
         musicSequence = selectedMusics
+        guard !musicSequence.isEmpty else { return }
         let currentMusic = musicSequence[currentMusicSequenceIndex]
         playMusic(name: currentMusic.name, volume: volume)
     }
@@ -72,9 +77,14 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
         }
     }
     
-    private func addMusic(name: String) {
-        guard let url = Bundle.main.url(forResource: name, withExtension: nil),
-              let audio = try? AVAudioPlayer(contentsOf: url) else { return }
+    private func addMusic(name: String) throws {
+        guard let url = Bundle.main.url(forResource: name, withExtension: nil) else {
+            throw SoundError.soundNameNotFound.rawValue
+        }
+        guard let audio = try? AVAudioPlayer(contentsOf: url) else {
+            throw SoundError.audioPlayerIssue.rawValue
+        }
+        
         if !musics.contains(where: { $0.name == name }) {
             let music = Music(name: name, audio: audio)
             music.audio?.delegate = self
@@ -83,7 +93,7 @@ final public class SoundManager: NSObject, AVAudioPlayerDelegate {
     }
     
     private func addMusicSequence(names: [String]) {
-        for name in names { addMusic(name: name) }
+        for name in names { try? addMusic(name: name) }
     }
     
     private func playNextMusicInSequence() {
