@@ -47,9 +47,9 @@ public class PKMapNode: SKNode {
     public func addObject(_ object: PKObjectNode,
                           texture: SKTexture,
                           size: CGSize,
-                          logic: LogicBody,
+                          logic: LogicBody = LogicBody(),
                           drops: [Any] = [],
-                          animations: [ObjectAnimation],
+                          animations: [ObjectAnimation] = [],
                           at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
         if let newObject = object.copy() as? PKObjectNode {
@@ -68,8 +68,8 @@ public class PKMapNode: SKNode {
     public func addObject(_ object: PKObjectNode,
                           texture: SKTexture,
                           size: CGSize,
-                          logic: LogicBody,
-                          animations: [ObjectAnimation],
+                          logic: LogicBody = LogicBody(),
+                          animations: [ObjectAnimation] = [],
                           matrix: Matrix,
                           startingCoordinate: Coordinate) {
         
@@ -101,8 +101,8 @@ public class PKMapNode: SKNode {
                           texture: SKTexture,
                           filteringMode: SKTextureFilteringMode = .linear,
                           size: CGSize,
-                          logic: LogicBody,
-                          animations: [ObjectAnimation],
+                          logic: LogicBody = LogicBody(),
+                          animations: [ObjectAnimation] = [],
                           row: Int,
                           excluding columns: [Coordinate] = []) {
         let tilesOnRow = self.tiles.filter {
@@ -126,8 +126,8 @@ public class PKMapNode: SKNode {
                           texture: SKTexture,
                           filteringMode: SKTextureFilteringMode = .linear,
                           size: CGSize,
-                          logic: LogicBody,
-                          animations: [ObjectAnimation],
+                          logic: LogicBody = LogicBody(),
+                          animations: [ObjectAnimation] = [],
                           column: Int,
                           excluding rows: [Coordinate] = []) {
         let tilesOnColumn = self.tiles.filter {
@@ -150,8 +150,8 @@ public class PKMapNode: SKNode {
     public func addObject(_ object: PKObjectNode,
                           structure: MapStructure,
                           size: CGSize,
-                          logic: LogicBody,
-                          animations: [ObjectAnimation],
+                          logic: LogicBody = LogicBody(),
+                          animations: [ObjectAnimation] = [],
                           startingCoordinate: Coordinate = Coordinate.zero,
                           matrix: Matrix) {
         
@@ -274,8 +274,8 @@ public class PKMapNode: SKNode {
                                           textures: [SKTexture],
                                           filteringMode: SKTextureFilteringMode = .linear,
                                           size: CGSize,
-                                          logic: LogicBody,
-                                          animations: [ObjectAnimation],
+                                          logic: LogicBody = LogicBody(),
+                                          animations: [ObjectAnimation] = [],
                                           matrix: Matrix,
                                           startingCoordinate: Coordinate) {
         
