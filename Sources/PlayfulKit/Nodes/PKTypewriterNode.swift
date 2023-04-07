@@ -50,8 +50,9 @@ public class PKTypewriterNode: SKLabelNode {
     
     /// Display all the text and stop the writing.
     public func displayAllText() {
-        attributedText = textManager.attributedText(parameter: parameter)
         stop()
+        attributedText = textManager.attributedText(parameter: parameter)
+        currentCharacterIndex = parameter.content.count
     }
     
     // MARK: - PRIVATE
