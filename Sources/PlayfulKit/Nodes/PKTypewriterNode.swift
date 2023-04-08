@@ -22,7 +22,6 @@ public class PKTypewriterNode: SKLabelNode {
         self.timeInterval = timeInterval
         super.init()
         setup()
-        startWriting()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -30,7 +29,6 @@ public class PKTypewriterNode: SKLabelNode {
     }
     
     private let textManager = TextManager()
-    private let soundManager = SoundManager()
     
     public var container: SKNode?
     public var parameter: TextManager.Paramater
@@ -80,6 +78,8 @@ public class PKTypewriterNode: SKLabelNode {
         horizontalAlignmentMode = parameter.horizontalAlignmentMode
         verticalAlignmentMode = parameter.verticalAlignmentMode
         position = container.cornerPosition(corner: .topLeft, padding: parameter.padding)
+        
+        configureTimer()
     }
     
     private var isWriting: Bool {
@@ -104,11 +104,9 @@ public class PKTypewriterNode: SKLabelNode {
         attributedText = textManager.attributedText(parameter: newParameter)
     }
     
-    private func startWriting() {
+    private func configureTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { [weak self] timer in
-            guard let self = self else { return }
-            self.write()
+            self?.write()
         }
-        start()
     }
 }
