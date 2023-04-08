@@ -13,7 +13,10 @@ public class PKTypewriterNode: SKLabelNode {
     
     public init(container: SKNode,
                 parameter: TextManager.Paramater,
-                timeInterval: TimeInterval = 0.05) {
+                timeInterval: TimeInterval = 0.05,
+                startCompletion: (() -> Void)? = nil,
+                whileCompletion: (() -> Void)? = nil,
+                endCompletion: (() -> Void)? = nil) {
         self.container = container
         self.parameter = parameter
         self.timeInterval = timeInterval
