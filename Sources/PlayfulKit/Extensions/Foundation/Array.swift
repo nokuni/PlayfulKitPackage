@@ -11,7 +11,8 @@ import Utility_Toolbox
 public extension Array where Element: PKTileNode {
 
     /// Attributes coordinates to PKTileNode elements.
-    mutating func attributeCoordinates(splittedBy columns: Int) {
+    mutating func attributeCoordinates(splittedBy columns: Int) throws {
+        guard columns > 0 else { throw PKMapNodeError.matrixAtZero.rawValue }
         var coordinate = Coordinate.zero
         let splittedTiles = self.splitted(into: columns)
         for column in splittedTiles.indices {

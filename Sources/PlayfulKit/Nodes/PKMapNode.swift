@@ -19,7 +19,7 @@ public class PKMapNode: SKNode {
         
         super.init()
         
-        self.createMap()
+        try? createMap()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -470,13 +470,17 @@ public class PKMapNode: SKNode {
         }
         return tileNodes
     }
-    private func createMap() {
+    private func createMap() throws {
         var tileNodes = tiles(count: matrix.total)
-        tileNodes.attributeCoordinates(splittedBy: matrix.column)
+        do {
+            try tileNodes.attributeCoordinates(splittedBy: matrix.column)
+        } catch {
+            throw PKMapNodeError.matrixAtZero.rawValue
+        }
         assembly.createNodeCollection(of: tileNodes,
-                                        at: origin,
-                                        in: self,
-                                        parameter: .init(columns: matrix.column))
+                                      at: origin,
+                                      in: self,
+                                      parameter: .init(columns: matrix.column))
     }
     private func drawTexture(_ texture: SKTexture, on tiles: [PKTileNode]) {
         tiles.forEach { $0.texture = texture }
