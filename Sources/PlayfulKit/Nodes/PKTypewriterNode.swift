@@ -27,10 +27,14 @@ public class PKTypewriterNode: SKLabelNode {
     }
     
     private let textManager = TextManager()
+    private let soundManager = SoundManager()
     
     public var container: SKNode?
     public var parameter: TextManager.Paramater
     public var timeInterval: TimeInterval
+    public var startCompletion: (() -> Void)?
+    public var whileCompletion: (() -> Void)?
+    public var endCompletion: (() -> Void)?
     
     private var currentCharacterIndex: Int = 0
     private var currentImageIndex: Int = 0
@@ -39,9 +43,15 @@ public class PKTypewriterNode: SKLabelNode {
     // MARK: - PUBLIC
     
     /// Stop the writing text.
-    public func stop() { timer?.invalidate() }
+    public func stop() {
+        endCompletion?()
+        timer?.invalidate()
+    }
 
-    public func start() { timer?.fire() }
+    public func start() {
+        startCompletion?()
+        timer?.fire()
+    }
     
     /// Check if the text has finished writing.
     public func hasFinished() -> Bool {
@@ -77,6 +87,7 @@ public class PKTypewriterNode: SKLabelNode {
         switch true {
         case isWriting:
             updateText()
+            whileCompletion?()
         default:
             stop()
         }
