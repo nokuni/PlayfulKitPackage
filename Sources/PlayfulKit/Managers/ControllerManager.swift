@@ -113,6 +113,10 @@ public class ControllerManager {
     public var action: ControllerAction?
     public var virtualControllerElements: [VirtualControllerElement] = []
     
+    public func removeControllerObservers() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     /// Observe the controllers and establish a connexion.
     public func observeControllers() {
         NotificationCenter.default.addObserver(self, selector: #selector(connectControllers), name: NSNotification.Name.GCControllerDidConnect, object: nil)
