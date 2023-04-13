@@ -116,7 +116,8 @@ public class ControllerManager {
     public var isObservingControllers: Bool = false
     
     public func removeControllerObservers() {
-        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.GCControllerDidConnect, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
         isObservingControllers = false
     }
     
