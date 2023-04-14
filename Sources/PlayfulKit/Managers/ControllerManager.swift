@@ -116,8 +116,7 @@ public class ControllerManager {
     public var isObservingControllers: Bool = false
     
     public func removeControllerObservers() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.GCControllerDidConnect, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
+        NotificationCenter.default.removeObserver(self)
         isObservingControllers = false
     }
     
@@ -131,7 +130,6 @@ public class ControllerManager {
         virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
         
         if GCController.controllers().isEmpty {
-            print("Virtual Controller connected !")
             connectVirtualController()
             registerVirtualInputs()
         }
@@ -182,20 +180,21 @@ public class ControllerManager {
     
     // MARK: - Setup
     @objc public func connectControllers() {
+        print("Connect controllers ...")
         guard let controller = GCController.current else { return }
         
         if controller != virtualController?.controller {
-            print("Virtual Controller disconnected ...")
             disconnectVirtualController()
         }
         
         register(controller)
     }
     @objc public func disconnectControllers() {
-        print("Hardware and Virtual Controller disconnected ...")
+        print("All Controllers disconnected ...")
         disconnectVirtualController()
         
         if GCController.controllers().isEmpty {
+            print("No Hardware controller detected ...")
             virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
             connectVirtualController()
             registerVirtualInputs()
@@ -214,9 +213,11 @@ public class ControllerManager {
         return configuration
     }
     public func connectVirtualController() {
+        print("Connect Virtual Controller ...")
         virtualController?.connect()
     }
     public func disconnectVirtualController() {
+        print("Disconnect Virtual Controller ...")
         virtualController?.disconnect()
     }
     
@@ -267,6 +268,7 @@ public class ControllerManager {
         }
     }
     public func registerVirtualInputs() {
+        print("Register virtual controller inputs ...")
         registerDpad(virtualController?.controller?.extendedGamepad?.dpad)
         
         registerButton(virtualController?.controller?.extendedGamepad?.buttonA, action: action?.buttonA)
