@@ -477,6 +477,7 @@ public class PKMapNode: SKNode {
             throw PKMapNodeError.matrixAtZero.rawValue
         }
         
+        // Due to some visual issues with white lines between tiles, horizontal and vertical spacing are set to 0.99 instead of 1. 
         let parameter = AssemblyManager.Parameter(horizontalSpacing: 0.99,
                                                   verticalSpacing: 0.99,
                                                   columns: matrix.column)
