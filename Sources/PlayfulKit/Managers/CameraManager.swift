@@ -15,12 +15,15 @@ final public class CameraManager {
     
     public struct CameraConfiguration {
         public init(position: CGPoint = .center,
+                    zPosition: CGFloat = 20,
                     zoom: CGFloat = 1) {
             self.position = position
+            self.zPosition = zPosition
             self.zoom = zoom
         }
         
         public var position: CGPoint
+        public var zPosition: CGFloat
         public var zoom: CGFloat
     }
     public struct Showcase {
@@ -67,6 +70,7 @@ final public class CameraManager {
     
     /// Configure the camera to the scene.
     public func configure(configuration: CameraConfiguration = CameraConfiguration()) {
+        scene.camera?.zPosition = configuration.zPosition
         scene.camera?.position = configuration.position
         scene.camera?.run(zoomAction(configuration.zoom))
     }

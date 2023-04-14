@@ -470,11 +470,10 @@ public class PKMapNode: SKNode {
         }
         return tileNodes
     }
+    
     private func createMap() throws {
         var tileNodes = tiles(count: matrix.total)
-        do {
-            try tileNodes.attributeCoordinates(splittedBy: matrix.column)
-        } catch {
+        do { try tileNodes.attributeCoordinates(splittedBy: matrix.column) } catch {
             throw PKMapNodeError.matrixAtZero.rawValue
         }
         assembly.createNodeCollection(of: tileNodes,
@@ -483,7 +482,10 @@ public class PKMapNode: SKNode {
                                       parameter: .init(columns: matrix.column))
     }
     private func drawTexture(_ texture: SKTexture, on tiles: [PKTileNode]) {
-        tiles.forEach { $0.texture = texture }
+        tiles.forEach {
+            $0.texture = texture
+            $0.texture?.preload { }
+        }
     }
     private func isIncludingOtherCoordinates(_ coordinate: Coordinate,
                                              startingCoordinate: Coordinate,
