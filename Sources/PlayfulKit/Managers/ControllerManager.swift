@@ -223,16 +223,10 @@ public class ControllerManager {
         virtualController?.disconnect()
     }
     public func disableVirtualController() {
-        disconnectVirtualController()
         isVirtualControllerEnabled = false
     }
     public func enableVirtualController() {
         isVirtualControllerEnabled = true
-        if GCController.controllers().isEmpty && isVirtualControllerEnabled {
-            virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-            connectVirtualController()
-            registerVirtualInputs()
-        }
     }
     
     // MARK: - Controls
