@@ -115,6 +115,7 @@ public class ControllerManager {
     
     public var isObservingControllers: Bool = false
     public var isVirtualControllerConnected: Bool = false
+    public var isVirtualControllerEnabled: Bool = true
     
     /// Remove all controller observers.
     public func removeControllerObservers() {
@@ -195,7 +196,7 @@ public class ControllerManager {
         print("All Controllers disconnected ...")
         disconnectVirtualController()
         
-        if GCController.controllers().isEmpty && !isVirtualControllerConnected {
+        if GCController.controllers().isEmpty && !isVirtualControllerConnected && isVirtualControllerEnabled {
             print("No Hardware controller detected ...")
             virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
             connectVirtualController()
@@ -227,6 +228,12 @@ public class ControllerManager {
             isVirtualControllerConnected = false
             virtualController?.disconnect()
         }
+    }
+    public func disableVirtualController() {
+        isVirtualControllerEnabled = false
+    }
+    public func enableVirtualController() {
+        isVirtualControllerEnabled = true
     }
     
     // MARK: - Controls
