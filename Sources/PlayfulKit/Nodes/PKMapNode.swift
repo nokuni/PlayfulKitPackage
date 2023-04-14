@@ -476,10 +476,14 @@ public class PKMapNode: SKNode {
         do { try tileNodes.attributeCoordinates(splittedBy: matrix.column) } catch {
             throw PKMapNodeError.matrixAtZero.rawValue
         }
+        
+        let parameter = AssemblyManager.Parameter(horizontalSpacing: 0.99,
+                                                  verticalSpacing: 0.99,
+                                                  columns: matrix.column)
         assembly.createNodeCollection(of: tileNodes,
                                       at: origin,
                                       in: self,
-                                      parameter: .init(columns: matrix.column))
+                                      parameter: parameter)
     }
     private func drawTexture(_ texture: SKTexture, on tiles: [PKTileNode]) {
         tiles.forEach {
