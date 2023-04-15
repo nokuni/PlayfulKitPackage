@@ -77,6 +77,7 @@ public class PKTypewriterNode: SKLabelNode {
         preferredMaxLayoutWidth = container.frame.width - (parameter.padding.leading + parameter.padding.trailing)
         horizontalAlignmentMode = parameter.horizontalAlignmentMode
         verticalAlignmentMode = parameter.verticalAlignmentMode
+        zPosition = container.zPosition + 1
         position = container.cornerPosition(corner: .topLeft, padding: parameter.padding)
         
         configureTimer()
