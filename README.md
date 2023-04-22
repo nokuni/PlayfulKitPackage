@@ -38,7 +38,7 @@ progressBar.position = .center
 addChild(progressBar)
 ```
 
-### **PKScribeNode**
+### **PKTypewriterNode**
 *Create a writing text.*
 
 ```swift
@@ -125,12 +125,15 @@ assemblyManager.createNodeCollection(of: nodes, in: self)
 ## Controller Manager
 
 ```swift
+// Instanciate the manager
 let manager = ControllerManager(scene: scene)
 
+// Setup the controller elements for the virtual controller (button, dpad, etc...)
 func setupVirtualController() {
     manager.virtualControllerElements = [.directionPad, .buttonA, .buttonB, .buttonX, .buttonY]
 }
 
+// Assign the actions to inputs.
 func setupActions() {
     manager.action = ControllerManager.ControllerAction()
         
@@ -157,6 +160,7 @@ func setupActions() {
                                                         release: action.releaseDPad)
 }
     
+// Setup the controllers.
 func setupControllers() {
     setupVirtualController()
     setupActions()
