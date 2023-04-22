@@ -126,7 +126,7 @@ public class ControllerManager {
     public var scene: SKScene
     public var action: ControllerAction?
     
-    private var hardwareController: GCController?
+    private var controller: GCController?
     public var virtualController: GCVirtualController?
     public var virtualControllerElements: [VirtualControllerElement] = []
     
@@ -139,24 +139,30 @@ public class ControllerManager {
     
     /// Observe the controllers and establish a connexion.
     public func observeControllers() {
-        
         guard !isSetup else { return }
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(controllerDidConnect),
+                                               selector: #selector(connectControllers),
                                                name: NSNotification.Name.GCControllerDidConnect,
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(controllerDidDisconnect),
+                                               selector: #selector(disconnectControllers),
                                                name: NSNotification.Name.GCControllerDidDisconnect,
                                                object: nil)
         
         virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
         
-        connectVirtualController()
+        if GCController.controllers().isEmpty {
+            connectVirtualController()
+            registerVirtualInputs()
+        }
         
-        registerVirtualInputs()
+        guard let controller = GCController.controllers().first else { return }
+        
+        register(controller)
+        
+        connectControllers()
         
         isSetup = true
     }
@@ -167,31 +173,27 @@ public class ControllerManager {
 extension ControllerManager {
     
     /// Connect controllers.
-    @objc public func controllerDidConnect(notification: Notification) {
-        guard let controller = notification.object as? GCController else { return }
+    @objc public func connectControllers() {
+        print("Connect controllers ...")
+        guard let controller = GCController.current else { return }
         
-        print("Connected \(controller.productCategory) game controller.")
-        
-        disconnectVirtualController()
-        
-        guard let engine = createEngine(for: controller, locality: .default) else { return }
-        
-        engineMap[GCHapticsLocality.default] = engine
-        
-        hardwareController = controller
+        if controller != virtualController?.controller {
+            disconnectVirtualController()
+            
+            guard let engine = createEngine(for: controller, locality: .default) else { return }
+            
+            self.engineMap[GCHapticsLocality.default] = engine
+            self.controller = controller
+        }
         
         register(controller)
     }
     
     /// Disconnect controllers.
-    @objc public func controllerDidDisconnect(notification: Notification) {
-        guard hardwareController == notification.object as? GCController else { return }
+    @objc public func disconnectControllers() {
+        print("All Controllers disconnected ...")
         
-        print("Hardware controller disconnected ...")
-        
-        // dispose of engine and controller.
         engineMap.removeAll(keepingCapacity: true)
-        hardwareController = nil
         
         disconnectVirtualController()
         
@@ -355,7 +357,7 @@ extension ControllerManager {
 
 extension ControllerManager {
     
-    /// Creates haptics engine.
+    /// Create engine haptics on the hardware controller.
     private func createEngine(for controller: GCController, locality: GCHapticsLocality) -> CHHapticEngine? {
         // Get the controller's haptics (if one exists), and create a
         // new CGHapticEngine for it, using the default locality.
@@ -384,13 +386,12 @@ extension ControllerManager {
     
     public func triggerHaptic(named filename: String, locality: GCHapticsLocality = .default) {
         // Update the engine based on locality.
-        guard let controller = hardwareController else {
+        guard let controller = controller else {
             print("Unable to play haptics: no game controller connected")
             return
         }
         
         var engine: CHHapticEngine!
-        
         if let existingEngine = engineMap[locality] {
             engine = existingEngine
         } else if let newEngine = createEngine(for: controller, locality: locality) {
