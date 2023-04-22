@@ -142,12 +142,6 @@ public class ControllerManager {
         
         guard !isSetup else { return }
         
-        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-        
-        connectVirtualController()
-        
-        registerVirtualInputs()
-        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(controllerDidConnect),
                                                name: NSNotification.Name.GCControllerDidConnect,
@@ -157,6 +151,12 @@ public class ControllerManager {
                                                selector: #selector(controllerDidDisconnect),
                                                name: NSNotification.Name.GCControllerDidDisconnect,
                                                object: nil)
+        
+        virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
+        
+        connectVirtualController()
+        
+        registerVirtualInputs()
         
         isSetup = true
     }
