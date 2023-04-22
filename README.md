@@ -121,3 +121,47 @@ assemblyManager.createNodeList(of nodes: nodes, in node: self)
 ```swift
 assemblyManager.createNodeCollection(of: nodes, in: self)
 ```
+
+## Controller Manager
+
+```swift
+let manager = ControllerManager(scene: scene)
+
+func setupVirtualController() {
+    manager.virtualControllerElements = [.directionPad, .buttonA, .buttonB, .buttonX, .buttonY]
+}
+
+func setupActions() {
+    manager.action = ControllerManager.ControllerAction()
+        
+    manager.action?.buttonA = ControllerManager.ButtonAction(symbol: .a,
+                                                             press: actionA,
+                                                             release: releaseA)
+
+    manager.action?.buttonB = ControllerManager.ButtonAction(symbol: .b,
+                                                             press: actionB,
+                                                             release: releaseB)
+
+    manager.action?.buttonX = ControllerManager.ButtonAction(symbol: .x,
+                                                             press: actionX,
+                                                             release: releaseX)
+
+    manager.action?.buttonY = ControllerManager.ButtonAction(symbol: .y,
+                                                             press: actionY,
+                                                             release: releaseY)
+        
+    manager.action?.dpad = ControllerManager.DPadAction(leftPress: action.leftPadActionPress,
+                                                        rightPress: action.rightPadActionPress,
+                                                        upPress: action.upPadActionPress,
+                                                        downPress: action.downPadActionPress,
+                                                        release: action.releaseDPad)
+}
+    
+func setupControllers() {
+    setupVirtualController()
+    setupActions()
+    manager.observeControllers()
+}
+
+setupControllers()
+```
