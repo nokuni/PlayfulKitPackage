@@ -16,14 +16,30 @@ final public class HapticsManager {
     
     public func prepareHaptics() {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-
+        
+        do {
+            engine = try CHHapticEngine()
+            engine?.playsHapticsOnly = true
+            try engine?.start()
+        } catch {
+            print("There was an error creating the haptic engine: \(error.localizedDescription)")
+        }
+        
+        // The engine stopped; print out why
+        engine?.stoppedHandler = { reason in
+            print("The engine stopped: \(reason)")
+        }
+        
+        // If something goes wrong, attempt to restart the engine immediately
+        engine?.resetHandler = { [weak self] in
+            print("The engine reset")
+            
             do {
-                engine = try CHHapticEngine()
-                engine?.playsHapticsOnly = true
-                try engine?.start()
+                try self?.engine?.start()
             } catch {
-                print("There was an error creating the haptic engine: \(error.localizedDescription)")
+                print("Failed to restart the engine: \(error)")
             }
+        }
     }
     
     public func simpleSuccess() {
@@ -36,13 +52,13 @@ final public class HapticsManager {
         // make sure that the device supports haptics
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
         var events = [CHHapticEvent]()
-
+        
         // create one intense, sharp tap
         let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
         let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness)
         let event = CHHapticEvent(eventType: .hapticContinuous, parameters: [intensity, sharpness], relativeTime: 0, duration: 0.5)
         events.append(event)
-
+        
         // convert those events into a pattern and play it immediately
         do {
             let pattern = try CHHapticPattern(events: events, parameters: [])
