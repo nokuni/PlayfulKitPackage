@@ -15,6 +15,7 @@ public class ControllerManager {
         self.scene = scene
     }
     
+    /// Virtual controller elements.
     public enum VirtualControllerElement {
         case leftThumbstick
         case rightThumbstick
@@ -43,27 +44,38 @@ public class ControllerManager {
             }
         }
     }
+    
+    /// Button symbols.
     public enum ButtonSymbol {
         case a
         case b
         case x
         case y
+        case menu
     }
+    
+    /// Product categories.
     public enum ProductCategory {
         case xbox
         case playstation
         case nintendo
     }
     
+    /// Input action.
     public struct ButtonAction {
-        public init(press: (() -> Void)? = nil, release: (() -> Void)? = nil) {
+        public init(symbol: ButtonSymbol,
+                    press: (() -> Void)? = nil,
+                    release: (() -> Void)? = nil) {
+            self.symbol = symbol
             self.press = press
             self.release = release
         }
         
+        public var symbol: ButtonSymbol
         public var press: (() -> Void)?
         public var release: (() -> Void)?
     }
+    
     public struct DPadAction {
         public  init(leftPress: (() -> Void)? = nil,
                      rightPress: (() -> Void)? = nil,
@@ -85,11 +97,11 @@ public class ControllerManager {
     }
     
     public struct ControllerAction {
-        public init(buttonMenu: ButtonAction = ButtonAction(),
-                    buttonA: ButtonAction = ButtonAction(),
-                    buttonB: ButtonAction = ButtonAction(),
-                    buttonX: ButtonAction = ButtonAction(),
-                    buttonY: ButtonAction = ButtonAction(),
+        public init(buttonMenu: ButtonAction = ButtonAction(symbol: .menu),
+                    buttonA: ButtonAction = ButtonAction(symbol: .a),
+                    buttonB: ButtonAction = ButtonAction(symbol: .b),
+                    buttonX: ButtonAction = ButtonAction(symbol: .x),
+                    buttonY: ButtonAction = ButtonAction(symbol: .y),
                     dpad: DPadAction? = nil) {
             self.buttonMenu = buttonMenu
             self.buttonA = buttonA
@@ -115,12 +127,6 @@ public class ControllerManager {
     
     public var isObservingControllers: Bool = false
     public var isVirtualControllerEnabled: Bool = true
-    
-    /// Remove all controller observers.
-    public func removeControllerObservers() {
-        NotificationCenter.default.removeObserver(self)
-        isObservingControllers = false
-    }
     
     /// Observe the controllers and establish a connexion.
     public func observeControllers() {
@@ -155,13 +161,13 @@ public class ControllerManager {
             return gamepad.buttonX.localizedName
         case .y:
             return gamepad.buttonY.localizedName
+        case .menu:
+            return gamepad.buttonMenu.localizedName
         }
     }
+    
+    /// Returns the current product category (Playstation, Xbox or Nintendo).
     public var currentProductCategory: ProductCategory? {
-        // "Nintendo Switch Joy-Con (L/R)" -> Nintendo
-        // DualShock -> Playstation
-        // DualSense -> Playstation
-        // ??? -> Xbox
         let productCategory = GCController.current?.productCategory
         
         guard let productCategory = productCategory else { return nil }
@@ -179,8 +185,13 @@ public class ControllerManager {
             return nil
         }
     }
+}
+
+// MARK: - Setup
+
+extension ControllerManager {
     
-    // MARK: - Setup
+    /// Connect controllers.
     @objc public func connectControllers() {
         print("Connect controllers ...")
         guard let controller = GCController.current else { return }
@@ -191,6 +202,8 @@ public class ControllerManager {
         
         register(controller)
     }
+    
+    /// Disconnect controllers.
     @objc public func disconnectControllers() {
         print("All Controllers disconnected ...")
         disconnectVirtualController()
@@ -202,44 +215,27 @@ public class ControllerManager {
             registerVirtualInputs()
         }
     }
+}
+
+// MARK: - Controls
+
+extension ControllerManager {
     
-    // MARK: - Virtual
-    public var virtualControllerElementNames: Set<String> {
-        let names = virtualControllerElements.map { $0.name }
-        let elements = Set(names)
-        return elements
-    }
-    public var virtualControllerConfiguration: GCVirtualController.Configuration {
-        let configuration = GCVirtualController.Configuration()
-        configuration.elements = virtualControllerElementNames
-        return configuration
-    }
-    public func connectVirtualController() {
-        print("Connect Virtual Controller ...")
-        virtualController?.connect()
-    }
-    public func disconnectVirtualController() {
-        print("Disconnect Virtual Controller ...")
-        virtualController?.disconnect()
-    }
-    public func disableVirtualController() {
-        isVirtualControllerEnabled = false
-    }
-    public func enableVirtualController() {
-        isVirtualControllerEnabled = true
-    }
-    
-    // MARK: - Controls
-    public func register(_ controller: GCController?) {
+    /// Register controller controls
+    /*public func register(_ controller: GCController?) {
         print("Register Controller ...")
         controller?.extendedGamepad?.valueChangedHandler = {
             (gamepad: GCExtendedGamepad, element: GCControllerElement) in
             self.input(on: gamepad)
         }
-    }
+    }*/
+    
+    /// Button input
     public func pressButton(_ button: GCControllerButtonInput, action: ButtonAction?) {
-        if button.isPressed { action?.press?() } else { action?.release?() }
+        button.isPressed ? action?.press?() : action?.release?()
     }
+    
+    /// Dpad input
     public func pressDpad(_ directionPad: GCControllerDirectionPad,
                           action: DPadAction?) {
         switch true {
@@ -255,26 +251,90 @@ public class ControllerManager {
             action?.release?()
         }
     }
-    public func input(on gamepad: GCExtendedGamepad) {
+    
+    /// Register all inputs on the virtual controller.
+    public func register(_ controller: GCController?) {
+        print("Register controller inputs ...")
+        registerDpad(controller?.extendedGamepad?.dpad)
+        
+        registerButton(controller?.extendedGamepad?.buttonA, action: action?.buttonA)
+        registerButton(controller?.extendedGamepad?.buttonB, action: action?.buttonB)
+        registerButton(controller?.extendedGamepad?.buttonX, action: action?.buttonX)
+        registerButton(controller?.extendedGamepad?.buttonY, action: action?.buttonY)
+    }
+    
+    /// Controller inputs.
+    /*public func input(on gamepad: GCExtendedGamepad) {
         pressButton(gamepad.buttonMenu, action: action?.buttonMenu)
         pressButton(gamepad.buttonA, action: action?.buttonA)
         pressButton(gamepad.buttonB, action: action?.buttonB)
         pressButton(gamepad.buttonX, action: action?.buttonX)
         pressButton(gamepad.buttonY, action: action?.buttonY)
         pressDpad(gamepad.dpad, action: action?.dpad)
+    }*/
+}
+
+// MARK: - Virtual Controller Setup
+
+extension ControllerManager {
+    
+    /// Returns virtual controller element names (Button A, Button X, etc...)
+    public var virtualControllerElementNames: Set<String> {
+        let names = virtualControllerElements.map { $0.name }
+        let elements = Set(names)
+        return elements
     }
     
+    /// Returns virtual controller configuration.
+    public var virtualControllerConfiguration: GCVirtualController.Configuration {
+        let configuration = GCVirtualController.Configuration()
+        configuration.elements = virtualControllerElementNames
+        return configuration
+    }
+    
+    /// Enables the virtual controller.
+    public func connectVirtualController() {
+        print("Connect Virtual Controller ...")
+        virtualController?.connect()
+    }
+    
+    /// Disconnect the virtual controller.
+    public func disconnectVirtualController() {
+        print("Disconnect Virtual Controller ...")
+        virtualController?.disconnect()
+    }
+    
+    /// Disabled the virtual controller.
+    public func disableVirtualController() {
+        isVirtualControllerEnabled = false
+    }
+    
+    /// Enables the virtual controller.
+    public func enableVirtualController() {
+        isVirtualControllerEnabled = true
+    }
+}
+
+// MARK: - Virtual Controller Controls
+
+extension ControllerManager {
+    
+    /// Register button inputs on the virtual controller.
     public func registerButton(_ button: GCControllerButtonInput?, action: ButtonAction?) {
         button?.valueChangedHandler = { button, value, isPressed in
             self.pressButton(button, action: action)
         }
     }
+    
+    /// Register dpad inputs on the virtual controller.
     public func registerDpad(_ dpad: GCControllerDirectionPad?) {
         guard let dpad = dpad else { return }
         dpad.valueChangedHandler = { button, value, isPressed in
             self.pressDpad(dpad, action: self.action?.dpad)
         }
     }
+    
+    /// Register all inputs on the virtual controller.
     public func registerVirtualInputs() {
         print("Register virtual controller inputs ...")
         registerDpad(virtualController?.controller?.extendedGamepad?.dpad)
