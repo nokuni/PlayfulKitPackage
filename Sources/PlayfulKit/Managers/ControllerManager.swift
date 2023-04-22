@@ -337,6 +337,7 @@ extension ControllerManager {
         let controller = GCController.current
         guard let haptics = controller?.haptics else { return }
         let hapticsEngine = haptics.createEngine(withLocality: locality)
+        hapticsEngine?.playsHapticsOnly = true
         do {
             try hapticsEngine?.start()
         } catch let error {
