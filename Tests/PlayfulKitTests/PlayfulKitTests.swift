@@ -26,13 +26,6 @@ final class PlayfulKitTests: XCTestCase {
         rectangle.addChildSafely(scribeNode)
     }
     
-    func testButtonNanes() {
-        let scene = SKScene()
-        let controllerManager = ControllerManager(scene: scene)
-        controllerManager.observeControllers()
-        controllerManager.connectControllers()
-    }
-    
     func testObjectAdd() {
         let node = SKNode()
         let collision = Collision(category: .object,
