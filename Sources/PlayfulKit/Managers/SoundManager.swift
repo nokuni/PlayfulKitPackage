@@ -14,18 +14,7 @@ import SwiftUI
 
 final public class SoundManager: NSObject, AVAudioPlayerDelegate {
     
-    public override init() {
-        do {
-            
-            try AVAudioSession.sharedInstance().setCategory(.playback,
-                                                            mode: .default,
-                                                            options: [.mixWithOthers])
-            try AVAudioSession.sharedInstance().setActive(true)
-            
-        } catch {
-            print("Error activating AVAudioSession: \(error)")
-        }
-    }
+    public override init() { }
     
     private struct Music: Hashable {
         public let name: String
