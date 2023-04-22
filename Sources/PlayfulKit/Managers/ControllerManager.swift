@@ -335,8 +335,8 @@ extension ControllerManager {
     public func triggerHaptics(locality: GCHapticsLocality) {
         guard GCController.current != virtualController?.controller else { return }
         let controller = GCController.current
-        let haptics = controller?.haptics
-        let hapticsEngine = haptics?.createEngine(withLocality: locality)
+        guard let haptics = controller?.haptics else { return }
+        let hapticsEngine = haptics.createEngine(withLocality: locality)
         do {
             try hapticsEngine?.start()
         } catch let error {
