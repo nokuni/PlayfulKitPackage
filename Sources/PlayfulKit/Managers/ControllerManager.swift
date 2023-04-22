@@ -61,7 +61,7 @@ public class ControllerManager {
         case nintendo
     }
     
-    /// Input action.
+    /// Button action.
     public struct ButtonAction {
         public init(symbol: ButtonSymbol,
                     press: (() -> Void)? = nil,
@@ -76,6 +76,7 @@ public class ControllerManager {
         public var release: (() -> Void)?
     }
     
+    /// Dpad actions.
     public struct DPadAction {
         public  init(leftPress: (() -> Void)? = nil,
                      rightPress: (() -> Void)? = nil,
@@ -96,6 +97,7 @@ public class ControllerManager {
         var release: (() -> Void)?
     }
     
+    /// Controller actions.
     public struct ControllerAction {
         public init(buttonMenu: ButtonAction = ButtonAction(symbol: .menu),
                     buttonA: ButtonAction = ButtonAction(symbol: .a),
@@ -119,21 +121,19 @@ public class ControllerManager {
         public var dpad: DPadAction?
     }
     
-    public var virtualController: GCVirtualController?
-    
+    // Variables
     public var scene: SKScene
     public var action: ControllerAction?
-    public var virtualControllerElements: [VirtualControllerElement] = []
+    public var virtualController: GCVirtualController?
     
-    public var isObservingControllers: Bool = false
+    // Logic
+    public var virtualControllerElements: [VirtualControllerElement] = []
     public var isVirtualControllerEnabled: Bool = true
     
     /// Observe the controllers and establish a connexion.
     public func observeControllers() {
         NotificationCenter.default.addObserver(self, selector: #selector(connectControllers), name: NSNotification.Name.GCControllerDidConnect, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(disconnectControllers), name: NSNotification.Name.GCControllerDidDisconnect, object: nil)
-        
-        isObservingControllers = true
         
         virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
         
@@ -148,6 +148,41 @@ public class ControllerManager {
         
         connectControllers()
     }
+}
+
+// MARK: - Setup
+
+extension ControllerManager {
+    
+    /// Connect controllers.
+    @objc public func connectControllers() {
+        print("Connect controllers ...")
+        guard let controller = GCController.current else { return }
+        
+        if controller != virtualController?.controller {
+            disconnectVirtualController()
+        }
+        
+        register(controller)
+    }
+    
+    /// Disconnect controllers.
+    @objc public func disconnectControllers() {
+        print("All Controllers disconnected ...")
+        disconnectVirtualController()
+        
+        if GCController.controllers().isEmpty && isVirtualControllerEnabled {
+            print("No Hardware controller detected ...")
+            virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
+            connectVirtualController()
+            registerVirtualInputs()
+        }
+    }
+}
+
+// MARK: - Utils
+
+extension ControllerManager {
     
     /// Name of the button
     public func buttonName(_ symbol: ButtonSymbol) -> String? {
@@ -187,48 +222,9 @@ public class ControllerManager {
     }
 }
 
-// MARK: - Setup
-
-extension ControllerManager {
-    
-    /// Connect controllers.
-    @objc public func connectControllers() {
-        print("Connect controllers ...")
-        guard let controller = GCController.current else { return }
-        
-        if controller != virtualController?.controller {
-            disconnectVirtualController()
-        }
-        
-        register(controller)
-    }
-    
-    /// Disconnect controllers.
-    @objc public func disconnectControllers() {
-        print("All Controllers disconnected ...")
-        disconnectVirtualController()
-        
-        if GCController.controllers().isEmpty && isVirtualControllerEnabled {
-            print("No Hardware controller detected ...")
-            virtualController = GCVirtualController(configuration: virtualControllerConfiguration)
-            connectVirtualController()
-            registerVirtualInputs()
-        }
-    }
-}
-
 // MARK: - Controls
 
 extension ControllerManager {
-    
-    /// Register controller controls
-    /*public func register(_ controller: GCController?) {
-        print("Register Controller ...")
-        controller?.extendedGamepad?.valueChangedHandler = {
-            (gamepad: GCExtendedGamepad, element: GCControllerElement) in
-            self.input(on: gamepad)
-        }
-    }*/
     
     /// Button input
     public func pressButton(_ button: GCControllerButtonInput, action: ButtonAction?) {
@@ -252,6 +248,21 @@ extension ControllerManager {
         }
     }
     
+    /// Register button inputs on the virtual controller.
+    public func registerButton(_ button: GCControllerButtonInput?, action: ButtonAction?) {
+        button?.valueChangedHandler = { button, value, isPressed in
+            self.pressButton(button, action: action)
+        }
+    }
+    
+    /// Register dpad inputs on the virtual controller.
+    public func registerDpad(_ dpad: GCControllerDirectionPad?) {
+        guard let dpad = dpad else { return }
+        dpad.valueChangedHandler = { button, value, isPressed in
+            self.pressDpad(dpad, action: self.action?.dpad)
+        }
+    }
+    
     /// Register all inputs on the virtual controller.
     public func register(_ controller: GCController?) {
         print("Register controller inputs ...")
@@ -263,15 +274,16 @@ extension ControllerManager {
         registerButton(controller?.extendedGamepad?.buttonY, action: action?.buttonY)
     }
     
-    /// Controller inputs.
-    /*public func input(on gamepad: GCExtendedGamepad) {
-        pressButton(gamepad.buttonMenu, action: action?.buttonMenu)
-        pressButton(gamepad.buttonA, action: action?.buttonA)
-        pressButton(gamepad.buttonB, action: action?.buttonB)
-        pressButton(gamepad.buttonX, action: action?.buttonX)
-        pressButton(gamepad.buttonY, action: action?.buttonY)
-        pressDpad(gamepad.dpad, action: action?.dpad)
-    }*/
+    /// Register all inputs on the virtual controller.
+    public func registerVirtualInputs() {
+        print("Register virtual controller inputs ...")
+        registerDpad(virtualController?.controller?.extendedGamepad?.dpad)
+        
+        registerButton(virtualController?.controller?.extendedGamepad?.buttonA, action: action?.buttonA)
+        registerButton(virtualController?.controller?.extendedGamepad?.buttonB, action: action?.buttonB)
+        registerButton(virtualController?.controller?.extendedGamepad?.buttonX, action: action?.buttonX)
+        registerButton(virtualController?.controller?.extendedGamepad?.buttonY, action: action?.buttonY)
+    }
 }
 
 // MARK: - Virtual Controller Setup
@@ -315,33 +327,20 @@ extension ControllerManager {
     }
 }
 
-// MARK: - Virtual Controller Controls
+// MARK: - Haptics
 
 extension ControllerManager {
     
-    /// Register button inputs on the virtual controller.
-    public func registerButton(_ button: GCControllerButtonInput?, action: ButtonAction?) {
-        button?.valueChangedHandler = { button, value, isPressed in
-            self.pressButton(button, action: action)
+    /// Trigger haptics on the hardware controller.
+    public func triggerHaptics(locality: GCHapticsLocality) {
+        guard GCController.current != virtualController?.controller else { return }
+        let controller = GCController.current
+        let haptics = controller?.haptics
+        let hapticsEngine = haptics?.createEngine(withLocality: locality)
+        do {
+            try hapticsEngine?.start()
+        } catch let error {
+            print("Failed to play haptic pattern: \(error.localizedDescription).")
         }
-    }
-    
-    /// Register dpad inputs on the virtual controller.
-    public func registerDpad(_ dpad: GCControllerDirectionPad?) {
-        guard let dpad = dpad else { return }
-        dpad.valueChangedHandler = { button, value, isPressed in
-            self.pressDpad(dpad, action: self.action?.dpad)
-        }
-    }
-    
-    /// Register all inputs on the virtual controller.
-    public func registerVirtualInputs() {
-        print("Register virtual controller inputs ...")
-        registerDpad(virtualController?.controller?.extendedGamepad?.dpad)
-        
-        registerButton(virtualController?.controller?.extendedGamepad?.buttonA, action: action?.buttonA)
-        registerButton(virtualController?.controller?.extendedGamepad?.buttonB, action: action?.buttonB)
-        registerButton(virtualController?.controller?.extendedGamepad?.buttonX, action: action?.buttonX)
-        registerButton(virtualController?.controller?.extendedGamepad?.buttonY, action: action?.buttonY)
     }
 }
