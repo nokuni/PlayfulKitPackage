@@ -332,7 +332,7 @@ extension ControllerManager {
 extension ControllerManager {
     
     /// Trigger haptics on the hardware controller.
-    public func triggerHaptics(locality: GCHapticsLocality) {
+    public func configureHaptics(locality: GCHapticsLocality) {
         guard GCController.current != virtualController?.controller else { return }
         let controller = GCController.current
         guard let haptics = controller?.haptics else { return }
@@ -342,5 +342,10 @@ extension ControllerManager {
         } catch let error {
             print("Failed to play haptic pattern: \(error.localizedDescription).")
         }
+    }
+    
+    public func triggerHaptics() {
+        let haptic = HapticsManager()
+        haptic.complexSuccess(intensity: 0.5, sharpness: 0.5)
     }
 }

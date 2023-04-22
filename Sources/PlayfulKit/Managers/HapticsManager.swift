@@ -19,6 +19,7 @@ final public class HapticsManager {
 
             do {
                 engine = try CHHapticEngine()
+                engine?.playsHapticsOnly = true
                 try engine?.start()
             } catch {
                 print("There was an error creating the haptic engine: \(error.localizedDescription)")
