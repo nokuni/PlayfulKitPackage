@@ -91,7 +91,6 @@ public class PKTypewriterNode: SKLabelNode {
         switch true {
         case isWriting:
             updateText()
-            whileCompletion?()
         default:
             stop()
         }
@@ -107,6 +106,7 @@ public class PKTypewriterNode: SKLabelNode {
     
     private func configureTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { [weak self] timer in
+            self?.whileCompletion?()
             self?.write()
         }
     }
