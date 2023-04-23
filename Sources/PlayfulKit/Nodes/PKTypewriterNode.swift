@@ -50,14 +50,8 @@ public class PKTypewriterNode: SKLabelNode {
     }
 
     public func start() {
-        if let attributedText = textManager.attributedText(parameter: parameter) {
-            self.attributedText = attributedText
-        }
         startCompletion?()
-        timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { [weak self] timer in
-            self?.whileCompletion?()
-            self?.write()
-        }
+        timer?.fire()
     }
     
     /// Check if the text has finished writing.
@@ -75,6 +69,9 @@ public class PKTypewriterNode: SKLabelNode {
     // MARK: - PRIVATE
     private func setup() {
         guard let container = container else { return }
+        if let attributedText = textManager.attributedText(parameter: parameter) {
+            self.attributedText = attributedText
+        }
         lineBreakMode = NSLineBreakMode.byWordWrapping
         numberOfLines = 0
         preferredMaxLayoutWidth = container.frame.width - (parameter.padding.leading + parameter.padding.trailing)
@@ -82,6 +79,8 @@ public class PKTypewriterNode: SKLabelNode {
         verticalAlignmentMode = parameter.verticalAlignmentMode
         zPosition = container.zPosition + 1
         position = container.cornerPosition(corner: .topLeft, padding: parameter.padding)
+        
+        configureTimer()
     }
     
     private var isWriting: Bool {
@@ -103,5 +102,12 @@ public class PKTypewriterNode: SKLabelNode {
         var newParameter = parameter
         newParameter.content = currentText
         attributedText = textManager.attributedText(parameter: newParameter)
+    }
+    
+    private func configureTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { [weak self] timer in
+            self?.whileCompletion?()
+            self?.write()
+        }
     }
 }
