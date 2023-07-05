@@ -37,8 +37,6 @@ final class PlayfulKitTests: XCTestCase {
         let object = PKObjectNode(imageNamed: "redSquare")
         object.size = CGSize(width: 999, height: 999)
         object.coordinate = Coordinate(x: 99, y: 99)
-        object.logic.health = 999
-        object.logic.isDestructible = true
         object.applyPhysicsBody(size: CGSize(width: 50, height: 50), collision: collision)
         object.addAnimation(ObjectAnimation(identifier: "idle", frames: ["idle0", "idle1"]))
         

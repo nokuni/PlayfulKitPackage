@@ -64,7 +64,6 @@ public class PKMapNode: SKNode {
     public func addObject(_ object: PKObjectNode,
                           texture: SKTexture,
                           size: CGSize,
-                          logic: LogicBody = LogicBody(),
                           animations: [ObjectAnimation] = [],
                           matrix: Matrix,
                           startingCoordinate: Coordinate) {
@@ -96,7 +95,6 @@ public class PKMapNode: SKNode {
                           texture: SKTexture,
                           filteringMode: SKTextureFilteringMode = .linear,
                           size: CGSize,
-                          logic: LogicBody = LogicBody(),
                           animations: [ObjectAnimation] = [],
                           row: Int,
                           excluding columns: [Coordinate] = []) {
@@ -120,7 +118,6 @@ public class PKMapNode: SKNode {
                           texture: SKTexture,
                           filteringMode: SKTextureFilteringMode = .linear,
                           size: CGSize,
-                          logic: LogicBody = LogicBody(),
                           animations: [ObjectAnimation] = [],
                           column: Int,
                           excluding rows: [Coordinate] = []) {
@@ -143,7 +140,6 @@ public class PKMapNode: SKNode {
     public func addObject(_ object: PKObjectNode,
                           structure: MapStructure,
                           size: CGSize,
-                          logic: LogicBody = LogicBody(),
                           animations: [ObjectAnimation] = [],
                           startingCoordinate: Coordinate = Coordinate.zero,
                           matrix: Matrix) {
@@ -160,7 +156,6 @@ public class PKMapNode: SKNode {
         addObject(object,
                   texture: structure.middle,
                   size: size,
-                  logic: logic,
                   animations: animations,
                   matrix: matrix,
                   startingCoordinate: startingCoordinate
@@ -204,7 +199,6 @@ public class PKMapNode: SKNode {
         addObject(object,
                   texture: structure.left,
                   size: size,
-                  logic: logic,
                   animations: animations,
                   column: firstColumn,
                   excluding: excludedFirstColumns)
@@ -220,7 +214,6 @@ public class PKMapNode: SKNode {
         addObject(object,
                   texture: structure.right,
                   size: size,
-                  logic: logic,
                   animations: animations,
                   column: lastColumn,
                   excluding: excludedLastColumns)
@@ -236,7 +229,6 @@ public class PKMapNode: SKNode {
         addObject(object,
                   texture: structure.top,
                   size: size,
-                  logic: logic,
                   animations: animations,
                   row: firstRow,
                   excluding: excludedFirstRows)
@@ -252,7 +244,6 @@ public class PKMapNode: SKNode {
         addObject(object,
                   texture: structure.bottom,
                   size: size,
-                  logic: logic,
                   animations: animations,
                   row: lastRow,
                   excluding: excludedLastRows)
@@ -263,7 +254,6 @@ public class PKMapNode: SKNode {
                                           textures: [SKTexture],
                                           filteringMode: SKTextureFilteringMode = .linear,
                                           size: CGSize,
-                                          logic: LogicBody = LogicBody(),
                                           animations: [ObjectAnimation] = [],
                                           matrix: Matrix,
                                           startingCoordinate: Coordinate) {
