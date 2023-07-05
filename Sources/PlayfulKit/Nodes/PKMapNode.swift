@@ -47,8 +47,6 @@ public class PKMapNode: SKNode {
     public func addObject(_ object: PKObjectNode,
                           texture: SKTexture,
                           size: CGSize,
-                          logic: LogicBody = LogicBody(),
-                          drops: [Any] = [],
                           animations: [ObjectAnimation] = [],
                           at coordinate: Coordinate) {
         guard let position = tilePosition(from: coordinate) else { return }
@@ -56,8 +54,6 @@ public class PKMapNode: SKNode {
             newObject.size = size
             newObject.texture = texture
             newObject.coordinate = coordinate
-            newObject.logic = logic
-            newObject.drops = drops
             newObject.animations = animations
             newObject.position = position
             addChildSafely(newObject)
@@ -88,7 +84,6 @@ public class PKMapNode: SKNode {
                     addObject(newObject,
                               texture: texture,
                               size: size,
-                              logic: logic,
                               animations: animations,
                               at: coordinate)
                 }
@@ -114,7 +109,6 @@ public class PKMapNode: SKNode {
                 addObject(newObject,
                           texture: texture,
                           size: size,
-                          logic: logic,
                           animations: animations,
                           at: coordinate)
             }
@@ -139,7 +133,6 @@ public class PKMapNode: SKNode {
                 addObject(newObject,
                           texture: texture,
                           size: size,
-                          logic: logic,
                           animations: animations,
                           at: coordinate)
             }
@@ -182,25 +175,21 @@ public class PKMapNode: SKNode {
         addObject(object,
                   texture: structure.topLeft,
                   size: size,
-                  logic: logic,
                   animations: animations,
                   at: topLeftCornerCoordinate)
         addObject(object,
                   texture: structure.topRight,
                   size: size,
-                  logic: logic,
                   animations: animations,
                   at: topRightCornerCoordinate)
         addObject(object,
                   texture: structure.bottomLeft,
                   size: size,
-                  logic: logic,
                   animations: animations,
                   at: bottomLeftCornerCoordinate)
         addObject(object,
                   texture: structure.bottomRight,
                   size: size,
-                  logic: logic,
                   animations: animations,
                   at: bottomRightCornerCoordinate)
         
@@ -297,7 +286,6 @@ public class PKMapNode: SKNode {
             addObject(object,
                       texture: textures[index],
                       size: size,
-                      logic: logic,
                       animations: animations,
                       at: shapedCoordinates[index])
         }

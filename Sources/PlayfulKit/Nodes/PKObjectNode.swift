@@ -9,30 +9,27 @@ import SpriteKit
 
 /// An object node.
 public class PKObjectNode: SKSpriteNode {
-    public var logic = LogicBody()
     public var coordinate = Coordinate.zero
-    
-    public var drops: [Any] = []
-    
-    /// Animations of the object.
     public var animations: [ObjectAnimation] = []
+}
+
+// MARK: - ANIMATIONS
+public extension PKObjectNode {
     
-    // MARK: - ANIMATIONS
-    
-    public func addAnimation(_ animation: ObjectAnimation) {
+    func addAnimation(_ animation: ObjectAnimation) {
         animations.append(animation)
     }
     
-    public func addMultipleAnimation(_ animations: [ObjectAnimation]) {
+    func addMultipleAnimation(_ animations: [ObjectAnimation]) {
         self.animations.append(contentsOf: animations)
     }
     
     /// Get the action animation from an animation state.
-    public func animatedAction(with identifier: String,
-                               filteringMode: SKTextureFilteringMode = .linear,
-                               timeInterval: TimeInterval = 0.05,
-                               repeatCount: Int = 0,
-                               isRepeatingForever: Bool = false) -> SKAction {
+    func animatedAction(with identifier: String,
+                        filteringMode: SKTextureFilteringMode = .linear,
+                        timeInterval: TimeInterval = 0.05,
+                        repeatCount: Int = 0,
+                        isRepeatingForever: Bool = false) -> SKAction {
         guard let animation = animation(from: identifier) else { return SKAction() }
         guard !animation.frames.isEmpty else { return SKAction() }
         let action = SKAction.animate(with: animation.frames,
@@ -48,7 +45,7 @@ public class PKObjectNode: SKSpriteNode {
         }
     }
     
-    public func animation(from identifier: String) -> ObjectAnimation? {
+    func animation(from identifier: String) -> ObjectAnimation? {
         guard let index = animationIndex(from: identifier) else { return nil }
         return animations[index]
     }
