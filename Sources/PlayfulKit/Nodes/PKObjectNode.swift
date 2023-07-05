@@ -11,6 +11,12 @@ import SpriteKit
 open class PKObjectNode: SKSpriteNode {
     public var coordinate = Coordinate.zero
     public var animations: [ObjectAnimation] = []
+    public init() {
+        super.init(texture: nil, color: .clear, size: .zero)
+    }
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 // MARK: - ANIMATIONS

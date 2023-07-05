@@ -34,7 +34,8 @@ final class PlayfulKitTests: XCTestCase {
         
         let child = SKSpriteNode(imageNamed: "blueSquare")
         
-        let object = PKObjectNode(imageNamed: "redSquare")
+        let object = PKObjectNode()
+        object.texture = SKTexture(imageNamed: "redSquare")
         object.size = CGSize(width: 999, height: 999)
         object.coordinate = Coordinate(x: 99, y: 99)
         object.applyPhysicsBody(size: CGSize(width: 50, height: 50), collision: collision)
