@@ -62,8 +62,8 @@ public class PKProgressBarNode: SKNode {
     /// A progress bar synthesized with custom images.
     public struct ImageConfiguration {
         public init(amount: CGFloat = 1,
-                    sprite: SKSpriteNode,
-                    underSprite: SKSpriteNode) {
+                    sprite: SKSpriteNode = SKSpriteNode(),
+                    underSprite: SKSpriteNode = SKSpriteNode()) {
             self.amount = amount
             self.sprite = sprite
             self.underSprite = underSprite
