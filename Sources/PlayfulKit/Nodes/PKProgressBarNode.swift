@@ -19,7 +19,7 @@ public class PKProgressBarNode: SKNode {
         crop()
         createUnderBar()
     }
-    public init(imageConfiguration: ImageConfiguration) {
+    public init(imageConfiguration: ImageConfiguration = .init()) {
         self.imageConfiguration = imageConfiguration
         
         super.init()
