@@ -8,7 +8,7 @@
 import SpriteKit
 
 /// An object node.
-public class PKObjectNode: SKSpriteNode {
+open class PKObjectNode: SKSpriteNode {
     public var coordinate = Coordinate.zero
     public var animations: [ObjectAnimation] = []
 }
