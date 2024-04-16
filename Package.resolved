@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-algorithms.git",
       "state" : {
-        "revision" : "b14b7f4c528c942f121c8b860b9410b2bf57825e",
-        "version" : "1.0.0"
+        "revision" : "f6919dfc309e7f1b56224378b11e28bab5bccc42",
+        "version" : "1.2.0"
       }
     },
     {
@@ -24,7 +24,7 @@
       "location" : "https://github.com/nokuni/UtilityToolbox",
       "state" : {
         "branch" : "main",
-        "revision" : "e4dae16752cbeed622321b69372e1e62965f47a0"
+        "revision" : "8733ed059404699dc82e86ed5523c7819084e758"
       }
     }
   ],

@@ -5,7 +5,7 @@
 //  Created by Maertens Yann-Christophe on 19/03/23.
 //
 
-import Utility_Toolbox
+import UtilityToolbox
 
 public extension String {
     

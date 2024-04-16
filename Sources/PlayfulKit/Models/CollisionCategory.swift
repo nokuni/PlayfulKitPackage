@@ -16,25 +16,25 @@ public struct CollisionCategory: OptionSet {
     public let rawValue: UInt32
 
     /// No collision.
-    public static let allClear         = CollisionCategory(rawValue: .allClear)
+    public static let allClear = CollisionCategory(rawValue: .allClear)
     /// Collision with any nodes.
-    public static let allSet           = CollisionCategory(rawValue: .allSet)
+    public static let allSet = CollisionCategory(rawValue: .allSet)
     /// Player collision.
-    public static let player           = CollisionCategory(rawValue: 0x1 << 0)
+    public static let player = CollisionCategory(rawValue: 0x1 << 0)
     /// Player projectiles collision.
     public static let playerProjectile = CollisionCategory(rawValue: 0x1 << 1)
     /// Enemy collision.
-    public static let enemy            = CollisionCategory(rawValue: 0x1 << 2)
+    public static let enemy = CollisionCategory(rawValue: 0x1 << 2)
     /// Enemy projectiles collision.
-    public static let enemyProjectile  = CollisionCategory(rawValue: 0x1 << 3)
+    public static let enemyProjectile = CollisionCategory(rawValue: 0x1 << 3)
     /// NPC collision.
-    public static let npc              = CollisionCategory(rawValue: 0x1 << 4)
+    public static let npc = CollisionCategory(rawValue: 0x1 << 4)
     /// NPC projectiles collision.
-    public static let npcProjectile    = CollisionCategory(rawValue: 0x1 << 5)
+    public static let npcProjectile = CollisionCategory(rawValue: 0x1 << 5)
     /// Item collision.
-    public static let item             = CollisionCategory(rawValue: 0x1 << 6)
+    public static let item = CollisionCategory(rawValue: 0x1 << 6)
     /// Object collision.
-    public static let object           = CollisionCategory(rawValue: 0x1 << 7)
+    public static let object = CollisionCategory(rawValue: 0x1 << 7)
     /// Structure collision.
-    public static let structure        = CollisionCategory(rawValue: 0x1 << 8)
+    public static let structure = CollisionCategory(rawValue: 0x1 << 8)
 }

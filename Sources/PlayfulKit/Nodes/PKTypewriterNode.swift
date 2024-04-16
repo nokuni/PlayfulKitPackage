@@ -6,7 +6,7 @@
 //
 
 import SpriteKit
-import Utility_Toolbox
+import UtilityToolbox
 
 /// A writing text node.
 public class PKTypewriterNode: SKLabelNode {
